@@ -10,7 +10,7 @@ module.exports = function webpackConfig(env, args) {
       path: path.join(__dirname, 'dist'),
       libraryTarget: 'commonjs',
     },
-    resolve: { extensions: ['.tsx', '.js'] },
+    resolve: { extensions: ['.tsx', '.ts', '.js'] },
     module: {
       rules: [
         {

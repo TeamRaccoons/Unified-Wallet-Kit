@@ -1,6 +1,6 @@
 {
   "name": "@dicksonp/open-wallet-adapter",
-  "version": "0.0.1-alpha4-2",
+  "version": "0.0.1-alpha4-3",
   "types": "./dist/types/",
   "exports": {
     ".": "./dist/index.js"
@@ -25,7 +25,25 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "styled-components": "^5.3.6",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "@solana-mobile/wallet-adapter-mobile": "2.0.0",
+    "@solana/spl-token": "0.1.8",
+    "@solana/spl-token-registry": "~0.2.1105",
+    "@solana/wallet-adapter-base": "0.9.22",
+    "@solana/wallet-adapter-react": "0.15.32",
+    "@solana/wallet-adapter-wallets": "0.19.17",
+    "@solana/web3.js": "~1.77.3",
+    "autoprefixer": "10.4.14",
+    "bn.js": "5.2.1",
+    "classnames": "^2.3.2",
+    "decimal.js": "10.4.2",
+    "jsbi": "4.3.0",
+    "lokijs": "1.5.12",
+    "pino-pretty": "10.0.0",
+    "postcss": "8.4.23",
+    "react-toastify": "~9.0.7",
+    "react-use": "^17.2.4",
+    "sonner": "^0.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
@@ -45,6 +63,7 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "@types/bn.js": "^5.1.0"
   }
 }
