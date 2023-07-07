@@ -1,11 +1,14 @@
 const path = require('path')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const nodeExternals = require('webpack-node-externals')
 
 module.exports = function webpackConfig(env, args) {
   return {
-    entry: path.join(__dirname, 'src/index.ts'),
+    entry: path.join(__dirname, 'src/index.tsx'),
     output: {
       filename: 'index.js',
       path: path.join(__dirname, 'dist'),
+      libraryTarget: 'commonjs',
     },
     resolve: { extensions: ['.tsx', '.js'] },
     module: {
@@ -24,10 +27,7 @@ module.exports = function webpackConfig(env, args) {
         new (require('terser-webpack-plugin'))({ extractComments: false }),
       ],
     },
-    devServer: {
-      hot: true,
-      open: true,
-      static: { directory: path.join(__dirname, 'public') },
-    },
+    plugins: [new CleanWebpackPlugin()],
+    externals: [nodeExternals()],
   }
 }
