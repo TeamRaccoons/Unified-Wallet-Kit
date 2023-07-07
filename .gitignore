@@ -1,0 +1,6 @@
+.cache
+public/**/*
+!public/index.html
+node_modules
+
+dist/
