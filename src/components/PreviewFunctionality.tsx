@@ -2,11 +2,11 @@ import { IWalletProps } from "../contexts/CometKitProvider";
 
 const PreviewFunctionality = ({ title, walletProps }: { title: string, walletProps?: IWalletProps }) => {
   return (
-    <div className="flex flex-col justify-center mt-4 border border-white/10 p-4 bg-white/10 rounded-lg text-white text-xs">
-      <p className="font-semibold text-lg mb-4">{title}</p>
+    <div tw="flex flex-col justify-center mt-4 border border-white/10 p-4 bg-white/10 rounded-lg text-white text-xs">
+      <p tw="font-semibold text-lg mb-4">{title}</p>
 
-      <div className="flex flex-col space-y-4 w-full">
-        <div className="">
+      <div tw="flex flex-col space-y-4 w-full">
+        <div tw="">
           <div>
             Wallet:
           </div>
@@ -15,7 +15,7 @@ const PreviewFunctionality = ({ title, walletProps }: { title: string, walletPro
           </div>
         </div>
 
-        <div className="">
+        <div tw="">
           <div>
             PublicKey:
           </div>

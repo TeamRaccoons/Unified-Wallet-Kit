@@ -39,7 +39,7 @@ const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithCh
     <dialog
       role="dialog"
       aria-modal="true"
-      className="top-0 left-0 h-full w-full flex items-center justify-center bg-black/25 backdrop-blur-md animate-fade-in cursor-auto z-50"
+      tw="top-0 left-0 h-full w-full flex items-center justify-center bg-black/25 backdrop-blur-sm animate-fade-in cursor-auto z-50"
       ref={ref}
     >
       {children}

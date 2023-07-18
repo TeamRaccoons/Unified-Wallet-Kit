@@ -11,6 +11,7 @@ import { shortenAddress } from '../../../misc/utils';
 import { useCometKit } from '../../../contexts/CometKitProvider';
 import { Wallet } from '@solana/wallet-adapter-react';
 import { usePrevious } from 'react-use';
+import tw from 'twin.macro';
 
 export enum IVariant {
   SUCCESS = 'SUCCESS',
@@ -35,15 +36,12 @@ export const WalletNotification = ({
   switch (variant) {
     case IVariant.SUCCESS:
       IconComponent = <AlertSuccess width={38} height={38} />;
-      bg = 'bg-jupiter-notification-success';
       break;
     case IVariant.INFO:
       IconComponent = <AlertInfo width={38} height={38} />;
-      bg = 'bg-jupiter-notification-info';
       break;
     case IVariant.ERROR:
       IconComponent = <AlertError width={38} height={38} />;
-      bg = 'bg-jupiter-notification-error';
       break;
   }
 
@@ -52,18 +50,20 @@ export const WalletNotification = ({
   }, [id]);
 
   return (
-    <div className="relative bg-black text-white shadow-lg rounded-lg flex items-center w-full md:w-auto">
+    <div tw="relative bg-black text-white shadow-lg rounded-lg flex items-center w-full md:w-auto">
       {IconComponent && (
-        <div className={`rounded-full flex items-center justify-center h-8 w-8 ${bg} mr-4`}>{IconComponent}</div>
+        <div css={[
+          tw`rounded-full flex items-center justify-center h-8 w-8 mr-4`,
+        ]}>{IconComponent}</div>
       )}
 
       {/* Prevent template string from overflowing */}
       <div style={{ maxWidth: '90%' }}>
-        <div className="text-lg font-bold">{title}</div>
-        <div className="text-xs text-black-50 dark:text-white-50">{description}</div>
+        <div tw="text-lg font-bold">{title}</div>
+        <div tw="text-xs text-black/50 dark:text-white/50">{description}</div>
       </div>
 
-      <button className="absolute top-0 right-0" onClick={dismiss}>
+      <button tw="absolute top-0 right-0" onClick={dismiss}>
         <CloseIcon width={12} height={12} />
       </button>
     </div>
@@ -102,7 +102,7 @@ const WalletStatusNotification = () => {
         <>
           <div>{`Connected to ${wallet.adapter.name} (${truncatedAddress})`}</div>
           {!supportVersionedTransaction && (
-            <div className="text-black-75 dark:text-white-75">{`Versioned Tx is turned off as your wallet does not support it.`}</div>
+            <div tw="text-black/75 dark:text-white/75">{`Versioned Tx is turned off as your wallet does not support it.`}</div>
           )}
         </>, { id: WALLET_STATUS_NOTIFICATION_ID }
       )

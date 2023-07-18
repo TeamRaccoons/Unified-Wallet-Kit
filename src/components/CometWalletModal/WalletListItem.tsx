@@ -24,7 +24,7 @@ export const WalletIcon: FC<WalletIconProps> = ({ wallet, width = 24, height = 2
           height={height}
           src={wallet.icon}
           alt={`${wallet.name} icon`}
-          className="object-contain"
+          tw="object-contain"
           onError={onError}
         />
       </div>
@@ -47,16 +47,14 @@ export const WalletListItem = ({ handleClick, wallet }: WalletListItemProps) => 
   return (
     <li
       onClick={handleClick}
-      className={classNames(
-        'flex items-center px-5 py-4 space-x-5 cursor-pointer border border-white/10 rounded-lg hover:bg-white/10 hover:backdrop-blur-xl hover:shadow-2xl transition-all',
-      )}
+      tw={'flex items-center px-5 py-4 space-x-5 cursor-pointer border border-white/10 rounded-lg hover:bg-white/10 hover:backdrop-blur-xl hover:shadow-2xl transition-all'}
     >
       {isMobile() ? (
         <WalletIcon wallet={wallet} width={24} height={24} />
       ) : (
         <WalletIcon wallet={wallet} width={30} height={30} />
       )}
-      <span className="font-semibold text-xs overflow-hidden text-ellipsis">{wallet.name}</span>
+      <span tw="font-semibold text-xs overflow-hidden text-ellipsis">{wallet.name}</span>
     </li>
   );
 };

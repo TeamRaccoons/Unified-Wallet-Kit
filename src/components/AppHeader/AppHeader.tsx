@@ -20,23 +20,23 @@ const AppHeader: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between w-full px-4 py-4 md:px-8">
-        <div className="flex items-center flex-1">
-          <button onClick={handleToggleMenu} type="button" className="w-6 mr-3 md:hidden text-white">
+      <div tw="flex items-center justify-between w-full px-4 py-4 md:px-8">
+        <div tw="flex items-center flex-1">
+          <button onClick={handleToggleMenu} type="button" tw="w-6 mr-3 md:hidden text-white">
             {openMobileMenu ? <CloseIcon /> : <MenuIcon />}
           </button>
 
-          <a href="https://jup.ag" className="flex-1">
-            <h1 className="flex items-center text-lg font-semibold text-white">
+          <a href="https://jup.ag" tw="flex-1">
+            <h1 tw="flex items-center text-lg font-semibold text-white">
               <JupiterLogo />
-              <span className="ml-3">Jupiter</span>
+              <span tw="ml-3">Jupiter</span>
             </h1>
           </a>
         </div>
 
         <HeaderLinks />
 
-        <div className="flex-1" />
+        <div tw="flex-1" />
       </div>
 
       {openMobileMenu && (
@@ -44,7 +44,7 @@ const AppHeader: React.FC<{}> = () => {
           style={{
             height: 'calc(100vh - 70px)',
           }}
-          className="z-50 md:hidden fixed top-[70px] left-0 w-full bg-[rgba(62,62,69,0.85)] backdrop-blur-[20px]"
+          tw="z-50 md:hidden fixed top-[70px] left-0 w-full bg-[rgba(62,62,69,0.85)] backdrop-blur-[20px]"
           onClick={handleToggleMenu}
         >
           <HeaderLinksMobile />

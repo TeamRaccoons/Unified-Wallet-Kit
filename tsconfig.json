@@ -3,8 +3,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "node",
-    "jsx": "react-jsx",
-    "baseUrl": "./src",
+    "jsx": "preserve",
+    "baseUrl": ".",
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,16 +12,26 @@
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-
+    "paths": {
+      "src/*": [
+        "src/*"
+      ],
+      "public/*": [
+        "public/*"
+      ]
+    },
     // ignore some typings check
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "noImplicitReturns": false,
-
-    // Ensure that .d.ts files are created by tsc, but not .js files
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "declarationDir": "./dist/types/",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "incremental": true,
+    "noEmit": true
   },
   "include": [
     "src",
@@ -32,4 +42,7 @@
     "./types",
     "./node_modules/@types"
   ],
+  "exclude": [
+    "node_modules"
+  ]
 }

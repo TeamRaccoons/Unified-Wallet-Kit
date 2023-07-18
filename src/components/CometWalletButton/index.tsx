@@ -1,4 +1,5 @@
 import React from "react";
+import 'twin.macro';
 
 import { CurrentUserBadge } from "../CurrentUserBadge";
 import { useCometKit } from "../../contexts/CometKitProvider";
@@ -18,7 +19,7 @@ const CometWalletButton = () => {
       {!connected ? (
         <button
           type="button"
-          className="rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold"
+          tw="rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold"
           onClick={() => setShouldRender(true)}
         >
           {`Connect Wallet`}

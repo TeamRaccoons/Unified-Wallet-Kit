@@ -20,7 +20,7 @@ const Collapse: React.FC<
 
   return (
     <div
-      className={classNames('transition-all duration-200 overflow-hidden', animationClass, className)}
+      tw={'transition-all duration-200 overflow-hidden'}
       style={{ height: localHeight, maxHeight }}
     >
       {children}

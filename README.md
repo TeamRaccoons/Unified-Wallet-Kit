@@ -1,3 +1,20 @@
+
+Pre-requisite
+
+- Setup your global dialog css to full height and width.
+
+
+
+
+
+
+
+
+
+
+
+
+
 [](#webpack--styled-components--typescript)
 
 # Twin + Webpack + Styled Components + TypeScript
