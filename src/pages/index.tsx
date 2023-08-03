@@ -15,12 +15,11 @@ const Index = () => {
               <div tw="flex flex-col justify-center items-center text-center">
                 <SexyChameleonText>
                   <span tw="text-4xl md:text-[52px] font-semibold px-4 pb-2 md:px-0">
-                    Jupiter Terminal
+                    Jupiter Open Wallet
                   </span>
                 </SexyChameleonText>
                 <p tw="text-[#9D9DA6] w-[80%] md:max-w-[60%] text-base mt-4">
-                  An open-sourced, lite version of Jupiter that provides end-to-end swap flow by linking it in your HTML.
-                  Check out the visual demo for the various integration modes below.
+                  An open-sourced wallet adapter built by Jupiter.
                 </p>
               </div>
             </div>

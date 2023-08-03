@@ -6,7 +6,7 @@ import { useCometKit } from "../../contexts/CometKitProvider";
 import ModalDialog from "../ModalDialog";
 import CometWalletModal from '../../components/CometWalletModal';
 
-const CometWalletButton = () => {
+const CometWalletButton: React.FC<{ buttonClassName?: string; currentUserClassName?: string; }> = ({ buttonClassName: className, currentUserClassName }) => {
   const [shouldRender, setShouldRender] = React.useState(false);
   const { disconnect, connected } = useCometKit();
 
@@ -20,12 +20,13 @@ const CometWalletButton = () => {
         <button
           type="button"
           tw="rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold"
+          className={className}
           onClick={() => setShouldRender(true)}
         >
           {`Connect Wallet`}
         </button>
       ) : (
-        <CurrentUserBadge onClick={disconnect} />
+        <CurrentUserBadge onClick={disconnect} className={currentUserClassName} />
       )}
     </>
   );

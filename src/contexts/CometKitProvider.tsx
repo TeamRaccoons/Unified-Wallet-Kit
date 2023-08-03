@@ -10,9 +10,10 @@ import {
 } from "@solana/wallet-adapter-react";
 import { Connection, Transaction, VersionedTransaction } from "@solana/web3.js";
 
-import { Toaster } from 'sonner';
+// import { Toaster } from 'sonner';
 import { SendTransactionOptions, WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
-import WalletConnectionProvider from "./WalletConnectionProvider";
+import WalletConnectionProvider, { ICometKitMetadata } from "./WalletConnectionProvider";
+import { IHardcodedWalletStandardAdapter } from "./WalletConnectionProvider/HardcodedWalletStandardAdapter";
 
 export const MWA_NOT_FOUND_ERROR = "MWA_NOT_FOUND_ERROR";
 
@@ -66,11 +67,7 @@ export interface ICometKitContext { }
 
 interface ICometKitConfig {
   autoConnect: boolean;
-  metadata: {
-    uri: string;
-    icon: string;
-    name: string;
-  };
+  metadata: ICometKitMetadata;
 }
 
 const CometKitContext = React.createContext<ICometKitContext>({});
@@ -116,22 +113,21 @@ const CometKitValueProvider = ({ passThroughWallet, children }: { passThroughWal
 const CometKitProvider = ({
   passThroughWallet,
   config,
+  hardcodedWalletStandard,
   children,
 }: {
   passThroughWallet: Wallet | null;
   config: ICometKitConfig;
+  hardcodedWalletStandard?: IHardcodedWalletStandardAdapter[]
   children: React.ReactNode;
 }) => {
   return (
     <WalletConnectionProvider
-      metadata={{
-        uri: "",
-        icon: "",
-        name: "Open Wallet Adapter",
-      }}
+      metadata={config.metadata}
+      hardcodedWalletStandard={hardcodedWalletStandard}
     >
       <>
-        <Toaster position="bottom-left" toastOptions={{ className: '!bg-black !text-white !px-6 !py-5 !border-none' }} />
+        {/* <Toaster position="bottom-left" toastOptions={{ className: '!bg-black !text-white !px-6 !py-5 !border-none' }} /> */}
 
         <CometKitContext.Provider value={{ ...passThroughWallet }}>
           <CometKitValueProvider passThroughWallet={passThroughWallet}>

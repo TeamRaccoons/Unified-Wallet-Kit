@@ -12,10 +12,11 @@ export default function App({ Component, pageProps }: AppProps) {
       config={{
         autoConnect: true,
         metadata: {
-          uri: '',
-          icon: '',
-          name: '',
-        },
+          name: 'CometKit',
+          description: 'CometKit',
+          url: 'https://jup.ag',
+          iconUrls: ['https://jup.ag/favicon.ico'],
+        }
       }}
     >
       <GlobalStyles />

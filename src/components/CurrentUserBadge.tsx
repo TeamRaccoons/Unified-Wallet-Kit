@@ -5,7 +5,7 @@ import { shortenAddress } from '../misc/utils';
 import { WRAPPED_SOL_MINT } from '../misc/constants';
 import { useAccounts } from '../contexts/accounts';
 
-export const CurrentUserBadge: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
+export const CurrentUserBadge: React.FC<{ onClick?: () => void; className?: string; }> = ({ onClick, className }) => {
   const { wallet, publicKey } = useWallet();
   const { accounts } = useAccounts();
 
@@ -21,7 +21,7 @@ export const CurrentUserBadge: React.FC<{ onClick?: () => void }> = ({ onClick }
   }
 
   return (
-    <div onClick={onClick} tw="flex items-center bg-[#191B1F] py-2 px-3 rounded-2xl h-7 cursor-pointer">
+    <div onClick={onClick} tw="flex items-center bg-[#191B1F] py-2 px-3 rounded-2xl h-7 cursor-pointer" className={className}>
       <div
         tw="w-4 h-4 rounded-full bg-[#191B1F] dark:bg-white/10 flex justify-center items-center"
         style={{ position: 'relative' }}
