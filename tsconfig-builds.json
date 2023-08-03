@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "paths": {
+      "src/*": [
+        "src/*"
+      ],
+      "public/*": [
+        "public/*"
+      ]
+    },
+    // ignore some typings check
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
+    "noImplicitReturns": false,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "incremental": false,
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist/types/"
+  },
+  "include": [
+    "src",
+    "./types",
+    "dist"
+  ],
+  "typeRoots": [
+    "./types",
+    "./node_modules/@types"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

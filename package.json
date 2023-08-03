@@ -1,7 +1,7 @@
 {
   "name": "@dicksonp/open-wallet-adapter",
-  "version": "0.0.1-alpha4-4",
-  "types": "./dist/types/",
+  "version": "0.0.1-alpha4-11",
+  "types": "./dist/types/src/index.d.ts",
   "exports": {
     ".": "./dist/index.js"
   },
@@ -18,9 +18,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "build-lib": "webpack --mode=production && pnpm typings",
-    "serve": "npx serve public",
-    "typings": "tsc --jsx react-jsx --declaration --noEmit false --emitDeclarationOnly true --declarationDir ./dist/types/"
+    "build-lib": "webpack --mode=production && tsc --project ./tsconfig-builds.json",
+    "serve": "npx serve public"
   },
   "dependencies": {
     "@solana-mobile/wallet-adapter-mobile": "2.0.0",
@@ -68,5 +67,8 @@
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
     "webpack-node-externals": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@solana/wallet-adapter-base": "*"
   }
 }
