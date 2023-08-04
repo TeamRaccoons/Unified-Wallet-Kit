@@ -4,7 +4,6 @@ import {
   useWallet,
   Wallet,
   WalletContextState,
-  WalletNotSelectedError,
 } from '@solana/wallet-adapter-react'
 import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js'
 
@@ -18,9 +17,10 @@ import WalletConnectionProvider, {
   ICometKitConfig,
 } from './WalletConnectionProvider'
 import { usePrevious } from 'react-use'
-import { shortenAddress } from 'src/misc/utils'
-import ModalDialog from 'src/components/ModalDialog'
-import CometWalletModal from 'src/components/CometWalletModal'
+
+import { shortenAddress } from '../misc/utils'
+import ModalDialog from '../components/ModalDialog'
+import CometWalletModal from '../components/CometWalletModal'
 
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
 
