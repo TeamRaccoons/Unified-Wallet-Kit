@@ -6,9 +6,10 @@ import { NCSolanaWalletAdapter } from '@nightlylabs/connect-solana';
 import { BaseSignerWalletAdapter, WalletAdapterNetwork, WalletName } from '@solana/wallet-adapter-base';
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
 
-import { CometWalletButton, HardcodedWalletStandardAdapter } from '..';
+import { CometWalletButton } from '..';
 import { WalletAdapterWithMutableSupportedTransactionVersions, metadata } from './constants';
 import { CometKitProvider } from 'src/contexts/CometKitProvider';
+import WalletNotification from './WalletNotification';
 
 export const HARDCODED_WALLET_STANDARDS: { id: string; name: WalletName; url: string; icon: string }[] = [
   {
@@ -77,9 +78,6 @@ const ExampleAllWallets = () => {
       ...walletAdapters,
       NightlyConnectWallet,
       walletConnectWalletAdapter,
-      ...HARDCODED_WALLET_STANDARDS.map(
-        item => new HardcodedWalletStandardAdapter(item),
-      ),
     ].filter(item => item && item.name && item.icon)
   }, [metadata])
 
@@ -88,7 +86,7 @@ const ExampleAllWallets = () => {
       wallets={wallets}
       passThroughWallet={null}
       config={{
-        autoConnect: true,
+        autoConnect: false,
         env: 'mainnet-beta',
         metadata: {
           name: 'CometKit',
@@ -96,9 +94,12 @@ const ExampleAllWallets = () => {
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
         },
+        notificationCallback: WalletNotification,
         walletPrecedence: [
           'OKX Wallet' as WalletName,
+          'WalletConnect' as WalletName,
         ],
+        hardcodedWallets: HARDCODED_WALLET_STANDARDS
       }}
     >
       <CometWalletButton />

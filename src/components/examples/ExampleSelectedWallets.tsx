@@ -13,6 +13,7 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { WalletAdapterWithMutableSupportedTransactionVersions, metadata } from './constants';
 import { Adapter, BaseSignerWalletAdapter, WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import WalletNotification from './WalletNotification';
 
 const ExampleSelectedWallets = () => {
   const wallets: Adapter[] = useMemo(() => {
@@ -54,14 +55,15 @@ const ExampleSelectedWallets = () => {
       wallets={wallets}
       passThroughWallet={null}
       config={{
-        autoConnect: true,
+        autoConnect: false,
         env: 'mainnet-beta',
         metadata: {
           name: 'CometKit',
           description: 'CometKit',
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
-        }
+        },
+        notificationCallback: WalletNotification
       }}
     >
       <CometWalletButton />

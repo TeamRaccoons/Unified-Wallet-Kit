@@ -1,14 +1,12 @@
-import React, { MouseEvent, ReactNode, useCallback } from "react";
+import React, { ReactNode, useCallback } from "react";
 import { SolanaMobileWalletAdapterWalletName } from "@solana-mobile/wallet-adapter-mobile";
 import tw from "twin.macro";
 
 import { CurrentUserBadge } from "../CurrentUserBadge";
-import { MWA_NOT_FOUND_ERROR, useCometKit } from "../../contexts/CometKitProvider";
-import ModalDialog from "../ModalDialog";
-import CometWalletModal from '../../components/CometWalletModal';
+import { MWA_NOT_FOUND_ERROR, useCometContext, useCometKit } from "../../contexts/CometKitProvider";
 
 const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName?: string; currentUserClassName?: string; }> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
-  const [shouldRender, setShouldRender] = React.useState(false);
+  const { setShowModal } = useCometContext();
   const { disconnect, connect, connecting, connected, wallet } = useCometKit();
 
   const content = (
@@ -41,11 +39,11 @@ const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName
 
           return;
         } else {
-          setShouldRender(true)
+          setShowModal(true)
         }
       } catch (error) {
         if (error instanceof Error && error.message === MWA_NOT_FOUND_ERROR) {
-          setShouldRender(true)
+          setShowModal(true)
         }
       }
     },
@@ -54,14 +52,10 @@ const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName
   
   return (
     <>
-      <ModalDialog open={shouldRender} onClose={() => setShouldRender(false)}>
-        <CometWalletModal onClose={() => setShouldRender(false)} />
-      </ModalDialog>
-
       {!connected ? (
         <div
           css={[
-            overrideContent ? undefined : tw`rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold`
+            overrideContent ? undefined : tw`rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold cursor-pointer`
           ]}
           className={className}
           onClick={handleClick}

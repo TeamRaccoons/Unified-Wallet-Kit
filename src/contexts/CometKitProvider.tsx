@@ -1,13 +1,13 @@
-import React, { useContext, useMemo } from 'react'
+import React, { PropsWithChildren, useContext, useEffect, useMemo } from 'react'
 
 import {
   useWallet,
   Wallet,
   WalletContextState,
+  WalletNotSelectedError,
 } from '@solana/wallet-adapter-react'
-import { Connection, Transaction, VersionedTransaction } from '@solana/web3.js'
+import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js'
 
-// import { Toaster } from 'sonner';
 import {
   Adapter,
   SendTransactionOptions,
@@ -16,9 +16,11 @@ import {
 } from '@solana/wallet-adapter-base'
 import WalletConnectionProvider, {
   ICometKitConfig,
-  ICometKitMetadata,
 } from './WalletConnectionProvider'
-import { IHardcodedWalletStandardAdapter } from './WalletConnectionProvider/HardcodedWalletStandardAdapter'
+import { usePrevious } from 'react-use'
+import { shortenAddress } from 'src/misc/utils'
+import ModalDialog from 'src/components/ModalDialog'
+import CometWalletModal from 'src/components/CometWalletModal'
 
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
 
@@ -98,11 +100,17 @@ const DEFAULT_CONTEXT = {
 } as WalletContextState
 
 export interface ICometKitContext {
-  walletPrecedence: WalletName[]
+  walletPrecedence: WalletName[];
+  handleConnectClick: (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => Promise<void>;
+  showModal: boolean;
+  setShowModal: (showModal: boolean) => void;
 }
 
 const CometKitContext = React.createContext<ICometKitContext>({
   walletPrecedence: [],
+  handleConnectClick: async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => { },
+  showModal: false,
+  setShowModal: (showModal: boolean) => { },
 })
 const CometKitValueContext =
   React.createContext<WalletContextState>(DEFAULT_CONTEXT)
@@ -140,7 +148,16 @@ const CometKitValueProvider = ({
       }
     }
 
-    return defaultWalletContext
+    return {
+      ...defaultWalletContext,
+      connect: async () => {
+        try {
+          return await defaultWalletContext.connect()
+        } catch (error) {
+          // when wallet is not installed
+        }
+      },
+    }
   }, [defaultWalletContext, passThroughWallet])
 
   return (
@@ -150,39 +167,158 @@ const CometKitValueProvider = ({
   )
 }
 
+const CometKitContextProvider: React.FC<
+  {
+    config: ICometKitConfig;
+    passThroughWallet: Wallet | null;
+  } & PropsWithChildren
+> = ({ config, passThroughWallet, children }) => {
+  const { publicKey, wallet, select, connect } = useCometKit();
+  const previousPublicKey = usePrevious<PublicKey | null>(publicKey);
+  const previousWallet = usePrevious<Wallet | null>(wallet);
+
+  // Weird quirks for autoConnect to require select and connect
+  const [nonAutoConnectAttempt, setNonAutoConnectAttempt] = React.useState(false);
+  useEffect(() => {
+    if (nonAutoConnectAttempt && !config.autoConnect && wallet?.adapter.name) {
+      try {
+        connect();
+      } catch (error) {
+        // when wallet is not installed
+        console.log('hh')
+      }
+      setNonAutoConnectAttempt(false);
+    }
+  }, [nonAutoConnectAttempt, wallet?.adapter.name])
+
+  const [showModal, setShowModal] = React.useState(false);
+
+  const handleConnectClick = React.useCallback(
+    async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, adapter: Adapter) => {
+      event.preventDefault()
+
+      try {
+        setShowModal(false);
+
+        // Connecting
+        config.notificationCallback?.onConnecting({
+          publicKey: '',
+          shortAddress: '',
+          walletName: adapter.name,
+          metadata: {
+            name: adapter.name,
+            url: adapter.url,
+            icon: adapter.icon,
+            supportedTransactionVersions: adapter.supportedTransactionVersions,
+          }
+        })
+
+        // Might throw WalletReadyState.WalletNotReady
+        select(adapter.name)
+
+        // Weird quirks for autoConnect to require select and connect
+        if (!config.autoConnect) {
+          setNonAutoConnectAttempt(true);
+        }
+
+        if (adapter.readyState === WalletReadyState.NotDetected) {
+          throw WalletReadyState.NotDetected
+        }
+      } catch (error) {
+        console.log(error);
+
+        // Not Installed
+        config.notificationCallback?.onNotInstalled({
+          publicKey: '',
+          shortAddress: '',
+          walletName: adapter.name,
+          metadata: {
+            name: adapter.name,
+            url: adapter.url,
+            icon: adapter.icon,
+            supportedTransactionVersions: adapter.supportedTransactionVersions,
+          }
+        })
+      }
+    },
+    [select, connect, wallet?.adapter.name],
+  )
+
+  useEffect(() => {
+    // Disconnected
+    if (previousWallet && !wallet) {
+      config.notificationCallback?.onDisconnect({
+        publicKey: previousPublicKey?.toString() || '',
+        shortAddress: shortenAddress(previousPublicKey?.toString() || ''),
+        walletName: previousWallet?.adapter.name || '',
+        metadata: {
+          name: previousWallet?.adapter.name,
+          url: previousWallet?.adapter.url,
+          icon: previousWallet?.adapter.icon,
+          supportedTransactionVersions: previousWallet?.adapter.supportedTransactionVersions,
+        }
+      })
+      return;
+    }
+
+    // Connected
+    if (publicKey && wallet) {
+      config.notificationCallback?.onConnect({
+        publicKey: publicKey.toString(),
+        shortAddress: shortenAddress(publicKey.toString()),
+        walletName: wallet.adapter.name,
+        metadata: {
+          name: wallet.adapter.name,
+          url: wallet.adapter.url,
+          icon: wallet.adapter.icon,
+          supportedTransactionVersions: wallet.adapter.supportedTransactionVersions,
+        }
+      })
+      return;
+    }
+  }, [wallet, publicKey, previousWallet]);
+
+
+  return (
+    <CometKitContext.Provider
+      value={{
+        ...passThroughWallet,
+        walletPrecedence: config.walletPrecedence || [],
+        handleConnectClick,
+        showModal,
+        setShowModal,
+      }}
+    >
+      <ModalDialog open={showModal} onClose={() => setShowModal(false)}>
+        <CometWalletModal onClose={() => setShowModal(false)} />
+      </ModalDialog>
+
+      {children}
+    </CometKitContext.Provider>
+  )
+}
+
 const CometKitProvider = ({
   passThroughWallet,
   wallets,
   config,
-  hardcodedWalletStandard,
   children,
 }: {
   passThroughWallet: Wallet | null
   wallets: Adapter[]
   config: ICometKitConfig
-  hardcodedWalletStandard?: IHardcodedWalletStandardAdapter[]
   children: React.ReactNode
 }) => {
   return (
     <WalletConnectionProvider
       wallets={wallets}
       config={config}
-      hardcodedWalletStandard={hardcodedWalletStandard}
     >
-      <>
-        {/* <Toaster position="bottom-left" toastOptions={{ className: '!bg-black !text-white !px-6 !py-5 !border-none' }} /> */}
-
-        <CometKitContext.Provider
-          value={{
-            ...passThroughWallet,
-            walletPrecedence: config.walletPrecedence || [],
-          }}
-        >
-          <CometKitValueProvider passThroughWallet={passThroughWallet}>
-            {children}
-          </CometKitValueProvider>
-        </CometKitContext.Provider>
-      </>
+      <CometKitValueProvider passThroughWallet={passThroughWallet}>
+        <CometKitContextProvider config={config} passThroughWallet={passThroughWallet}>
+          {children}
+        </CometKitContextProvider>
+      </CometKitValueProvider>
     </WalletConnectionProvider>
   )
 }

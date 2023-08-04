@@ -1,13 +1,8 @@
-import React, { MouseEvent, ReactNode, useMemo } from "react";
-import { toast } from 'sonner';
+import React, { ReactNode, useMemo } from "react";
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import { useToggle } from 'react-use';
 
 import { WalletListItem, WalletIcon } from './WalletListItem';
-import {
-  IVariant,
-  WalletNotification,
-} from '../../components/Notification/WalletStatusNotification/WalletStatusNotification';
 
 import Collapse from '../../components/Collapse';
 import { BackpackWalletName, PhantomWalletName, SolflareWalletName } from '@solana/wallet-adapter-wallets';
@@ -62,46 +57,9 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
 
 const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
   const { wallets, select } = useCometKit();
-  const { walletPrecedence } = useCometContext();
+  const { walletPrecedence, handleConnectClick } = useCometContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
-
-  const handleWalletClick = React.useCallback(
-    async (event: MouseEvent, wallet: Adapter) => {
-      event.preventDefault();
-
-      try {
-        // Might throw WalletReadyState.WalletNotReady
-        select(wallet.name);
-
-        if (wallet.readyState === WalletReadyState.NotDetected) {
-          throw WalletReadyState.NotDetected;
-        }
-      } catch (error) {
-        const toastId = Math.floor(Math.random() * 100);
-        toast(
-          <WalletNotification
-            id={toastId}
-            variant={IVariant.ERROR}
-            title={`${wallet.name} Wallet is not installed`}
-            description={
-              <span>
-                {`Please go to the provider`}{' '}
-                <a target="_blank" rel="noopener noreferrer" tw="underline font-bold" href={wallet.url}>
-                  {`website`}
-                </a>{' '}
-                {`to download.`}
-              </span>
-            }
-          />, {
-          id: toastId,
-        });
-      } finally {
-        onClose();
-      }
-    },
-    [select, onClose],
-  );
 
   const list: { highlightedBy: HIGHLIGHTED_BY; highlight: Adapter[]; others: Adapter[] } = useMemo(() => {
     // Then, Installed, Top 3, Loadable, NotDetected
@@ -196,13 +154,13 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
         {list.others.map((adapter, index) => {
           return (
             <ul key={index}>
-              <WalletListItem handleClick={(event) => handleWalletClick(event, adapter)} wallet={adapter} />
+              <WalletListItem handleClick={(event) => handleConnectClick(event, adapter)} wallet={adapter} />
             </ul>
           );
         })}
       </div>
     ),
-    [handleWalletClick, list.others],
+    [handleConnectClick, list.others],
   );
 
   return (
@@ -242,7 +200,7 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
             return (
               <div
                 key={idx}
-                onClick={(event) => handleWalletClick(event, adapter)}
+                onClick={(event) => handleConnectClick(event, adapter)}
                 css={[
                   tw`p-4 lg:p-5 border border-white/10 rounded-lg hover:bg-white/10 flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
                   tw`hover:backdrop-blur-xl hover:shadow-2xl transition-all`,

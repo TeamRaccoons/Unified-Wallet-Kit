@@ -1,22 +1,43 @@
 import React, { FC, PropsWithChildren, useMemo } from 'react'
 import { WalletProvider } from '@solana/wallet-adapter-react'
-
-import { PreviouslyConnectedProvider } from './previouslyConnectedProvider'
-import {
-  IHardcodedWalletStandardAdapter,
-} from './HardcodedWalletStandardAdapter'
-import { Adapter, WalletName } from '@solana/wallet-adapter-base'
+import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base'
 import { SolanaMobileWalletAdapter, createDefaultAddressSelector, createDefaultAuthorizationResultCache } from '@solana-mobile/wallet-adapter-mobile'
 import { Cluster } from '@solana/web3.js'
+
+import { PreviouslyConnectedProvider } from './previouslyConnectedProvider'
+import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter'
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
 
-const noop = () => { }
+const noop = (error: WalletError, adapter?: Adapter) => {
+  console.log({ error, adapter })
+}
+
+export interface IWalletNotification {
+  publicKey: string;
+  shortAddress: string;
+  walletName: string;
+  metadata: {
+    name: string;
+    url: string;
+    icon: string;
+    supportedTransactionVersions?: SupportedTransactionVersions;
+  }
+}
 
 export interface ICometKitConfig {
   autoConnect: boolean;
   metadata: ICometKitMetadata;
   env: Cluster;
   walletPrecedence?: WalletName[];
+  hardcodedWallets?: IHardcodedWalletStandardAdapter[];
+  notificationCallback?: {
+    onConnect: (props: IWalletNotification) => void,
+    onConnecting: (props: IWalletNotification) => void,
+    onDisconnect: (props: IWalletNotification) => void,
+    onNotInstalled: (props: IWalletNotification) => void,
+    // TODO: Support wallet account change
+    // onChangeAccount: (props: IWalletNotification) => void,
+  }
 }
 
 export interface ICometKitMetadata {
@@ -32,7 +53,6 @@ const WalletConnectionProvider: FC<
   PropsWithChildren & {
     wallets: Adapter[],
     config: ICometKitConfig;
-    hardcodedWalletStandard?: IHardcodedWalletStandardAdapter[]
   }
 > = ({ wallets: passedWallets, config, children }) => {
   const wallets = useMemo(() => {
@@ -49,11 +69,14 @@ const WalletConnectionProvider: FC<
         },
       }),
       ...passedWallets,
+      ...(config.hardcodedWallets || []).map(
+        item => new HardcodedWalletStandardAdapter(item),
+      ),
     ]
   }, [])
 
   return (
-    <WalletProvider wallets={wallets} autoConnect onError={noop}>
+    <WalletProvider wallets={wallets} autoConnect={config.autoConnect} onError={noop}>
       <PreviouslyConnectedProvider>{children}</PreviouslyConnectedProvider>
     </WalletProvider>
   )

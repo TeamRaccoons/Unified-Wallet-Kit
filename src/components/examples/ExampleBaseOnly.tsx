@@ -1,6 +1,7 @@
 import React from 'react'
 import { CometKitProvider } from 'src/contexts/CometKitProvider'
 import CometWalletButton from '../CometWalletButton'
+import WalletNotification from './WalletNotification'
 
 const ExampleBaseOnly = () => {
   return (
@@ -8,14 +9,15 @@ const ExampleBaseOnly = () => {
       wallets={[]}
       passThroughWallet={null}
       config={{
-        autoConnect: true,
+        autoConnect: false,
         env: 'mainnet-beta',
         metadata: {
           name: 'CometKit',
           description: 'CometKit',
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
-        }
+        },
+        notificationCallback: WalletNotification
       }}
     >
       <CometWalletButton />
