@@ -204,12 +204,12 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
 
       <div tw="border-t-[1px] border-white/10" />
 
-      <div 
-      className="hideScrollbar"
-      css={[
-        tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`,
-        isOpen && tw`mb-7`,
-      ]}
+      <div
+        className="hideScrollbar"
+        css={[
+          tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`,
+          isOpen && tw`mb-7`,
+        ]}
       >
         <span tw="mt-6 text-xs  font-semibold">
           {list.highlightedBy === 'PreviouslyConnected' ? `Recently used` : null}
@@ -239,19 +239,23 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
           })}
         </div>
 
-        <div tw="mt-5 flex justify-between cursor-pointer" onClick={onToggle}>
-          <span tw="text-xs font-semibold">
-            <span>More wallets</span>
-          </span>
+        {list.others.length > 0 ? (
+          <>
+            <div tw="mt-5 flex justify-between cursor-pointer" onClick={onToggle}>
+              <span tw="text-xs font-semibold">
+                <span>More wallets</span>
+              </span>
 
-          <div tw=" flex items-center">
-            <span tw="w-[10px] h-[6px]">{isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}</span>
-          </div>
-        </div>
+              <div tw=" flex items-center">
+                <span tw="w-[10px] h-[6px]">{isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}</span>
+              </div>
+            </div>
 
-        <Collapse height={0} maxHeight={'auto'} expanded={isOpen}>
-          {renderWalletList}
-        </Collapse>
+            <Collapse height={0} maxHeight={'auto'} expanded={isOpen}>
+              {renderWalletList}
+            </Collapse>
+          </>
+        ) : null}
       </div>
 
       {/* Bottom Shades */}

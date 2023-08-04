@@ -11,8 +11,8 @@ import {
 import { Connection, Transaction, VersionedTransaction } from "@solana/web3.js";
 
 // import { Toaster } from 'sonner';
-import { SendTransactionOptions, WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
-import WalletConnectionProvider, { ICometKitMetadata } from "./WalletConnectionProvider";
+import { Adapter, SendTransactionOptions, WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
+import WalletConnectionProvider, { ICometKitConfig, ICometKitMetadata } from "./WalletConnectionProvider";
 import { IHardcodedWalletStandardAdapter } from "./WalletConnectionProvider/HardcodedWalletStandardAdapter";
 
 export const MWA_NOT_FOUND_ERROR = "MWA_NOT_FOUND_ERROR";
@@ -65,10 +65,7 @@ const DEFAULT_CONTEXT = {
 
 export interface ICometKitContext { }
 
-interface ICometKitConfig {
-  autoConnect: boolean;
-  metadata: ICometKitMetadata;
-}
+
 
 const CometKitContext = React.createContext<ICometKitContext>({});
 const CometKitValueContext = React.createContext<WalletContextState>(DEFAULT_CONTEXT);
@@ -80,7 +77,7 @@ const CometKitValueProvider = ({ passThroughWallet, children }: { passThroughWal
     if (passThroughWallet) {
       return {
         ...DEFAULT_CONTEXT,
-        wallets: defaultWalletContext.wallets,
+        wallets: defaultWalletContext.wallets || [],
         publicKey: passThroughWallet.adapter.publicKey,
         wallet: {
           adapter: passThroughWallet.adapter,
@@ -112,18 +109,21 @@ const CometKitValueProvider = ({ passThroughWallet, children }: { passThroughWal
 
 const CometKitProvider = ({
   passThroughWallet,
+  wallets,
   config,
   hardcodedWalletStandard,
   children,
 }: {
   passThroughWallet: Wallet | null;
+  wallets: Adapter[];
   config: ICometKitConfig;
   hardcodedWalletStandard?: IHardcodedWalletStandardAdapter[]
   children: React.ReactNode;
 }) => {
   return (
     <WalletConnectionProvider
-      metadata={config.metadata}
+      wallets={wallets}
+      config={config}
       hardcodedWalletStandard={hardcodedWalletStandard}
     >
       <>

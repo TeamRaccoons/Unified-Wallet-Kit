@@ -1,6 +1,6 @@
 {
   "name": "@dicksonp/open-wallet-adapter",
-  "version": "0.0.1-alpha4-13",
+  "version": "0.0.1-alpha4-29",
   "types": "./dist/types/src/index.d.ts",
   "exports": {
     ".": "./dist/index.js"
@@ -28,7 +28,7 @@
     "@solana/spl-token-registry": "~0.2.1105",
     "@solana/wallet-adapter-base": "0.9.22",
     "@solana/wallet-adapter-react": "0.15.32",
-    "@solana/wallet-adapter-wallets": "0.19.17",
+    "@solana/wallet-adapter-wallets": "0.19.18",
     "@solana/web3.js": "~1.77.3",
     "autoprefixer": "10.4.14",
     "bn.js": "5.2.1",

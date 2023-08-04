@@ -1,7 +1,9 @@
-import { CometWalletButton } from "src/components"
-import AppHeader from "src/components/AppHeader/AppHeader"
-import Footer from "src/components/Footer/Footer"
-import SexyChameleonText from "src/components/SexyChameleonText/SexyChameleonText"
+import AppHeader from 'src/components/AppHeader/AppHeader'
+import Footer from 'src/components/Footer/Footer'
+import SexyChameleonText from 'src/components/SexyChameleonText/SexyChameleonText'
+import ExampleAllWallets from 'src/components/examples/ExampleAllWallets'
+import ExampleBaseOnly from 'src/components/examples/ExampleBaseOnly'
+import ExampleSelectedWallets from 'src/components/examples/ExampleSelectedWallets'
 
 const Index = () => {
   return (
@@ -24,18 +26,37 @@ const Index = () => {
               </div>
             </div>
 
-            <div tw="flex justify-center">
-              <div tw="max-w-6xl bg-black/25 mt-12 rounded-xl flex flex-col md:flex-row w-full md:p-4">
-                <div tw="flex w-full items-center justify-center">
+            <div tw="flex flex-col space-y-10 items-center justify-center p-4">
+              <div tw="max-w-xl bg-black/25 mt-12 rounded-xl flex flex-col w-full p-4">
+                <div tw="font-semibold text-white">
+                  Base with Wallet Standard only
+                </div>
+                <div tw="flex w-full mt-4">
+                  <ExampleBaseOnly />
+                </div>
+              </div>
+              
+              <div tw="max-w-xl bg-black/25 mt-12 rounded-xl flex flex-col w-full p-4">
+                <div tw="font-semibold text-white">
+                  With selected wallets
+                </div>
+                <div tw="flex w-full mt-4">
+                  <ExampleSelectedWallets />
+                </div>
+              </div>
 
-                  <CometWalletButton />
+              <div tw="max-w-xl bg-black/25 mt-12 rounded-xl flex flex-col w-full p-4">
+                <div tw="font-semibold text-white">
+                  Example with All Wallets, and Custom Wallets
+                </div>
+                <div tw="flex w-full mt-4">
+                  <ExampleAllWallets />
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-        
+
         <div tw="w-full bg-jupiter-bg mt-12">
           <Footer />
         </div>

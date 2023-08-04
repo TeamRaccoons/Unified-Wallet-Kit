@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import 'twin.macro';
 
 import { CurrentUserBadge } from "../CurrentUserBadge";
@@ -6,9 +6,31 @@ import { useCometKit } from "../../contexts/CometKitProvider";
 import ModalDialog from "../ModalDialog";
 import CometWalletModal from '../../components/CometWalletModal';
 
-const CometWalletButton: React.FC<{ buttonClassName?: string; currentUserClassName?: string; }> = ({ buttonClassName: className, currentUserClassName }) => {
+const CometWalletButton: React.FC<{ buttonContent?: ReactNode; buttonClassName?: string; currentUserClassName?: string; }> = ({ buttonContent, buttonClassName: className, currentUserClassName }) => {
   const [shouldRender, setShouldRender] = React.useState(false);
-  const { disconnect, connected } = useCometKit();
+  const { disconnect, connecting, connected } = useCometKit();
+
+  const content = (
+    <>
+      {connecting && (
+        <span tw="text-xs">
+          <span>Connecting...</span>
+        </span>
+      )}
+      {/* Mobile */}
+      {!connecting && (
+        <span tw="block md:hidden">
+          <span>Connect</span>
+        </span>
+      )}
+      {/* Desktop */}
+      {!connecting && (
+        <span tw="hidden md:block">
+          <span>Connect Wallet</span>
+        </span>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -23,7 +45,7 @@ const CometWalletButton: React.FC<{ buttonClassName?: string; currentUserClassNa
           className={className}
           onClick={() => setShouldRender(true)}
         >
-          {`Connect Wallet`}
+          {buttonContent || content}
         </button>
       ) : (
         <CurrentUserBadge onClick={disconnect} className={currentUserClassName} />

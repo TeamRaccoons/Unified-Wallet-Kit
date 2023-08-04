@@ -24,7 +24,7 @@ module.exports = function webpackConfig(env, args) {
     optimization: {
       minimizer: [
         // Omit creation of .txt files
-        new (require('terser-webpack-plugin'))({ extractComments: false }),
+        // new (require('terser-webpack-plugin'))({ extractComments: false }),
       ],
     },
     plugins: [new CleanWebpackPlugin()],
