@@ -16,7 +16,7 @@ import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
 import { isMobile } from '../../misc/utils';
-import { useCometKit } from "../../contexts/CometKitProvider";
+import { useCometContext, useCometKit } from "../../contexts/CometKitProvider";
 import CloseIcon from "../../icons/CloseIcon";
 import tw from "twin.macro";
 
@@ -41,8 +41,28 @@ interface ICometWalletModal {
   onClose: () => void;
 }
 
+const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Adapter) => {
+  if (!walletPrecedence) return 0;
+
+  const aIndex = walletPrecedence.indexOf(a.name);
+  const bIndex = walletPrecedence.indexOf(b.name);
+
+  if (aIndex === -1 && bIndex === -1) return 0;
+  if (aIndex >= 0) {
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
+  }
+
+  if (bIndex >= 0) {
+    if (aIndex === -1) return 1;
+    return bIndex - aIndex;
+  }
+  return 0;
+};
+
 const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
   const { wallets, select } = useCometKit();
+  const { walletPrecedence } = useCometContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
@@ -139,8 +159,8 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
       const highlight = filteredAdapters.previouslyConnected.slice(0, 3);
       const others = Object.values(rest)
         .flat()
-        .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState]);
-      // .sort(sortByPrecedence(walletPrecedence));
+        .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
+        .sort(sortByPrecedence(walletPrecedence));
       others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length));
 
       return {
@@ -155,8 +175,8 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
       const highlight = filteredAdapters.installed.slice(0, 3);
       const others = Object.values(rest)
         .flat()
-        .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState]);
-      // .sort(sortByPrecedence(walletPrecedence));
+        .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
+        .sort(sortByPrecedence(walletPrecedence));
       others.unshift(...filteredAdapters.installed.slice(3, filteredAdapters.installed.length));
 
       return { highlightedBy: 'Installed', highlight, others };
@@ -165,8 +185,8 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
     const { top3, ...rest } = filteredAdapters;
     const others = Object.values(rest)
       .flat()
-      .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState]);
-    // .sort(sortByPrecedence(walletPrecedence));
+      .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
+      .sort(sortByPrecedence(walletPrecedence));
     return { highlightedBy: 'TopWallet', highlight: top3, others };
   }, [wallets, previouslyConnected]);
 

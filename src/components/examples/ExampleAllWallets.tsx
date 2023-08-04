@@ -95,7 +95,10 @@ const ExampleAllWallets = () => {
           description: 'CometKit',
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
-        }
+        },
+        walletPrecedence: [
+          'OKX Wallet' as WalletName,
+        ],
       }}
     >
       <CometWalletButton />

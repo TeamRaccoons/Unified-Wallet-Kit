@@ -5,7 +5,7 @@ import { PreviouslyConnectedProvider } from './previouslyConnectedProvider'
 import {
   IHardcodedWalletStandardAdapter,
 } from './HardcodedWalletStandardAdapter'
-import { Adapter } from '@solana/wallet-adapter-base'
+import { Adapter, WalletName } from '@solana/wallet-adapter-base'
 import { SolanaMobileWalletAdapter, createDefaultAddressSelector, createDefaultAuthorizationResultCache } from '@solana-mobile/wallet-adapter-mobile'
 import { Cluster } from '@solana/web3.js'
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
@@ -16,6 +16,7 @@ export interface ICometKitConfig {
   autoConnect: boolean;
   metadata: ICometKitMetadata;
   env: Cluster;
+  walletPrecedence?: WalletName[];
 }
 
 export interface ICometKitMetadata {
