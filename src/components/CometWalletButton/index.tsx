@@ -5,8 +5,9 @@ import { CurrentUserBadge } from "../CurrentUserBadge";
 import { useCometKit } from "../../contexts/CometKitProvider";
 import ModalDialog from "../ModalDialog";
 import CometWalletModal from '../../components/CometWalletModal';
+import tw from "twin.macro";
 
-const CometWalletButton: React.FC<{ buttonContent?: ReactNode; buttonClassName?: string; currentUserClassName?: string; }> = ({ buttonContent, buttonClassName: className, currentUserClassName }) => {
+const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName?: string; currentUserClassName?: string; }> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
   const [shouldRender, setShouldRender] = React.useState(false);
   const { disconnect, connecting, connected } = useCometKit();
 
@@ -41,11 +42,13 @@ const CometWalletButton: React.FC<{ buttonContent?: ReactNode; buttonClassName?:
       {!connected ? (
         <button
           type="button"
-          tw="rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold"
+          css={[
+            overrideContent ? undefined : tw`rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold`
+          ]}
           className={className}
           onClick={() => setShouldRender(true)}
         >
-          {buttonContent || content}
+          {overrideContent || content}
         </button>
       ) : (
         <CurrentUserBadge onClick={disconnect} className={currentUserClassName} />
