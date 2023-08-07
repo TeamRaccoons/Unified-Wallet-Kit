@@ -7,7 +7,7 @@ import { MWA_NOT_FOUND_ERROR, useCometContext, useCometKit } from "../../context
 
 const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName?: string; currentUserClassName?: string; }> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
   const { setShowModal } = useCometContext();
-  const { disconnect, connect, connecting, connected, wallet } = useCometKit();
+  const { disconnect, connect, connecting, wallet } = useCometKit();
 
   const content = (
     <>
@@ -52,7 +52,7 @@ const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName
   
   return (
     <>
-      {!connected ? (
+      {!wallet?.adapter.connected ? (
         <div
           css={[
             overrideContent ? undefined : tw`rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold cursor-pointer`

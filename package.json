@@ -1,6 +1,6 @@
 {
   "name": "@dicksonp/open-wallet-adapter",
-  "version": "0.0.1-alpha4-31",
+  "version": "0.0.1-alpha4-32",
   "types": "./dist/types/src/index.d.ts",
   "exports": {
     ".": "./dist/index.js"

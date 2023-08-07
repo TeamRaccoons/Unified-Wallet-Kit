@@ -185,7 +185,6 @@ const CometKitContextProvider: React.FC<
         connect();
       } catch (error) {
         // when wallet is not installed
-        console.log('hh')
       }
       setNonAutoConnectAttempt(false);
     }
