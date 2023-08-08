@@ -6,7 +6,7 @@ import { Cluster } from '@solana/web3.js'
 
 import { PreviouslyConnectedProvider } from './previouslyConnectedProvider'
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter'
-export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
+import { MWA_NOT_FOUND_ERROR } from '../CometKitProvider'
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter })

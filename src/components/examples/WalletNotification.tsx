@@ -1,4 +1,6 @@
 import { toast } from 'sonner';
+import 'twin.macro'
+
 import { ICometKitConfig, IWalletNotification } from 'src/contexts/WalletConnectionProvider';
 
 const WalletNotification: ICometKitConfig['notificationCallback'] = {

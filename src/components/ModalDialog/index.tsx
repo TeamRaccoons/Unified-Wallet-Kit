@@ -1,4 +1,6 @@
 import React, { PropsWithChildren, useCallback, useEffect, useRef } from 'react'
+import 'twin.macro'
+
 import { useOutsideClick } from '../../misc/utils';
 
 const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithChildren> = ({ open, onClose: onCloseFunc, children }) => {

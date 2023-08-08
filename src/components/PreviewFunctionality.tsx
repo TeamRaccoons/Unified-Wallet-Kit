@@ -1,3 +1,4 @@
+import 'twin.macro'
 import { IWalletProps } from "../contexts/CometKitProvider";
 
 const PreviewFunctionality = ({ title, walletProps }: { title: string, walletProps?: IWalletProps }) => {

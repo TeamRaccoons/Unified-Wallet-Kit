@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import 'twin.macro'
+
 import DiscordIcon from 'src/icons/DiscordIcon';
 import TwitterIcon from 'src/icons/TwitterIcon';
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import 'twin.macro'
+
 import DiscordIcon from '../../icons/DiscordIcon';
 import RepoLogo from '../../icons/RepoLogo';
 import SwapIcon from '../../icons/SwapIcon';

@@ -1,7 +1,5 @@
-.cache
-public/**/*
-!public/index.html
-node_modules
-.next/
-
+/node_modules
+.vscode
+.yarn
 dist/
+.next/

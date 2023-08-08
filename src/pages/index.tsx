@@ -1,3 +1,6 @@
+import React from 'react';
+import 'twin.macro'
+
 import AppHeader from 'src/components/AppHeader/AppHeader'
 import Footer from 'src/components/Footer/Footer'
 import SexyChameleonText from 'src/components/SexyChameleonText/SexyChameleonText'

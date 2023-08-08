@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import 'twin.macro'
 
 import { shortenAddress } from '../misc/utils';
 import { WRAPPED_SOL_MINT } from '../misc/constants';

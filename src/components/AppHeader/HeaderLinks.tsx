@@ -1,9 +1,8 @@
-import classNames from 'classnames';
+import tw from 'twin.macro';
+
 import SwapIcon from '../../icons/SwapIcon';
 import RepoLogo from '../../icons/RepoLogo';
 import DiscordIcon from '../../icons/DiscordIcon';
-import tw from 'twin.macro';
-
 
 const HeaderLink = ({
   href,

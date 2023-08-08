@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import "twin.macro";
 import React, { HTMLAttributes, PropsWithChildren, useEffect, useState } from 'react';
 
 const Collapse: React.FC<

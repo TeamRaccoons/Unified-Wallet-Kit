@@ -1,7 +1,7 @@
 import { Adapter } from '@solana/wallet-adapter-base';
 import React, { DetailedHTMLProps, FC, ImgHTMLAttributes, MouseEventHandler, useCallback, useMemo } from 'react';
+import 'twin.macro'
 
-import classNames from 'classnames';
 import UnknownIconSVG from '../../icons/UnknownIconSVG';
 import { isMobile } from '../../misc/utils';
 

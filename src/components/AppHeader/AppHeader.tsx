@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import 'twin.macro'
+
 import CloseIcon from '../../icons/CloseIcon';
 import JupiterLogo from '../../icons/JupiterLogo';
 import MenuIcon from '../../icons/MenuIcon';

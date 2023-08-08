@@ -5,7 +5,6 @@ import { useToggle } from 'react-use';
 import { WalletListItem, WalletIcon } from './WalletListItem';
 
 import Collapse from '../../components/Collapse';
-import { BackpackWalletName, PhantomWalletName, SolflareWalletName } from '@solana/wallet-adapter-wallets';
 
 import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
@@ -30,7 +29,7 @@ export interface WalletModalProps {
 }
 
 type HIGHLIGHTED_BY = 'PreviouslyConnected' | 'Installed' | 'TopWallet';
-const TOP_WALLETS: WalletName[] = [PhantomWalletName, SolflareWalletName, BackpackWalletName];
+const TOP_WALLETS: WalletName[] = [];
 
 interface ICometWalletModal {
   onClose: () => void;
