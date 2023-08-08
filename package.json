@@ -1,7 +1,8 @@
 {
   "name": "@jup-ag/wallet-adapter",
-  "version": "0.0.2",
+  "version": "0.0.9",
   "license": "MIT",
+  "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
   "types": "dist/types/index.d.ts",
   "type": "module",
@@ -46,7 +47,6 @@
     "next": "*",
     "pino-pretty": "*",
     "react-toastify": "*",
-    "react-use": "*",
     "sonner": "*",
     "styled-components": "*"
   },

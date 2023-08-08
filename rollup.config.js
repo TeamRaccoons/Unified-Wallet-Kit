@@ -5,7 +5,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import pkg from './package.json' assert { type: 'json' }
 
 const config = {
-  name: 'DesignSystem',
+  name: 'OpenWallet',
   extensions: ['.ts', '.tsx'],
 }
 
@@ -27,7 +27,7 @@ export default {
       file: pkg.module,
       format: 'es',
       sourcemap: true,
-    },
+    }
   ],
   plugins: [
     // Automatically add peerDependencies to the `external` config
