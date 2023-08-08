@@ -1,6 +1,7 @@
 import React, { ReactNode, useMemo } from "react";
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import { useToggle } from 'react-use';
+import { BackpackWalletName, PhantomWalletName, SolflareWalletName } from "@solana/wallet-adapter-wallets";
 
 import { WalletListItem, WalletIcon } from './WalletListItem';
 
@@ -29,7 +30,7 @@ export interface WalletModalProps {
 }
 
 type HIGHLIGHTED_BY = 'PreviouslyConnected' | 'Installed' | 'TopWallet';
-const TOP_WALLETS: WalletName[] = [];
+const TOP_WALLETS: WalletName[] = [PhantomWalletName, SolflareWalletName, BackpackWalletName];
 
 interface ICometWalletModal {
   onClose: () => void;
