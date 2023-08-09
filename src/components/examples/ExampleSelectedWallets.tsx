@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
-import { CometKitProvider } from 'src/contexts/CometKitProvider'
-import CometWalletButton from '../CometWalletButton'
+import React, { useMemo } from 'react';
+import { CometKitProvider } from 'src/contexts/CometKitProvider';
+import { CometWalletButton } from '../CometWalletButton';
 
 import {
   PhantomWalletAdapter,
@@ -17,27 +17,29 @@ import WalletNotification from './WalletNotification';
 
 const ExampleSelectedWallets = () => {
   const wallets: Adapter[] = useMemo(() => {
-    const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null = (() => {
-      if (!metadata.walletConnectProjectId) return null;
+    const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
+      (() => {
+        if (!metadata.walletConnectProjectId) return null;
 
-      const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> = new WalletConnectWalletAdapter({
-        network: WalletAdapterNetwork.Mainnet,
-        options: {
-          relayUrl: 'wss://relay.walletconnect.com',
-          projectId: metadata.walletConnectProjectId,
-          metadata: {
-            name: metadata.name,
-            description: metadata.description,
-            url: metadata.url,
-            icons: metadata.iconUrls,
-          },
-        },
-      });
+        const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> =
+          new WalletConnectWalletAdapter({
+            network: WalletAdapterNetwork.Mainnet,
+            options: {
+              relayUrl: 'wss://relay.walletconnect.com',
+              projectId: metadata.walletConnectProjectId,
+              metadata: {
+                name: metadata.name,
+                description: metadata.description,
+                url: metadata.url,
+                icons: metadata.iconUrls,
+              },
+            },
+          });
 
-      // While sometimes supported, it mostly isn't. Should this be dynamic in the wallet-adapter instead?
-      adapter.supportedTransactionVersions = new Set(['legacy']);
-      return adapter;
-    })()
+        // While sometimes supported, it mostly isn't. Should this be dynamic in the wallet-adapter instead?
+        adapter.supportedTransactionVersions = new Set(['legacy']);
+        return adapter;
+      })();
 
     return [
       new PhantomWalletAdapter(),
@@ -47,8 +49,8 @@ const ExampleSelectedWallets = () => {
       new GlowWalletAdapter(),
       new TrustWalletAdapter(),
       walletConnectWalletAdapter,
-    ].filter(item => item && item.name && item.icon) as Adapter[]
-  }, [])
+    ].filter((item) => item && item.name && item.icon) as Adapter[];
+  }, []);
 
   return (
     <CometKitProvider
@@ -63,12 +65,12 @@ const ExampleSelectedWallets = () => {
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
         },
-        notificationCallback: WalletNotification
+        notificationCallback: WalletNotification,
       }}
     >
       <CometWalletButton />
     </CometKitProvider>
-  )
-}
+  );
+};
 
-export default ExampleSelectedWallets
+export default ExampleSelectedWallets;
