@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import 'twin.macro';
 
-import { shortenAddress } from '../../src/misc/utils';
-import { WRAPPED_SOL_MINT } from '../../src/misc/constants';
-import { useAccounts } from '../../src/contexts/accounts';
+import { shortenAddress } from '../misc/utils';
+import { WRAPPED_SOL_MINT } from '../misc/constants';
+import { useAccounts } from '../contexts/accounts';
 
 export const CurrentUserBadge: React.FC<{ onClick?: () => void; className?: string }> = ({ onClick, className }) => {
   const { wallet, publicKey } = useWallet();
