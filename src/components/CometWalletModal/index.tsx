@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from "react";
+import React, { ReactNode, useMemo, useRef } from "react";
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import { useToggle } from 'react-use';
 import { BackpackWalletName, PhantomWalletName, SolflareWalletName } from "@solana/wallet-adapter-wallets";
@@ -10,7 +10,7 @@ import Collapse from '../../components/Collapse';
 import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
-import { isMobile } from '../../misc/utils';
+import { isMobile, useOutsideClick } from '../../misc/utils';
 import { useCometContext, useCometKit } from "../../contexts/CometKitProvider";
 import CloseIcon from "../../icons/CloseIcon";
 import tw from "twin.macro";
@@ -56,7 +56,7 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
 };
 
 const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
-  const { wallets, select } = useCometKit();
+  const { wallets } = useCometKit();
   const { walletPrecedence, handleConnectClick } = useCometContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
@@ -163,8 +163,11 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
     [handleConnectClick, list.others],
   );
 
+  const contentRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(contentRef, onClose);
+
   return (
-    <div tw="max-w-md w-full relative flex flex-col overflow-hidden text-white !bg-[#313E4C] border border-white/10 rounded-xl max-h-[90vh] lg:max-h-[576px] transition-height duration-500 ease-in-out ">
+    <div ref={contentRef} tw="max-w-md w-full relative flex flex-col overflow-hidden text-white !bg-[#313E4C] border border-white/10 rounded-xl max-h-[90vh] lg:max-h-[576px] transition-height duration-500 ease-in-out ">
       <div tw="px-5 py-6 flex justify-between leading-none">
         <div>
           <div tw="font-semibold">

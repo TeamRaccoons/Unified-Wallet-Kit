@@ -40,8 +40,8 @@ module.exports = {
         },
       },
       animation: {
-        'fade-in': 'fade-in 0.5s ease-in-out',
-        'fade-out': 'fade-out 0.5s ease-out',
+        'fade-in': 'fade-in 0.15s ease-in-out',
+        'fade-out': 'fade-out 0.15s ease-out',
       },
       backgroundImage: {
         'v2-text-gradient': 'linear-gradient(247.44deg, #C7F284 13.88%, #00BEF0 99.28%)',

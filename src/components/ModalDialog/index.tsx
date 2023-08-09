@@ -1,13 +1,19 @@
-import React, { PropsWithChildren, useCallback, useEffect, useRef } from 'react'
-import 'twin.macro'
-
-import { useOutsideClick } from '../../misc/utils';
+import React, { PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react'
+import tw from 'twin.macro';
 
 const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithChildren> = ({ open, onClose: onCloseFunc, children }) => {
   const ref = useRef<HTMLDialogElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
-  useOutsideClick(contentRef, () => ref.current?.close());
+  const [isLocalOpen, setIsLocalOpen] = useState(false);
+  useEffect(() => {
+    if (!isLocalOpen) setIsLocalOpen(open);
+
+    if (isLocalOpen) {
+      setTimeout(() => {
+        setIsLocalOpen(open);
+      }, 150);
+    }
+  }, [open])
 
   const onClose = useCallback(() => {
     ref.current?.close();
@@ -16,7 +22,7 @@ const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithCh
 
   useEffect(() => {
     if (ref.current) {
-      if (open) {
+      if (isLocalOpen) {
         if (!ref.current.open) {
           ref.current.showModal();
         }
@@ -26,22 +32,24 @@ const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithCh
     }
 
     // Make sure when `ESC` (browser default) is clicked, we close the dialog
-    if (open) {
+    if (isLocalOpen) {
       const refNode = ref.current;
       refNode?.addEventListener('close', onClose);
       return () => {
         refNode?.removeEventListener('close', onClose);
       };
     }
-  }, [onClose, open]);
+  }, [onClose, isLocalOpen]);
 
-  if (!open) return null;
-
+  if (!isLocalOpen) return null;
   return (
     <dialog
       role="dialog"
       aria-modal="true"
-      tw="top-0 left-0 h-full w-full flex items-center justify-center bg-black/25 backdrop-blur-sm animate-fade-in cursor-auto z-50"
+      css={[
+        tw`top-0 left-0 h-full w-full flex items-center justify-center bg-black/25 backdrop-blur-sm animate-fade-in cursor-auto z-50`,
+        isLocalOpen && !open && tw`animate-fade-out opacity-0`,
+      ]}
       ref={ref}
     >
       {children}
