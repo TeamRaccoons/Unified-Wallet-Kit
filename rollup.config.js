@@ -1,7 +1,6 @@
-import json from '@rollup/plugin-json';
+import { nodeExternals } from 'rollup-plugin-node-externals';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json' assert { type: 'json' };
 
@@ -32,20 +31,11 @@ export default {
   ],
 
   plugins: [
-    // findUnused({ extensions: ['.ts', '.tsx'] }),
-
-    // Automatically add peerDependencies to the `external` config
-    // https://rollupjs.org/guide/en/#external
-    peerDepsExternal(),
-
-    // External modules not to include in your bundle (eg: 'lodash', 'moment' etc.)
-    // https://rollupjs.org/guide/en/#external
-    // external: []
+    nodeExternals(),
 
     resolve({ extensions: config.extensions, browser: true, preferBuiltins: false }),
 
     commonjs(),
-    json(),
     babel({
       extensions: config.extensions,
       include: ['src/**/*'],
