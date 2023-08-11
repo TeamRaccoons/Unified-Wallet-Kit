@@ -3,3 +3,4 @@
 .yarn
 dist/
 .next/
+.DS_Store

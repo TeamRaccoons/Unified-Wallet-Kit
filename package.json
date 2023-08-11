@@ -1,6 +1,6 @@
 {
   "name": "@jup-ag/wallet-adapter",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
@@ -32,18 +32,18 @@
     "@emotion/styled": "^11.10.5",
     "@solana/web3.js": ">=1.77.3",
     "bn.js": ">=5.2.1",
-    "buffer": ">=6.0.3",
     "decimal.js": ">=10.4.3",
     "react": ">=18",
-    "react-use": ">=17.2.4",
-    "styled-components": "*"
+    "styled-components": "*",
+    "@solana/spl-token": "*"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@solana-mobile/wallet-adapter-mobile": "^2.0.0",
     "@solana/wallet-adapter-base": "0.9.22",
-    "@solana/wallet-adapter-react": "0.15.32"
+    "@solana/wallet-adapter-react": "0.15.32",
+    "react-use": ">=17.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
@@ -51,11 +51,9 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@emotion/babel-preset-css-prop": "^11.10.0",
-    "@nightlylabs/connect-solana": "^0.0.21",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
-    "@rollup/plugin-terser": "^0.4.3",
     "@solana/spl-token": "0.1.8",
     "@solana/spl-token-registry": "~0.2.1105",
     "@solana/wallet-adapter-wallets": "0.19.18",
@@ -76,7 +74,6 @@
     "react-dom": "^18.2.0",
     "rollup": "^3.7.3",
     "rollup-plugin-node-externals": "^6.1.1",
-    "rollup-plugin-unused": "^0.1.1",
     "sonner": "^0.4.0",
     "styled-components": "^5.3.6",
     "tailwindcss": "^3.2.4",

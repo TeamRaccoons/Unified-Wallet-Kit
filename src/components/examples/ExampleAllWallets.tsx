@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import * as AllWalletAdapters from '@solana/wallet-adapter-wallets';
-import { NCSolanaWalletAdapter } from '@nightlylabs/connect-solana';
 
 import { BaseSignerWalletAdapter, WalletAdapterNetwork, WalletName } from '@solana/wallet-adapter-base';
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
@@ -43,15 +42,6 @@ const ExampleAllWallets = () => {
       .map(key => (allwalletAdapters as any)[key])
       .map((WalletAdapter: any) => new WalletAdapter()) // Intentional any, TS were being annoying
 
-    const NightlyConnectWallet = new NCSolanaWalletAdapter({
-      appMetadata: {
-        application: metadata.name,
-        description: metadata.description,
-        additionalInfo: metadata.additionalInfo || '',
-        icon: metadata.iconUrls[0],
-      }
-    })
-
     const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null = (() => {
       if (!metadata.walletConnectProjectId) return null;
 
@@ -76,7 +66,6 @@ const ExampleAllWallets = () => {
 
     return [
       ...walletAdapters,
-      NightlyConnectWallet,
       walletConnectWalletAdapter,
     ].filter(item => item && item.name && item.icon)
   }, [metadata])

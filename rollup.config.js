@@ -1,7 +1,7 @@
 import { nodeExternals } from 'rollup-plugin-node-externals';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json' assert { type: 'json' };
 
 const config = {
@@ -31,14 +31,18 @@ export default {
   ],
 
   plugins: [
-    nodeExternals(),
+    nodeExternals({
+      // Specificially bundle react-use in
+      deps: true,
+      exclude: /^react-use/
+    }),
 
-    resolve({ extensions: config.extensions, browser: true, preferBuiltins: false }),
+    nodeResolve({ extensions: config.extensions }),
 
     commonjs(),
     babel({
       extensions: config.extensions,
-      include: ['src/**/*'],
+      include: ['src/**/*',],
       exclude: 'node_modules/**',
     }),
   ],
