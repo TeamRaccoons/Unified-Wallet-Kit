@@ -6,7 +6,7 @@ import pkg from './package.json' assert { type: 'json' };
 
 const config = {
   name: 'OpenWallet',
-  extensions: ['.ts', '.tsx'],
+  extensions: ['.ts', '.tsx', '.js', '.jsx'],
 };
 
 export default {
@@ -29,12 +29,10 @@ export default {
       sourcemap: true,
     },
   ],
-
   plugins: [
     nodeExternals({
       // Specificially bundle react-use in
-      deps: true,
-      exclude: /^react-use/
+      exclude: /^react-use/,
     }),
 
     nodeResolve({ extensions: config.extensions }),
