@@ -1,7 +1,7 @@
-import React from 'react'
-import { CometKitProvider } from 'src/contexts/CometKitProvider'
-import CometWalletButton from '../CometWalletButton'
-import WalletNotification from './WalletNotification'
+import React from 'react';
+import { CometKitProvider } from 'src/contexts/CometKitProvider';
+import { CometWalletButton } from '../CometWalletButton';
+import WalletNotification from './WalletNotification';
 
 const ExampleBaseOnly = () => {
   return (
@@ -17,12 +17,12 @@ const ExampleBaseOnly = () => {
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
         },
-        notificationCallback: WalletNotification
+        notificationCallback: WalletNotification,
       }}
     >
       <CometWalletButton />
     </CometKitProvider>
-  )
-}
+  );
+};
 
-export default ExampleBaseOnly
+export default ExampleBaseOnly;

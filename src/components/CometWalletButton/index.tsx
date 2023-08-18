@@ -1,11 +1,16 @@
-import React, { ReactNode, useCallback } from "react";
-import { SolanaMobileWalletAdapterWalletName } from "@solana-mobile/wallet-adapter-mobile";
-import tw from "twin.macro";
+import React, { ReactNode, useCallback } from 'react';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
+import tw from 'twin.macro';
 
-import { CurrentUserBadge } from "../CurrentUserBadge";
-import { MWA_NOT_FOUND_ERROR, useCometContext, useCometKit } from "../../contexts/CometKitProvider";
+import { CurrentUserBadge } from '../CurrentUserBadge';
+import { useCometContext, useCometKit } from '../../contexts/CometKitProvider';
+import { MWA_NOT_FOUND_ERROR } from '../../contexts/CometKitContext';
 
-const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName?: string; currentUserClassName?: string; }> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
+export const CometWalletButton: React.FC<{
+  overrideContent?: ReactNode;
+  buttonClassName?: string;
+  currentUserClassName?: string;
+}> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
   const { setShowModal } = useCometContext();
   const { disconnect, connect, connecting, wallet } = useCometKit();
 
@@ -31,31 +36,30 @@ const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName
     </>
   );
 
-  const handleClick = useCallback(
-    async () => {
-      try {
-        if (wallet?.adapter.name === SolanaMobileWalletAdapterWalletName) {
-          await connect();
+  const handleClick = useCallback(async () => {
+    try {
+      if (wallet?.adapter.name === SolanaMobileWalletAdapterWalletName) {
+        await connect();
 
-          return;
-        } else {
-          setShowModal(true)
-        }
-      } catch (error) {
-        if (error instanceof Error && error.message === MWA_NOT_FOUND_ERROR) {
-          setShowModal(true)
-        }
+        return;
+      } else {
+        setShowModal(true);
       }
-    },
-    [wallet, connect],
-  );
-  
+    } catch (error) {
+      if (error instanceof Error && error.message === MWA_NOT_FOUND_ERROR) {
+        setShowModal(true);
+      }
+    }
+  }, [wallet, connect]);
+
   return (
     <>
       {!wallet?.adapter.connected ? (
         <div
           css={[
-            overrideContent ? undefined : tw`rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold cursor-pointer`
+            overrideContent
+              ? undefined
+              : tw`rounded-lg bg-white text-black text-xs py-3 px-5 font-semibold cursor-pointer`,
           ]}
           className={className}
           onClick={handleClick}
@@ -68,5 +72,3 @@ const CometWalletButton: React.FC<{ overrideContent?: ReactNode; buttonClassName
     </>
   );
 };
-
-export default CometWalletButton;

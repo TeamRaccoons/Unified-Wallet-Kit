@@ -1,16 +1,20 @@
-import React, { FC, PropsWithChildren, useMemo } from 'react'
-import { WalletProvider } from '@solana/wallet-adapter-react'
-import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base'
-import { SolanaMobileWalletAdapter, createDefaultAddressSelector, createDefaultAuthorizationResultCache } from '@solana-mobile/wallet-adapter-mobile'
-import { Cluster } from '@solana/web3.js'
+import React, { FC, PropsWithChildren, useMemo } from 'react';
+import { WalletProvider } from '@solana/wallet-adapter-react';
+import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base';
+import {
+  SolanaMobileWalletAdapter,
+  createDefaultAddressSelector,
+  createDefaultAuthorizationResultCache,
+} from '@solana-mobile/wallet-adapter-mobile';
+import { Cluster } from '@solana/web3.js';
 
-import { PreviouslyConnectedProvider } from './previouslyConnectedProvider'
-import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter'
-import { MWA_NOT_FOUND_ERROR } from '../CometKitProvider'
+import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
+import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
+import { MWA_NOT_FOUND_ERROR } from '../CometKitContext';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
-  console.log({ error, adapter })
-}
+  console.log({ error, adapter });
+};
 
 export interface IWalletNotification {
   publicKey: string;
@@ -21,7 +25,7 @@ export interface IWalletNotification {
     url: string;
     icon: string;
     supportedTransactionVersions?: SupportedTransactionVersions;
-  }
+  };
 }
 
 export interface ICometKitConfig {
@@ -31,13 +35,13 @@ export interface ICometKitConfig {
   walletPrecedence?: WalletName[];
   hardcodedWallets?: IHardcodedWalletStandardAdapter[];
   notificationCallback?: {
-    onConnect: (props: IWalletNotification) => void,
-    onConnecting: (props: IWalletNotification) => void,
-    onDisconnect: (props: IWalletNotification) => void,
-    onNotInstalled: (props: IWalletNotification) => void,
+    onConnect: (props: IWalletNotification) => void;
+    onConnecting: (props: IWalletNotification) => void;
+    onDisconnect: (props: IWalletNotification) => void;
+    onNotInstalled: (props: IWalletNotification) => void;
     // TODO: Support wallet account change
     // onChangeAccount: (props: IWalletNotification) => void,
-  }
+  };
 }
 
 export interface ICometKitMetadata {
@@ -51,7 +55,7 @@ export interface ICometKitMetadata {
 
 const WalletConnectionProvider: FC<
   PropsWithChildren & {
-    wallets: Adapter[],
+    wallets: Adapter[];
     config: ICometKitConfig;
   }
 > = ({ wallets: passedWallets, config, children }) => {
@@ -62,24 +66,20 @@ const WalletConnectionProvider: FC<
         appIdentity: config.metadata,
         authorizationResultCache: createDefaultAuthorizationResultCache(),
         cluster: config.env,
-        onWalletNotFound: async (
-          mobileWalletAdapter: SolanaMobileWalletAdapter,
-        ) => {
-          throw new Error(MWA_NOT_FOUND_ERROR)
+        onWalletNotFound: async (mobileWalletAdapter: SolanaMobileWalletAdapter) => {
+          throw new Error(MWA_NOT_FOUND_ERROR);
         },
       }),
       ...passedWallets,
-      ...(config.hardcodedWallets || []).map(
-        item => new HardcodedWalletStandardAdapter(item),
-      ),
-    ]
-  }, [])
+      ...(config.hardcodedWallets || []).map((item) => new HardcodedWalletStandardAdapter(item)),
+    ];
+  }, []);
 
   return (
     <WalletProvider wallets={wallets} autoConnect={config.autoConnect} onError={noop}>
       <PreviouslyConnectedProvider>{children}</PreviouslyConnectedProvider>
     </WalletProvider>
-  )
-}
+  );
+};
 
-export default WalletConnectionProvider
+export default WalletConnectionProvider;

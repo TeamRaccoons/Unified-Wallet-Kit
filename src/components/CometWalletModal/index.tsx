@@ -1,7 +1,6 @@
-import React, { ReactNode, useMemo, useRef } from "react";
+import React, { ReactNode, useMemo, useRef } from 'react';
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import { useToggle } from 'react-use';
-import { BackpackWalletName, PhantomWalletName, SolflareWalletName } from "@solana/wallet-adapter-wallets";
 
 import { WalletListItem, WalletIcon } from './WalletListItem';
 
@@ -11,9 +10,9 @@ import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
 import { isMobile, useOutsideClick } from '../../misc/utils';
-import { useCometContext, useCometKit } from "../../contexts/CometKitProvider";
-import CloseIcon from "../../icons/CloseIcon";
-import tw from "twin.macro";
+import { useCometContext, useCometKit } from '../../contexts/CometKitContext';
+import CloseIcon from '../../icons/CloseIcon';
+import tw from 'twin.macro';
 
 const PRIORITISE: {
   [value in WalletReadyState]: number;
@@ -30,7 +29,11 @@ export interface WalletModalProps {
 }
 
 type HIGHLIGHTED_BY = 'PreviouslyConnected' | 'Installed' | 'TopWallet';
-const TOP_WALLETS: WalletName[] = [PhantomWalletName, SolflareWalletName, BackpackWalletName];
+const TOP_WALLETS: WalletName[] = [
+  'Phantom' as WalletName<'Phantom'>,
+  'Solflare' as WalletName<'Solflare'>,
+  'Backpack' as WalletName<'Backpack'>,
+];
 
 interface ICometWalletModal {
   onClose: () => void;
@@ -167,7 +170,10 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
   useOutsideClick(contentRef, onClose);
 
   return (
-    <div ref={contentRef} tw="max-w-md w-full relative flex flex-col overflow-hidden text-white !bg-[#313E4C] border border-white/10 rounded-xl max-h-[90vh] lg:max-h-[576px] transition-height duration-500 ease-in-out ">
+    <div
+      ref={contentRef}
+      tw="max-w-md w-full relative flex flex-col overflow-hidden text-white !bg-[#313E4C] border border-white/10 rounded-xl max-h-[90vh] lg:max-h-[576px] transition-height duration-500 ease-in-out "
+    >
       <div tw="px-5 py-6 flex justify-between leading-none">
         <div>
           <div tw="font-semibold">
@@ -185,13 +191,7 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
 
       <div tw="border-t-[1px] border-white/10" />
 
-      <div
-        className="hideScrollbar"
-        css={[
-          tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`,
-          isOpen && tw`mb-7`,
-        ]}
-      >
+      <div className="hideScrollbar" css={[tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`, isOpen && tw`mb-7`]}>
         <span tw="mt-6 text-xs  font-semibold">
           {list.highlightedBy === 'PreviouslyConnected' ? `Recently used` : null}
           {list.highlightedBy === 'Installed' ? `Installed wallets` : null}

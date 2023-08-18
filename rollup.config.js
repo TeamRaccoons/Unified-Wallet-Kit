@@ -1,13 +1,13 @@
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import peerDepsExternal from 'rollup-plugin-peer-deps-external'
-import resolve from 'rollup-plugin-node-resolve'
-import pkg from './package.json' assert { type: 'json' }
+import { nodeExternals } from 'rollup-plugin-node-externals';
+import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import pkg from './package.json' assert { type: 'json' };
 
 const config = {
   name: 'OpenWallet',
-  extensions: ['.ts', '.tsx'],
-}
+  extensions: ['.ts', '.tsx', '.js', '.jsx'],
+};
 
 export default {
   input: 'src/index.tsx',
@@ -27,25 +27,21 @@ export default {
       file: pkg.module,
       format: 'es',
       sourcemap: true,
-    }
+    },
   ],
   plugins: [
-    // Automatically add peerDependencies to the `external` config
-    // https://rollupjs.org/guide/en/#external
-    peerDepsExternal(),
+    nodeExternals({
+      // Specificially bundle react-use in
+      exclude: /^react-use/,
+    }),
 
-    // External modules not to include in your bundle (eg: 'lodash', 'moment' etc.)
-    // https://rollupjs.org/guide/en/#external
-    // external: []
-
-    resolve({ extensions: config.extensions }),
+    nodeResolve({ extensions: config.extensions }),
 
     commonjs(),
-
     babel({
       extensions: config.extensions,
-      include: ['src/**/*'],
+      include: ['src/**/*',],
       exclude: 'node_modules/**',
     }),
   ],
-}
+};

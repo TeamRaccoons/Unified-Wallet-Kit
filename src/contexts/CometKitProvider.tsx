@@ -1,133 +1,41 @@
-import React, { PropsWithChildren, useContext, useEffect, useMemo } from 'react'
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useWallet, Wallet, WalletContextState } from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
+
+import { Adapter, WalletReadyState } from '@solana/wallet-adapter-base';
+import WalletConnectionProvider, { ICometKitConfig } from './WalletConnectionProvider';
+import { usePrevious } from 'react-use';
+
+import { shortenAddress } from '../misc/utils';
+import ModalDialog from '../components/ModalDialog';
+import CometWalletModal from '../components/CometWalletModal';
 import {
-  useWallet,
-  Wallet,
-  WalletContextState,
-} from '@solana/wallet-adapter-react'
-import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js'
-
-import {
-  Adapter,
-  SendTransactionOptions,
-  WalletName,
-  WalletReadyState,
-} from '@solana/wallet-adapter-base'
-import WalletConnectionProvider, {
-  ICometKitConfig,
-} from './WalletConnectionProvider'
-import { usePrevious } from 'react-use'
-
-import { shortenAddress } from '../misc/utils'
-import ModalDialog from '../components/ModalDialog'
-import CometWalletModal from '../components/CometWalletModal'
-
-export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
+  CometKitValueContext,
+  COMET_KIT_VALUE_DEFAULT_CONTEXT,
+  useCometKit,
+  CometKitContext,
+  useCometContext,
+} from './CometKitContext';
 
 export type IWalletProps = Omit<
   WalletContextState,
-  | 'autoConnect'
-  | 'disconnecting'
-  | 'sendTransaction'
-  | 'signTransaction'
-  | 'signAllTransactions'
-  | 'signMessage'
->
-
-// Copied from @solana/wallet-adapter-react
-function constructMissingProviderErrorMessage(
-  action: string,
-  valueName: string,
-) {
-  return (
-    'You have tried to ' +
-    ` ${action} "${valueName}"` +
-    ' on a WalletContext without providing one.' +
-    ' Make sure to render a WalletProvider' +
-    ' as an ancestor of the component that uses ' +
-    'WalletContext'
-  )
-}
-
-const DEFAULT_CONTEXT = {
-  autoConnect: false,
-  connecting: false,
-  connected: false,
-  disconnecting: false,
-  select(_name: WalletName | null) {
-    console.error(constructMissingProviderErrorMessage('get', 'select'))
-  },
-  connect() {
-    return Promise.reject(
-      console.error(constructMissingProviderErrorMessage('get', 'connect')),
-    )
-  },
-  disconnect() {
-    return Promise.reject(
-      console.error(constructMissingProviderErrorMessage('get', 'disconnect')),
-    )
-  },
-  sendTransaction(
-    _transaction: VersionedTransaction | Transaction,
-    _connection: Connection,
-    _options?: SendTransactionOptions,
-  ) {
-    return Promise.reject(
-      console.error(
-        constructMissingProviderErrorMessage('get', 'sendTransaction'),
-      ),
-    )
-  },
-  signTransaction(_transaction: Transaction) {
-    return Promise.reject(
-      console.error(
-        constructMissingProviderErrorMessage('get', 'signTransaction'),
-      ),
-    )
-  },
-  signAllTransactions(_transaction: Transaction[]) {
-    return Promise.reject(
-      console.error(
-        constructMissingProviderErrorMessage('get', 'signAllTransactions'),
-      ),
-    )
-  },
-  signMessage(_message: Uint8Array) {
-    return Promise.reject(
-      console.error(constructMissingProviderErrorMessage('get', 'signMessage')),
-    )
-  },
-} as WalletContextState
-
-export interface ICometKitContext {
-  walletPrecedence: WalletName[];
-  handleConnectClick: (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => Promise<void>;
-  showModal: boolean;
-  setShowModal: (showModal: boolean) => void;
-}
-
-const CometKitContext = React.createContext<ICometKitContext>({
-  walletPrecedence: [],
-  handleConnectClick: async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => { },
-  showModal: false,
-  setShowModal: (showModal: boolean) => { },
-})
-const CometKitValueContext =
-  React.createContext<WalletContextState>(DEFAULT_CONTEXT)
+  'autoConnect' | 'disconnecting' | 'sendTransaction' | 'signTransaction' | 'signAllTransactions' | 'signMessage'
+>;
 
 const CometKitValueProvider = ({
   passThroughWallet,
   children,
 }: {
-  passThroughWallet: Wallet | null
-  children: React.ReactNode
+  passThroughWallet: Wallet | null;
+  children: React.ReactNode;
 }) => {
-  const defaultWalletContext = useWallet()
+  const defaultWalletContext = useWallet();
 
   const value = useMemo(() => {
     if (passThroughWallet) {
       return {
-        ...DEFAULT_CONTEXT,
+        ...COMET_KIT_VALUE_DEFAULT_CONTEXT,
         wallets: defaultWalletContext.wallets || [],
         publicKey: passThroughWallet.adapter.publicKey,
         wallet: {
@@ -139,33 +47,29 @@ const CometKitValueProvider = ({
         disconnect: async () => {
           try {
             if (passThroughWallet?.adapter.disconnect) {
-              return passThroughWallet?.adapter.disconnect()
+              return passThroughWallet?.adapter.disconnect();
             }
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
         },
-      }
+      };
     }
 
     return {
       ...defaultWalletContext,
       connect: async () => {
         try {
-          return await defaultWalletContext.connect()
+          return await defaultWalletContext.connect();
         } catch (error) {
           // when wallet is not installed
         }
       },
-    }
-  }, [defaultWalletContext, passThroughWallet])
+    };
+  }, [defaultWalletContext, passThroughWallet]);
 
-  return (
-    <CometKitValueContext.Provider value={value}>
-      {children}
-    </CometKitValueContext.Provider>
-  )
-}
+  return <CometKitValueContext.Provider value={value}>{children}</CometKitValueContext.Provider>;
+};
 
 const CometKitContextProvider: React.FC<
   {
@@ -178,7 +82,7 @@ const CometKitContextProvider: React.FC<
   const previousWallet = usePrevious<Wallet | null>(wallet);
 
   // Weird quirks for autoConnect to require select and connect
-  const [nonAutoConnectAttempt, setNonAutoConnectAttempt] = React.useState(false);
+  const [nonAutoConnectAttempt, setNonAutoConnectAttempt] = useState(false);
   useEffect(() => {
     if (nonAutoConnectAttempt && !config.autoConnect && wallet?.adapter.name) {
       try {
@@ -188,13 +92,13 @@ const CometKitContextProvider: React.FC<
       }
       setNonAutoConnectAttempt(false);
     }
-  }, [nonAutoConnectAttempt, wallet?.adapter.name])
+  }, [nonAutoConnectAttempt, wallet?.adapter.name]);
 
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const handleConnectClick = React.useCallback(
+  const handleConnectClick = useCallback(
     async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, adapter: Adapter) => {
-      event.preventDefault()
+      event.preventDefault();
 
       try {
         setShowModal(false);
@@ -209,11 +113,11 @@ const CometKitContextProvider: React.FC<
             url: adapter.url,
             icon: adapter.icon,
             supportedTransactionVersions: adapter.supportedTransactionVersions,
-          }
-        })
+          },
+        });
 
         // Might throw WalletReadyState.WalletNotReady
-        select(adapter.name)
+        select(adapter.name);
 
         // Weird quirks for autoConnect to require select and connect
         if (!config.autoConnect) {
@@ -221,7 +125,7 @@ const CometKitContextProvider: React.FC<
         }
 
         if (adapter.readyState === WalletReadyState.NotDetected) {
-          throw WalletReadyState.NotDetected
+          throw WalletReadyState.NotDetected;
         }
       } catch (error) {
         console.log(error);
@@ -236,12 +140,12 @@ const CometKitContextProvider: React.FC<
             url: adapter.url,
             icon: adapter.icon,
             supportedTransactionVersions: adapter.supportedTransactionVersions,
-          }
-        })
+          },
+        });
       }
     },
     [select, connect, wallet?.adapter.name],
-  )
+  );
 
   useEffect(() => {
     // Disconnected
@@ -255,8 +159,8 @@ const CometKitContextProvider: React.FC<
           url: previousWallet?.adapter.url,
           icon: previousWallet?.adapter.icon,
           supportedTransactionVersions: previousWallet?.adapter.supportedTransactionVersions,
-        }
-      })
+        },
+      });
       return;
     }
 
@@ -271,12 +175,11 @@ const CometKitContextProvider: React.FC<
           url: wallet.adapter.url,
           icon: wallet.adapter.icon,
           supportedTransactionVersions: wallet.adapter.supportedTransactionVersions,
-        }
-      })
+        },
+      });
       return;
     }
   }, [wallet, publicKey, previousWallet]);
-
 
   return (
     <CometKitContext.Provider
@@ -294,8 +197,8 @@ const CometKitContextProvider: React.FC<
 
       {children}
     </CometKitContext.Provider>
-  )
-}
+  );
+};
 
 const CometKitProvider = ({
   passThroughWallet,
@@ -303,32 +206,20 @@ const CometKitProvider = ({
   config,
   children,
 }: {
-  passThroughWallet: Wallet | null
-  wallets: Adapter[]
-  config: ICometKitConfig
-  children: React.ReactNode
+  passThroughWallet: Wallet | null;
+  wallets: Adapter[];
+  config: ICometKitConfig;
+  children: React.ReactNode;
 }) => {
   return (
-    <WalletConnectionProvider
-      wallets={wallets}
-      config={config}
-    >
+    <WalletConnectionProvider wallets={wallets} config={config}>
       <CometKitValueProvider passThroughWallet={passThroughWallet}>
         <CometKitContextProvider config={config} passThroughWallet={passThroughWallet}>
           {children}
         </CometKitContextProvider>
       </CometKitValueProvider>
     </WalletConnectionProvider>
-  )
-}
+  );
+};
 
-// Interal context for use within the library
-const useCometContext = (): ICometKitContext => {
-  return useContext(CometKitContext)
-}
-
-const useCometKit = (): WalletContextState => {
-  return useContext(CometKitValueContext)
-}
-
-export { CometKitProvider, useCometKit, useCometContext }
+export { CometKitProvider, useCometKit, useCometContext };

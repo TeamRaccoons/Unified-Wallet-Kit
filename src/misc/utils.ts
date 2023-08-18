@@ -1,5 +1,5 @@
-import Decimal from 'decimal.js';
-import BN from 'bn.js';
+import { Decimal } from 'decimal.js';
+import { BN } from 'bn.js';
 import { RefObject, useEffect, useRef } from 'react';
 
 const userLocale =
@@ -33,7 +33,7 @@ export function shortenAddress(address: string, chars = 4): string {
   return `${address.slice(0, chars)}...${address.slice(-chars)}`;
 }
 
-export function fromLamports(lamportsAmount?: BN | number, decimals?: number, rate: number = 1.0): number {
+export function fromLamports(lamportsAmount?: typeof BN | number, decimals?: number, rate: number = 1.0): number {
   if (!lamportsAmount) {
     return 0;
   }
@@ -46,7 +46,7 @@ export function fromLamports(lamportsAmount?: BN | number, decimals?: number, ra
   return new Decimal(amount.toString()).div(precision).mul(rate).toNumber();
 }
 
-export function toLamports(lamportsAmount: BN | number, decimals: number): number {
+export function toLamports(lamportsAmount: typeof BN | number, decimals: number): number {
   let amount = BN.isBN(lamportsAmount) ? lamportsAmount.toNumber() : Number(lamportsAmount);
 
   if (Number.isNaN(amount)) {

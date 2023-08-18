@@ -22,29 +22,15 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
-      "src/*": [
-        "src/*"
-      ],
-      "public/*": [
-        "public/*"
-      ]
+      "src/*": ["src/*"],
+      "public/*": ["public/*"]
     },
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true
   },
-  "include": [
-    "src/**/*.tsx",
-    "types"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*.tsx", "types", "lib/index.tsx"],
+  "exclude": ["node_modules", "dist"]
 }
