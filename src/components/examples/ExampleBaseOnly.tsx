@@ -1,27 +1,30 @@
 import React from 'react';
-import { CometKitProvider } from 'src/contexts/CometKitProvider';
-import { CometWalletButton } from '../CometWalletButton';
+import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
+import { UnifiedWalletButton } from '../UnifiedWalletButton';
 import WalletNotification from './WalletNotification';
 
 const ExampleBaseOnly = () => {
   return (
-    <CometKitProvider
+    <UnifiedWalletProvider
       wallets={[]}
       passThroughWallet={null}
       config={{
         autoConnect: false,
         env: 'mainnet-beta',
         metadata: {
-          name: 'CometKit',
-          description: 'CometKit',
+          name: 'UnifiedWallet',
+          description: 'UnifiedWallet',
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
         },
         notificationCallback: WalletNotification,
+        walletlistExplanation: {
+          href: 'https://jup.ag',
+        }
       }}
     >
-      <CometWalletButton />
-    </CometKitProvider>
+      <UnifiedWalletButton />
+    </UnifiedWalletProvider>
   );
 };
 

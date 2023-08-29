@@ -5,9 +5,9 @@ import * as AllWalletAdapters from '@solana/wallet-adapter-wallets';
 import { BaseSignerWalletAdapter, WalletAdapterNetwork, WalletName } from '@solana/wallet-adapter-base';
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
 
-import { CometWalletButton } from '..';
+import { UnifiedWalletButton } from '..';
 import { WalletAdapterWithMutableSupportedTransactionVersions, metadata } from './constants';
-import { CometKitProvider } from 'src/contexts/CometKitProvider';
+import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
 import WalletNotification from './WalletNotification';
 
 export const HARDCODED_WALLET_STANDARDS: { id: string; name: WalletName; url: string; icon: string }[] = [
@@ -43,8 +43,6 @@ const ExampleAllWallets = () => {
       .map((WalletAdapter: any) => new WalletAdapter()) // Intentional any, TS were being annoying
 
     const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null = (() => {
-      if (!metadata.walletConnectProjectId) return null;
-
       const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> = new WalletConnectWalletAdapter({
         network: WalletAdapterNetwork.Mainnet,
         options: {
@@ -71,15 +69,15 @@ const ExampleAllWallets = () => {
   }, [metadata])
 
   return (
-    <CometKitProvider
+    <UnifiedWalletProvider
       wallets={wallets}
       passThroughWallet={null}
       config={{
         autoConnect: false,
         env: 'mainnet-beta',
         metadata: {
-          name: 'CometKit',
-          description: 'CometKit',
+          name: 'UnifiedWallet',
+          description: 'UnifiedWallet',
           url: 'https://jup.ag',
           iconUrls: ['https://jup.ag/favicon.ico'],
         },
@@ -88,11 +86,14 @@ const ExampleAllWallets = () => {
           'OKX Wallet' as WalletName,
           'WalletConnect' as WalletName,
         ],
-        hardcodedWallets: HARDCODED_WALLET_STANDARDS
+        hardcodedWallets: HARDCODED_WALLET_STANDARDS,
+        walletlistExplanation: {
+          href: 'https://jup.ag',
+        }
       }}
     >
-      <CometWalletButton />
-    </CometKitProvider>
+      <UnifiedWalletButton />
+    </UnifiedWalletProvider>
   )
 }
 

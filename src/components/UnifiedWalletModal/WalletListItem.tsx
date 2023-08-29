@@ -1,9 +1,10 @@
 import { Adapter } from '@solana/wallet-adapter-base';
 import React, { DetailedHTMLProps, FC, ImgHTMLAttributes, MouseEventHandler, useCallback, useMemo } from 'react';
-import 'twin.macro'
+import 'twin.macro';
 
 import UnknownIconSVG from '../../icons/UnknownIconSVG';
 import { isMobile } from '../../misc/utils';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 
 export interface WalletIconProps extends DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   wallet: Adapter | null;
@@ -44,17 +45,24 @@ export interface WalletListItemProps {
 }
 
 export const WalletListItem = ({ handleClick, wallet }: WalletListItemProps) => {
+  const adapterName = useMemo(() => {
+    if (wallet.name === SolanaMobileWalletAdapterWalletName) return 'Mobile';
+    return wallet.name;
+  }, [wallet.name]);
+
   return (
     <li
       onClick={handleClick}
-      tw={'flex items-center px-5 py-4 space-x-5 cursor-pointer border border-white/10 rounded-lg hover:bg-white/10 hover:backdrop-blur-xl hover:shadow-2xl transition-all'}
+      tw={
+        'flex items-center px-5 py-4 space-x-5 cursor-pointer border border-white/10 rounded-lg hover:bg-white/10 hover:backdrop-blur-xl hover:shadow-2xl transition-all'
+      }
     >
       {isMobile() ? (
         <WalletIcon wallet={wallet} width={24} height={24} />
       ) : (
         <WalletIcon wallet={wallet} width={30} height={30} />
       )}
-      <span tw="font-semibold text-xs overflow-hidden text-ellipsis">{wallet.name}</span>
+      <span tw="font-semibold text-xs overflow-hidden text-ellipsis">{adapterName}</span>
     </li>
   );
 };

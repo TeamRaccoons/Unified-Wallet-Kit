@@ -10,7 +10,7 @@ import { Cluster } from '@solana/web3.js';
 
 import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
-import { MWA_NOT_FOUND_ERROR } from '../CometKitContext';
+import { MWA_NOT_FOUND_ERROR } from '../UnifiedWalletContext';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter });
@@ -28,9 +28,9 @@ export interface IWalletNotification {
   };
 }
 
-export interface ICometKitConfig {
+export interface IUnifiedWalletConfig {
   autoConnect: boolean;
-  metadata: ICometKitMetadata;
+  metadata: IUnifiedWalletMetadata;
   env: Cluster;
   walletPrecedence?: WalletName[];
   hardcodedWallets?: IHardcodedWalletStandardAdapter[];
@@ -42,28 +42,35 @@ export interface ICometKitConfig {
     // TODO: Support wallet account change
     // onChangeAccount: (props: IWalletNotification) => void,
   };
+  walletlistExplanation?: {
+    href: string;
+  }
 }
 
-export interface ICometKitMetadata {
+export interface IUnifiedWalletMetadata {
   name: string;
   url: string;
   description: string;
   iconUrls: string[]; // full uri, first icon will be used as main icon (png, jpg, svg)
   additionalInfo?: string;
-  walletConnectProjectId?: string; // wallet connect app id, register your app on WalletConnect website
 }
 
 const WalletConnectionProvider: FC<
   PropsWithChildren & {
     wallets: Adapter[];
-    config: ICometKitConfig;
+    config: IUnifiedWalletConfig;
   }
 > = ({ wallets: passedWallets, config, children }) => {
   const wallets = useMemo(() => {
     return [
       new SolanaMobileWalletAdapter({
         addressSelector: createDefaultAddressSelector(),
-        appIdentity: config.metadata,
+        appIdentity: {
+          uri: config.metadata.url,
+          // TODO: Icon support looks flaky
+          icon: '',
+          name: config.metadata.name,
+        },
         authorizationResultCache: createDefaultAuthorizationResultCache(),
         cluster: config.env,
         onWalletNotFound: async (mobileWalletAdapter: SolanaMobileWalletAdapter) => {

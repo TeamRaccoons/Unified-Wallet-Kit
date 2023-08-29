@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useRef } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import { useToggle } from 'react-use';
 
@@ -10,9 +10,10 @@ import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
 import { isMobile, useOutsideClick } from '../../misc/utils';
-import { useCometContext, useCometKit } from '../../contexts/CometKitContext';
+import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletContext';
 import CloseIcon from '../../icons/CloseIcon';
 import tw from 'twin.macro';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 
 const PRIORITISE: {
   [value in WalletReadyState]: number;
@@ -35,7 +36,7 @@ const TOP_WALLETS: WalletName[] = [
   'Backpack' as WalletName<'Backpack'>,
 ];
 
-interface ICometWalletModal {
+interface IUnifiedWalletModal {
   onClose: () => void;
 }
 
@@ -58,9 +59,9 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
   return 0;
 };
 
-const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
-  const { wallets } = useCometKit();
-  const { walletPrecedence, handleConnectClick } = useCometContext();
+const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
+  const { wallets } = useUnifiedWallet();
+  const { walletPrecedence, handleConnectClick, walletlistExplanation } = useUnifiedWalletContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
@@ -121,7 +122,7 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-        .sort(sortByPrecedence(walletPrecedence));
+        .sort(sortByPrecedence(walletPrecedence || []));
       others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length));
 
       return {
@@ -137,7 +138,7 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-        .sort(sortByPrecedence(walletPrecedence));
+        .sort(sortByPrecedence(walletPrecedence || []));
       others.unshift(...filteredAdapters.installed.slice(3, filteredAdapters.installed.length));
 
       return { highlightedBy: 'Installed', highlight, others };
@@ -147,20 +148,30 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
     const others = Object.values(rest)
       .flat()
       .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-      .sort(sortByPrecedence(walletPrecedence));
+      .sort(sortByPrecedence(walletPrecedence || []));
     return { highlightedBy: 'TopWallet', highlight: top3, others };
   }, [wallets, previouslyConnected]);
 
   const renderWalletList = useMemo(
     () => (
-      <div tw="mt-4 grid gap-2 grid-cols-2 pb-4" translate="no">
-        {list.others.map((adapter, index) => {
-          return (
-            <ul key={index}>
-              <WalletListItem handleClick={(event) => handleConnectClick(event, adapter)} wallet={adapter} />
-            </ul>
-          );
-        })}
+      <div>
+        <div tw="mt-4 grid gap-2 grid-cols-2 pb-4" translate="no">
+          {list.others.map((adapter, index) => {
+            return (
+              <ul key={index}>
+                <WalletListItem handleClick={(event) => handleConnectClick(event, adapter)} wallet={adapter} />
+              </ul>
+            );
+          })}
+        </div>
+
+        {walletlistExplanation ? (
+          <div tw="text-xs font-semibold underline mb-8">
+            <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
+              <span>{`Can't find your wallet?`}</span>
+            </a>
+          </div>
+        ) : null}
       </div>
     ),
     [handleConnectClick, list.others],
@@ -200,6 +211,11 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
 
         <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
           {list.highlight.map((adapter, idx) => {
+            const adapterName = (() => {
+              if (adapter.name === SolanaMobileWalletAdapterWalletName) return 'Mobile';
+              return adapter.name;
+            })();
+
             return (
               <div
                 key={idx}
@@ -214,11 +230,19 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
                 ) : (
                   <WalletIcon wallet={adapter} width={30} height={30} />
                 )}
-                <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapter.name}</span>
+                <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapterName}</span>
               </div>
             );
           })}
         </div>
+
+        {walletlistExplanation && list.others.length === 0 ? (
+          <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
+            <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
+              <span>{`Can't find your wallet?`}</span>
+            </a>
+          </div>
+        ) : null}
 
         {list.others.length > 0 ? (
           <>
@@ -255,4 +279,4 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
   );
 };
 
-export default CometWalletModal;
+export default UnifiedWalletModal;

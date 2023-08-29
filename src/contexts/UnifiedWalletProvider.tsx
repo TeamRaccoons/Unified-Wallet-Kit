@@ -4,26 +4,26 @@ import { useWallet, Wallet, WalletContextState } from '@solana/wallet-adapter-re
 import { PublicKey } from '@solana/web3.js';
 
 import { Adapter, WalletReadyState } from '@solana/wallet-adapter-base';
-import WalletConnectionProvider, { ICometKitConfig } from './WalletConnectionProvider';
+import WalletConnectionProvider, { IUnifiedWalletConfig } from './WalletConnectionProvider';
 import { usePrevious } from 'react-use';
 
 import { shortenAddress } from '../misc/utils';
 import ModalDialog from '../components/ModalDialog';
-import CometWalletModal from '../components/CometWalletModal';
+import UnifiedWalletModal from '../components/UnifiedWalletModal';
 import {
-  CometKitValueContext,
-  COMET_KIT_VALUE_DEFAULT_CONTEXT,
-  useCometKit,
-  CometKitContext,
-  useCometContext,
-} from './CometKitContext';
+  UnifiedWalletValueContext,
+  UNIFIED_WALLET_VALUE_DEFAULT_CONTEXT,
+  useUnifiedWallet,
+  UnifiedWalletContext,
+  useUnifiedWalletContext,
+} from './UnifiedWalletContext';
 
 export type IWalletProps = Omit<
   WalletContextState,
   'autoConnect' | 'disconnecting' | 'sendTransaction' | 'signTransaction' | 'signAllTransactions' | 'signMessage'
 >;
 
-const CometKitValueProvider = ({
+const UnifiedWalletValueProvider = ({
   passThroughWallet,
   children,
 }: {
@@ -35,7 +35,7 @@ const CometKitValueProvider = ({
   const value = useMemo(() => {
     if (passThroughWallet) {
       return {
-        ...COMET_KIT_VALUE_DEFAULT_CONTEXT,
+        ...UNIFIED_WALLET_VALUE_DEFAULT_CONTEXT,
         wallets: defaultWalletContext.wallets || [],
         publicKey: passThroughWallet.adapter.publicKey,
         wallet: {
@@ -68,16 +68,16 @@ const CometKitValueProvider = ({
     };
   }, [defaultWalletContext, passThroughWallet]);
 
-  return <CometKitValueContext.Provider value={value}>{children}</CometKitValueContext.Provider>;
+  return <UnifiedWalletValueContext.Provider value={value}>{children}</UnifiedWalletValueContext.Provider>;
 };
 
-const CometKitContextProvider: React.FC<
+const UnifiedWalletContextProvider: React.FC<
   {
-    config: ICometKitConfig;
+    config: IUnifiedWalletConfig;
     passThroughWallet: Wallet | null;
   } & PropsWithChildren
 > = ({ config, passThroughWallet, children }) => {
-  const { publicKey, wallet, select, connect } = useCometKit();
+  const { publicKey, wallet, select, connect } = useUnifiedWallet();
   const previousPublicKey = usePrevious<PublicKey | null>(publicKey);
   const previousWallet = usePrevious<Wallet | null>(wallet);
 
@@ -182,25 +182,26 @@ const CometKitContextProvider: React.FC<
   }, [wallet, publicKey, previousWallet]);
 
   return (
-    <CometKitContext.Provider
+    <UnifiedWalletContext.Provider
       value={{
         ...passThroughWallet,
         walletPrecedence: config.walletPrecedence || [],
         handleConnectClick,
         showModal,
         setShowModal,
+        walletlistExplanation: config.walletlistExplanation,
       }}
     >
       <ModalDialog open={showModal} onClose={() => setShowModal(false)}>
-        <CometWalletModal onClose={() => setShowModal(false)} />
+        <UnifiedWalletModal onClose={() => setShowModal(false)} />
       </ModalDialog>
 
       {children}
-    </CometKitContext.Provider>
+    </UnifiedWalletContext.Provider>
   );
 };
 
-const CometKitProvider = ({
+const UnifiedWalletProvider = ({
   passThroughWallet,
   wallets,
   config,
@@ -208,18 +209,18 @@ const CometKitProvider = ({
 }: {
   passThroughWallet: Wallet | null;
   wallets: Adapter[];
-  config: ICometKitConfig;
+  config: IUnifiedWalletConfig;
   children: React.ReactNode;
 }) => {
   return (
     <WalletConnectionProvider wallets={wallets} config={config}>
-      <CometKitValueProvider passThroughWallet={passThroughWallet}>
-        <CometKitContextProvider config={config} passThroughWallet={passThroughWallet}>
+      <UnifiedWalletValueProvider passThroughWallet={passThroughWallet}>
+        <UnifiedWalletContextProvider config={config} passThroughWallet={passThroughWallet}>
           {children}
-        </CometKitContextProvider>
-      </CometKitValueProvider>
+        </UnifiedWalletContextProvider>
+      </UnifiedWalletValueProvider>
     </WalletConnectionProvider>
   );
 };
 
-export { CometKitProvider, useCometKit, useCometContext };
+export { UnifiedWalletProvider, useUnifiedWallet, useUnifiedWalletContext };

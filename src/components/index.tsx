@@ -1,1 +1,1 @@
-export { CometWalletButton } from './CometWalletButton';
+export { UnifiedWalletButton } from './UnifiedWalletButton';
