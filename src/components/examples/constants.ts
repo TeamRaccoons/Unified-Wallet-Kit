@@ -1,8 +1,8 @@
 import { BaseWalletAdapter } from "@solana/wallet-adapter-base";
 
 export const metadata = {
-  name: 'CometKit',
-  description: 'CometKit',
+  name: 'UnifiedWallet',
+  description: 'UnifiedWallet',
   url: 'https://jup.ag',
   iconUrls: ['https://jup.ag/favicon.ico'],
   additionalInfo: '',

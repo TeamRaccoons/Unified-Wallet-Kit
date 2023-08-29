@@ -6,14 +6,14 @@ import { createContext } from 'react';
 
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
 
-export interface ICometKitContext {
+export interface IUnifiedWalletContext {
   walletPrecedence: WalletName[];
   handleConnectClick: (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => Promise<void>;
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
 }
 
-export const CometKitContext = createContext<ICometKitContext>({
+export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
   walletPrecedence: [],
   handleConnectClick: async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => {},
   showModal: false,
@@ -32,7 +32,7 @@ function constructMissingProviderErrorMessage(action: string, valueName: string)
   );
 }
 
-export const COMET_KIT_VALUE_DEFAULT_CONTEXT = {
+export const UNIFIED_WALLET_VALUE_DEFAULT_CONTEXT = {
   autoConnect: false,
   connecting: false,
   connected: false,
@@ -64,13 +64,13 @@ export const COMET_KIT_VALUE_DEFAULT_CONTEXT = {
   },
 } as WalletContextState;
 
-export const CometKitValueContext = createContext<WalletContextState>(COMET_KIT_VALUE_DEFAULT_CONTEXT);
+export const UnifiedWalletValueContext = createContext<WalletContextState>(UNIFIED_WALLET_VALUE_DEFAULT_CONTEXT);
 
 // Interal context for use within the library
-export const useCometContext = (): ICometKitContext => {
-  return useContext(CometKitContext);
+export const useUnifiedWalletContext = (): IUnifiedWalletContext => {
+  return useContext(UnifiedWalletContext);
 };
 
-export const useCometKit = (): WalletContextState => {
-  return useContext(CometKitValueContext);
+export const useUnifiedWallet = (): WalletContextState => {
+  return useContext(UnifiedWalletValueContext);
 };

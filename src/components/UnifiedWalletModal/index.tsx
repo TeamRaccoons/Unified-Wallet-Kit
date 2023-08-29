@@ -10,7 +10,7 @@ import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
 import { isMobile, useOutsideClick } from '../../misc/utils';
-import { useCometContext, useCometKit } from '../../contexts/CometKitContext';
+import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletContext';
 import CloseIcon from '../../icons/CloseIcon';
 import tw from 'twin.macro';
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
@@ -36,7 +36,7 @@ const TOP_WALLETS: WalletName[] = [
   'Backpack' as WalletName<'Backpack'>,
 ];
 
-interface ICometWalletModal {
+interface IUnifiedWalletModal {
   onClose: () => void;
 }
 
@@ -59,9 +59,9 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
   return 0;
 };
 
-const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
-  const { wallets } = useCometKit();
-  const { walletPrecedence, handleConnectClick } = useCometContext();
+const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
+  const { wallets } = useUnifiedWallet();
+  const { walletPrecedence, handleConnectClick } = useUnifiedWalletContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
@@ -261,4 +261,4 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
   );
 };
 
-export default CometWalletModal;
+export default UnifiedWalletModal;

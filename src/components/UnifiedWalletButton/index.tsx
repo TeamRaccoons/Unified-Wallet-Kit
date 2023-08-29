@@ -3,16 +3,16 @@ import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapt
 import tw from 'twin.macro';
 
 import { CurrentUserBadge } from '../CurrentUserBadge';
-import { useCometContext, useCometKit } from '../../contexts/CometKitProvider';
-import { MWA_NOT_FOUND_ERROR } from '../../contexts/CometKitContext';
+import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletProvider';
+import { MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
 
-export const CometWalletButton: React.FC<{
+export const UnifiedWalletButton: React.FC<{
   overrideContent?: ReactNode;
   buttonClassName?: string;
   currentUserClassName?: string;
 }> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
-  const { setShowModal } = useCometContext();
-  const { disconnect, connect, connecting, wallet } = useCometKit();
+  const { setShowModal } = useUnifiedWalletContext();
+  const { disconnect, connect, connecting, wallet } = useUnifiedWallet();
 
   const content = (
     <>

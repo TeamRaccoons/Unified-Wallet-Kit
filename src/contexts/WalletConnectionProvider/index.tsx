@@ -10,7 +10,7 @@ import { Cluster } from '@solana/web3.js';
 
 import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
-import { MWA_NOT_FOUND_ERROR } from '../CometKitContext';
+import { MWA_NOT_FOUND_ERROR } from '../UnifiedWalletContext';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter });
@@ -28,9 +28,9 @@ export interface IWalletNotification {
   };
 }
 
-export interface ICometKitConfig {
+export interface IUnifiedWalletConfig {
   autoConnect: boolean;
-  metadata: ICometKitMetadata;
+  metadata: IUnifiedWalletMetadata;
   env: Cluster;
   walletPrecedence?: WalletName[];
   hardcodedWallets?: IHardcodedWalletStandardAdapter[];
@@ -44,7 +44,7 @@ export interface ICometKitConfig {
   };
 }
 
-export interface ICometKitMetadata {
+export interface IUnifiedWalletMetadata {
   name: string;
   url: string;
   description: string;
@@ -55,7 +55,7 @@ export interface ICometKitMetadata {
 const WalletConnectionProvider: FC<
   PropsWithChildren & {
     wallets: Adapter[];
-    config: ICometKitConfig;
+    config: IUnifiedWalletConfig;
   }
 > = ({ wallets: passedWallets, config, children }) => {
   const wallets = useMemo(() => {

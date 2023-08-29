@@ -1,9 +1,9 @@
 import { toast } from 'sonner';
 import 'twin.macro'
 
-import { ICometKitConfig, IWalletNotification } from 'src/contexts/WalletConnectionProvider';
+import { IUnifiedWalletConfig, IWalletNotification } from 'src/contexts/WalletConnectionProvider';
 
-const WalletNotification: ICometKitConfig['notificationCallback'] = {
+const WalletNotification: IUnifiedWalletConfig['notificationCallback'] = {
   onConnect: (props: IWalletNotification) => {
     toast.success(
       <div tw="flex flex-col bg-green-100 w-full p-4">
