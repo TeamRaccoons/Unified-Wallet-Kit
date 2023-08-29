@@ -1,4 +1,6 @@
 # Unified Wallet Kit
+<img src="public/raccoons_wallet.jpg" />
+
 Unified Wallet Kit is an open-sourced, Swiss Army Knife wallet adapter, striving for the best wallet integration experience for developers, and best wallet experience for your users.
 
 Used by Jupiter and Meteora.
