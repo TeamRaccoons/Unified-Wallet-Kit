@@ -65,7 +65,12 @@ const WalletConnectionProvider: FC<
     return [
       new SolanaMobileWalletAdapter({
         addressSelector: createDefaultAddressSelector(),
-        appIdentity: config.metadata,
+        appIdentity: {
+          uri: config.metadata.url,
+          // TODO: Icon support looks flaky
+          icon: '',
+          name: config.metadata.name,
+        },
         authorizationResultCache: createDefaultAuthorizationResultCache(),
         cluster: config.env,
         onWalletNotFound: async (mobileWalletAdapter: SolanaMobileWalletAdapter) => {
