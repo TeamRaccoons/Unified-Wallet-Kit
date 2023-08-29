@@ -13,6 +13,7 @@ import { isMobile, useOutsideClick } from '../../misc/utils';
 import { useCometContext, useCometKit } from '../../contexts/CometKitContext';
 import CloseIcon from '../../icons/CloseIcon';
 import tw from 'twin.macro';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 
 const PRIORITISE: {
   [value in WalletReadyState]: number;
@@ -200,6 +201,11 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
 
         <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
           {list.highlight.map((adapter, idx) => {
+            const adapterName = (() => {
+              if (adapter.name === SolanaMobileWalletAdapterWalletName) return 'Mobile';
+              return adapter.name;
+            })();
+
             return (
               <div
                 key={idx}
@@ -214,7 +220,7 @@ const CometWalletModal: React.FC<ICometWalletModal> = ({ onClose }) => {
                 ) : (
                   <WalletIcon wallet={adapter} width={30} height={30} />
                 )}
-                <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapter.name}</span>
+                <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapterName}</span>
               </div>
             );
           })}

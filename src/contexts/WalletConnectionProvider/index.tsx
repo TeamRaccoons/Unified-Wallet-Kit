@@ -50,7 +50,6 @@ export interface ICometKitMetadata {
   description: string;
   iconUrls: string[]; // full uri, first icon will be used as main icon (png, jpg, svg)
   additionalInfo?: string;
-  walletConnectProjectId?: string; // wallet connect app id, register your app on WalletConnect website
 }
 
 const WalletConnectionProvider: FC<

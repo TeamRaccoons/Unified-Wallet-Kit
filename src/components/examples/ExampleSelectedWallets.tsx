@@ -17,24 +17,20 @@ import WalletNotification from './WalletNotification';
 
 const ExampleSelectedWallets = () => {
   const wallets: Adapter[] = useMemo(() => {
-    const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
-      (() => {
-        if (!metadata.walletConnectProjectId) return null;
-
-        const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> =
-          new WalletConnectWalletAdapter({
-            network: WalletAdapterNetwork.Mainnet,
-            options: {
-              relayUrl: 'wss://relay.walletconnect.com',
-              projectId: metadata.walletConnectProjectId,
-              metadata: {
-                name: metadata.name,
-                description: metadata.description,
-                url: metadata.url,
-                icons: metadata.iconUrls,
-              },
-            },
-          });
+    const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null = (() => {
+      const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> = new WalletConnectWalletAdapter({
+        network: WalletAdapterNetwork.Mainnet,
+        options: {
+          relayUrl: 'wss://relay.walletconnect.com',
+          projectId: metadata.walletConnectProjectId,
+          metadata: {
+            name: metadata.name,
+            description: metadata.description,
+            url: metadata.url,
+            icons: metadata.iconUrls,
+          },
+        },
+      });
 
         // While sometimes supported, it mostly isn't. Should this be dynamic in the wallet-adapter instead?
         adapter.supportedTransactionVersions = new Set(['legacy']);

@@ -43,8 +43,6 @@ const ExampleAllWallets = () => {
       .map((WalletAdapter: any) => new WalletAdapter()) // Intentional any, TS were being annoying
 
     const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null = (() => {
-      if (!metadata.walletConnectProjectId) return null;
-
       const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> = new WalletConnectWalletAdapter({
         network: WalletAdapterNetwork.Mainnet,
         options: {

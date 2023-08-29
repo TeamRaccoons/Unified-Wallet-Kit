@@ -38,7 +38,7 @@ export const CometWalletButton: React.FC<{
 
   const handleClick = useCallback(async () => {
     try {
-      if (wallet?.adapter.name === SolanaMobileWalletAdapterWalletName) {
+      if ('' === SolanaMobileWalletAdapterWalletName) {
         await connect();
 
         return;
