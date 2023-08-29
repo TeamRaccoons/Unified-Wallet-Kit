@@ -18,6 +18,9 @@ const ExampleBaseOnly = () => {
           iconUrls: ['https://jup.ag/favicon.ico'],
         },
         notificationCallback: WalletNotification,
+        walletlistExplanation: {
+          href: 'https://jup.ag',
+        }
       }}
     >
       <UnifiedWalletButton />

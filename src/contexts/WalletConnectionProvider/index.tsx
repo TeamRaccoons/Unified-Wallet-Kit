@@ -42,6 +42,9 @@ export interface IUnifiedWalletConfig {
     // TODO: Support wallet account change
     // onChangeAccount: (props: IWalletNotification) => void,
   };
+  walletlistExplanation?: {
+    href: string;
+  }
 }
 
 export interface IUnifiedWalletMetadata {

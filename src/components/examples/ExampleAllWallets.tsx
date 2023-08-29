@@ -86,7 +86,10 @@ const ExampleAllWallets = () => {
           'OKX Wallet' as WalletName,
           'WalletConnect' as WalletName,
         ],
-        hardcodedWallets: HARDCODED_WALLET_STANDARDS
+        hardcodedWallets: HARDCODED_WALLET_STANDARDS,
+        walletlistExplanation: {
+          href: 'https://jup.ag',
+        }
       }}
     >
       <UnifiedWalletButton />

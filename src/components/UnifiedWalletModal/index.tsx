@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useRef } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import { useToggle } from 'react-use';
 
@@ -61,7 +61,7 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
 
 const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
   const { wallets } = useUnifiedWallet();
-  const { walletPrecedence, handleConnectClick } = useUnifiedWalletContext();
+  const { walletPrecedence, handleConnectClick, walletlistExplanation } = useUnifiedWalletContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
@@ -122,7 +122,7 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-        .sort(sortByPrecedence(walletPrecedence));
+        .sort(sortByPrecedence(walletPrecedence || []));
       others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length));
 
       return {
@@ -138,7 +138,7 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-        .sort(sortByPrecedence(walletPrecedence));
+        .sort(sortByPrecedence(walletPrecedence || []));
       others.unshift(...filteredAdapters.installed.slice(3, filteredAdapters.installed.length));
 
       return { highlightedBy: 'Installed', highlight, others };
@@ -148,20 +148,30 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
     const others = Object.values(rest)
       .flat()
       .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-      .sort(sortByPrecedence(walletPrecedence));
+      .sort(sortByPrecedence(walletPrecedence || []));
     return { highlightedBy: 'TopWallet', highlight: top3, others };
   }, [wallets, previouslyConnected]);
 
   const renderWalletList = useMemo(
     () => (
-      <div tw="mt-4 grid gap-2 grid-cols-2 pb-4" translate="no">
-        {list.others.map((adapter, index) => {
-          return (
-            <ul key={index}>
-              <WalletListItem handleClick={(event) => handleConnectClick(event, adapter)} wallet={adapter} />
-            </ul>
-          );
-        })}
+      <div>
+        <div tw="mt-4 grid gap-2 grid-cols-2 pb-4" translate="no">
+          {list.others.map((adapter, index) => {
+            return (
+              <ul key={index}>
+                <WalletListItem handleClick={(event) => handleConnectClick(event, adapter)} wallet={adapter} />
+              </ul>
+            );
+          })}
+        </div>
+
+        {walletlistExplanation ? (
+          <div tw="text-xs font-semibold underline mb-8">
+            <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
+              <span>{`Can't find your wallet?`}</span>
+            </a>
+          </div>
+        ) : null}
       </div>
     ),
     [handleConnectClick, list.others],
@@ -225,6 +235,14 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
             );
           })}
         </div>
+
+        {walletlistExplanation && list.others.length === 0 ? (
+          <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
+            <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
+              <span>{`Can't find your wallet?`}</span>
+            </a>
+          </div>
+        ) : null}
 
         {list.others.length > 0 ? (
           <>

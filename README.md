@@ -1,10 +1,13 @@
 # Unified Wallet Kit
 Unified Wallet Kit is an open-sourced, Swiss Army Knife wallet adapter, striving for the best wallet integration experience for developers, and best wallet experience for your users.
 
+Used by Jupiter and Meteora.
+
 # Philosophy
 - Set a sensible defaults
 - Lightweight, easy to adopt, fast to access
 - Extensible wallets, with a BYOW (Bring your own wallets) approach
+- Better onboarding experience for new users
 
 ## Core features
 - [x] Main esm bundle at 94Kb (~20Kb gzipped)
@@ -16,6 +19,7 @@ Unified Wallet Kit is an open-sourced, Swiss Army Knife wallet adapter, striving
 ## Upcoming features
 - [ ] Internationalization (i18n)
 - [ ] Theming (from light to dark, from funky to boringly corporate)
+- [ ] New user onboarding
 - [ ] Even more customisation
 
 ## FAQs
@@ -34,6 +38,8 @@ Unified Wallet Kit is an open-sourced, Swiss Army Knife wallet adapter, striving
     - mobile-first, responsive design
     - themeing support (coming soon)
     - Internationalization (i18n) support (coming soon)
+  - And on ecosystem level
+    - new user onboarding (coming soon)
 
 - why not ship with notification by default
   - existing dApp might already have their own notification system

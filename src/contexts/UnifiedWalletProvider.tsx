@@ -189,6 +189,7 @@ const UnifiedWalletContextProvider: React.FC<
         handleConnectClick,
         showModal,
         setShowModal,
+        walletlistExplanation: config.walletlistExplanation,
       }}
     >
       <ModalDialog open={showModal} onClose={() => setShowModal(false)}>

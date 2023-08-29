@@ -3,14 +3,16 @@ import type { Connection, Transaction, VersionedTransaction } from '@solana/web3
 import type { WalletContextState } from '@solana/wallet-adapter-react';
 import { useContext } from 'react';
 import { createContext } from 'react';
+import { IUnifiedWalletConfig } from './WalletConnectionProvider';
 
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
 
 export interface IUnifiedWalletContext {
-  walletPrecedence: WalletName[];
+  walletPrecedence: IUnifiedWalletConfig['walletPrecedence'];
   handleConnectClick: (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => Promise<void>;
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
+  walletlistExplanation: IUnifiedWalletConfig['walletlistExplanation'];
 }
 
 export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
@@ -18,6 +20,7 @@ export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
   handleConnectClick: async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => {},
   showModal: false,
   setShowModal: (showModal: boolean) => {},
+  walletlistExplanation: undefined,
 });
 
 // Copied from @solana/wallet-adapter-react
