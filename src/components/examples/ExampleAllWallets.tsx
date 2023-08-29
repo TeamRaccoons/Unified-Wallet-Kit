@@ -1,14 +1,17 @@
 import { useMemo } from 'react';
+import 'twin.macro';
 
 import * as AllWalletAdapters from '@solana/wallet-adapter-wallets';
 
 import { BaseSignerWalletAdapter, WalletAdapterNetwork, WalletName } from '@solana/wallet-adapter-base';
-export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR'
+export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
 
 import { UnifiedWalletButton } from '..';
 import { WalletAdapterWithMutableSupportedTransactionVersions, metadata } from './constants';
 import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
 import WalletNotification from './WalletNotification';
+import CodeBlocks from '../CodeBlocks/CodeBlocks';
+import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleAllWalletsSnippet';
 
 export const HARDCODED_WALLET_STANDARDS: { id: string; name: WalletName; url: string; icon: string }[] = [
   {
@@ -28,51 +31,46 @@ export const HARDCODED_WALLET_STANDARDS: { id: string; name: WalletName; url: st
 const ExampleAllWallets = () => {
   const wallets = useMemo(() => {
     if (typeof window === 'undefined') {
-      return []
+      return [];
     }
 
-    const {
-      UnsafeBurnerWalletAdapter: _,
-      WalletConnectWalletAdapter,
-      ...allwalletAdapters
-    } = AllWalletAdapters
+    const { UnsafeBurnerWalletAdapter: _, WalletConnectWalletAdapter, ...allwalletAdapters } = AllWalletAdapters;
 
     const walletAdapters = Object.keys(allwalletAdapters)
-      .filter(key => key.includes('Adapter'))
-      .map(key => (allwalletAdapters as any)[key])
-      .map((WalletAdapter: any) => new WalletAdapter()) // Intentional any, TS were being annoying
+      .filter((key) => key.includes('Adapter'))
+      .map((key) => (allwalletAdapters as any)[key])
+      .map((WalletAdapter: any) => new WalletAdapter()); // Intentional any, TS were being annoying
 
-    const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null = (() => {
-      const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> = new WalletConnectWalletAdapter({
-        network: WalletAdapterNetwork.Mainnet,
-        options: {
-          relayUrl: 'wss://relay.walletconnect.com',
-          projectId: metadata.walletConnectProjectId,
-          metadata: {
-            name: metadata.name,
-            description: metadata.description,
-            url: metadata.url,
-            icons: metadata.iconUrls,
-          },
-        },
-      });
+    const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
+      (() => {
+        const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> =
+          new WalletConnectWalletAdapter({
+            network: WalletAdapterNetwork.Mainnet,
+            options: {
+              relayUrl: 'wss://relay.walletconnect.com',
+              projectId: metadata.walletConnectProjectId,
+              metadata: {
+                name: metadata.name,
+                description: metadata.description,
+                url: metadata.url,
+                icons: metadata.iconUrls,
+              },
+            },
+          });
 
-      // While sometimes supported, it mostly isn't. Should this be dynamic in the wallet-adapter instead?
-      adapter.supportedTransactionVersions = new Set(['legacy']);
-      return adapter;
-    })()
+        // While sometimes supported, it mostly isn't. Should this be dynamic in the wallet-adapter instead?
+        adapter.supportedTransactionVersions = new Set(['legacy']);
+        return adapter;
+      })();
 
-    return [
-      ...walletAdapters,
-      walletConnectWalletAdapter,
-    ].filter(item => item && item.name && item.icon)
-  }, [metadata])
+    return [...walletAdapters, walletConnectWalletAdapter].filter((item) => item && item.name && item.icon);
+  }, [metadata]);
 
-  return (
-    <UnifiedWalletProvider
-      wallets={wallets}
-      passThroughWallet={null}
-      config={{
+  const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(
+    () => ({
+      wallets: wallets,
+      passThroughWallet: null,
+      config: {
         autoConnect: false,
         env: 'mainnet-beta',
         metadata: {
@@ -82,19 +80,27 @@ const ExampleAllWallets = () => {
           iconUrls: ['https://jup.ag/favicon.ico'],
         },
         notificationCallback: WalletNotification,
-        walletPrecedence: [
-          'OKX Wallet' as WalletName,
-          'WalletConnect' as WalletName,
-        ],
+        walletPrecedence: ['OKX Wallet' as WalletName, 'WalletConnect' as WalletName],
         hardcodedWallets: HARDCODED_WALLET_STANDARDS,
         walletlistExplanation: {
-          href: 'https://jup.ag',
-        }
-      }}
-    >
-      <UnifiedWalletButton />
-    </UnifiedWalletProvider>
-  )
-}
+          href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
+        },
+      },
+    }),
+    [wallets],
+  );
 
-export default ExampleAllWallets
+  return (
+    <div tw="w-full">
+      <div tw="w-[90px] md:w-[130px]">
+        <UnifiedWalletProvider {...params}>
+          <UnifiedWalletButton />
+        </UnifiedWalletProvider>
+      </div>
+
+      <CodeBlocks params={params} unparsedWalletDeclarationString={HARDCODED_DECLARTION_BLOCK} unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK} />
+    </div>
+  );
+};
+
+export default ExampleAllWallets;

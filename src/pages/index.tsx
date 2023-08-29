@@ -30,21 +30,21 @@ const Index = () => {
             </div>
 
             <div tw="flex flex-col space-y-10 items-center justify-center p-4">
-              <div tw="max-w-xl bg-black/25 mt-12 rounded-xl flex flex-col w-full p-4">
+              <div className='hideScrollbar' tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4 pb-0">
                 <div tw="font-semibold text-white">Base with Wallet Standard only</div>
                 <div tw="flex w-full mt-4">
                   <ExampleBaseOnly />
                 </div>
               </div>
 
-              <div tw="max-w-xl bg-black/25 mt-12 rounded-xl flex flex-col w-full p-4">
+              <div className='hideScrollbar' tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4">
                 <div tw="font-semibold text-white">With selected wallets</div>
                 <div tw="flex w-full mt-4">
                   <ExampleSelectedWallets />
                 </div>
               </div>
 
-              <div tw="max-w-xl bg-black/25 mt-12 rounded-xl flex flex-col w-full p-4">
+              <div className='hideScrollbar' tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4">
                 <div tw="font-semibold text-white">Example with All Wallets, and Custom Wallets</div>
                 <div tw="flex w-full mt-4">
                   <ExampleAllWallets />

@@ -5,7 +5,7 @@ Unified Wallet Kit is an open-sourced, Swiss Army Knife wallet adapter, striving
 
 Used by Jupiter and Meteora.
 
-# Philosophy
+## Philosophy
 - Set a sensible defaults
 - Lightweight, easy to adopt, fast to access
 - Extensible wallets, with a BYOW (Bring your own wallets) approach
@@ -23,6 +23,42 @@ Used by Jupiter and Meteora.
 - [ ] Theming (from light to dark, from funky to boringly corporate)
 - [ ] New user onboarding
 - [ ] Even more customisation
+
+## Getting Started
+- `pnpm i @jup-ag/wallet-adapter`
+- Wrap your app with `<UnifiedWalletProvider />` and pass in as little to as many wallets you would like to support.
+- Below example is `ExampleBaseOnly.tsx`
+
+```tsx
+const ExampleBaseOnly = () => {
+  return (
+    <UnifiedWalletProvider
+      wallets={[]}
+      passThroughWallet={null}
+      config={{
+        autoConnect: false,
+        env: 'mainnet-beta',
+        metadata: {
+          name: 'UnifiedWallet',
+          description: 'UnifiedWallet',
+          url: 'https://jup.ag',
+          iconUrls: ['https://jup.ag/favicon.ico'],
+        },
+        notificationCallback: WalletNotification,
+        walletlistExplanation: {
+          href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
+        }
+      }}
+    >
+      <UnifiedWalletButton />
+    </UnifiedWalletProvider>
+  );
+};
+
+export default ExampleBaseOnly;
+```
+- More example can be found on the demo page, or in `src/components/examples`
+
 
 ## FAQs
 - Why not ship with all wallets?

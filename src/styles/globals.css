@@ -8,3 +8,15 @@ dialog {
   min-width: 100vw;
   min-height: 100vh;
 }
+
+.hideScrollbar {
+  -ms-overflow-style: none;
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hideScrollbar::-moz-scrollbar {
+  display: none;
+}

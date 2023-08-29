@@ -1,5 +1,6 @@
-import "twin.macro";
+import 'twin.macro';
 import React, { HTMLAttributes, PropsWithChildren, useEffect, useState } from 'react';
+import tw from 'twin.macro';
 
 const Collapse: React.FC<
   PropsWithChildren<{
@@ -16,11 +17,11 @@ const Collapse: React.FC<
     else setLocalHeight(height);
   }, [height, maxHeight, expanded]);
 
-  const animationClass = expanded ? 'animate-fade-in' : 'animate-fade-out';
+  const animationClass = expanded ? tw`animate-fade-in` : tw`animate-fade-out`;
 
   return (
     <div
-      tw={'transition-all duration-200 overflow-hidden'}
+      css={[tw`transition-all duration-200 overflow-hidden`, animationClass]}
       style={{ height: localHeight, maxHeight }}
     >
       {children}
