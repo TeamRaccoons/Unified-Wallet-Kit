@@ -38,7 +38,7 @@ export const UnifiedWalletButton: React.FC<{
 
   const handleClick = useCallback(async () => {
     try {
-      if ('' === SolanaMobileWalletAdapterWalletName) {
+      if (wallet?.adapter?.name === SolanaMobileWalletAdapterWalletName) {
         await connect();
 
         return;
