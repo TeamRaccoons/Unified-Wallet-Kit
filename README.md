@@ -34,7 +34,6 @@ const ExampleBaseOnly = () => {
   return (
     <UnifiedWalletProvider
       wallets={[]}
-      passThroughWallet={null}
       config={{
         autoConnect: false,
         env: 'mainnet-beta',

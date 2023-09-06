@@ -69,7 +69,6 @@ const ExampleAllWallets = () => {
   const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(
     () => ({
       wallets: wallets,
-      passThroughWallet: null,
       config: {
         autoConnect: false,
         env: 'mainnet-beta',

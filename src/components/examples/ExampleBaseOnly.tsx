@@ -12,7 +12,6 @@ const HARDCODED_WALLET_CODEBLOCK = `wallets={[]}`
 const ExampleBaseOnly = () => {
   const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(() => ({
     wallets: [],
-    passThroughWallet: null,
     config: {
       autoConnect: false,
       env: 'mainnet-beta' as Cluster,

@@ -24,38 +24,13 @@ export type IWalletProps = Omit<
 >;
 
 const UnifiedWalletValueProvider = ({
-  passThroughWallet,
   children,
 }: {
-  passThroughWallet: Wallet | null;
   children: React.ReactNode;
 }) => {
   const defaultWalletContext = useWallet();
 
   const value = useMemo(() => {
-    if (passThroughWallet) {
-      return {
-        ...UNIFIED_WALLET_VALUE_DEFAULT_CONTEXT,
-        wallets: defaultWalletContext.wallets || [],
-        publicKey: passThroughWallet.adapter.publicKey,
-        wallet: {
-          adapter: passThroughWallet.adapter,
-          readyState: WalletReadyState.Loadable,
-        },
-        connecting: passThroughWallet.adapter.connecting,
-        connected: passThroughWallet.adapter.connected,
-        disconnect: async () => {
-          try {
-            if (passThroughWallet?.adapter.disconnect) {
-              return passThroughWallet?.adapter.disconnect();
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        },
-      };
-    }
-
     return {
       ...defaultWalletContext,
       connect: async () => {
@@ -66,7 +41,7 @@ const UnifiedWalletValueProvider = ({
         }
       },
     };
-  }, [defaultWalletContext, passThroughWallet]);
+  }, [defaultWalletContext]);
 
   return <UnifiedWalletValueContext.Provider value={value}>{children}</UnifiedWalletValueContext.Provider>;
 };
@@ -74,9 +49,8 @@ const UnifiedWalletValueProvider = ({
 const UnifiedWalletContextProvider: React.FC<
   {
     config: IUnifiedWalletConfig;
-    passThroughWallet: Wallet | null;
   } & PropsWithChildren
-> = ({ config, passThroughWallet, children }) => {
+> = ({ config, children }) => {
   const { publicKey, wallet, select, connect } = useUnifiedWallet();
   const previousPublicKey = usePrevious<PublicKey | null>(publicKey);
   const previousWallet = usePrevious<Wallet | null>(wallet);
@@ -184,7 +158,6 @@ const UnifiedWalletContextProvider: React.FC<
   return (
     <UnifiedWalletContext.Provider
       value={{
-        ...passThroughWallet,
         walletPrecedence: config.walletPrecedence || [],
         handleConnectClick,
         showModal,
@@ -202,20 +175,18 @@ const UnifiedWalletContextProvider: React.FC<
 };
 
 const UnifiedWalletProvider = ({
-  passThroughWallet,
   wallets,
   config,
   children,
 }: {
-  passThroughWallet: Wallet | null;
   wallets: Adapter[];
   config: IUnifiedWalletConfig;
   children: React.ReactNode;
 }) => {
   return (
     <WalletConnectionProvider wallets={wallets} config={config}>
-      <UnifiedWalletValueProvider passThroughWallet={passThroughWallet}>
-        <UnifiedWalletContextProvider config={config} passThroughWallet={passThroughWallet}>
+      <UnifiedWalletValueProvider >
+        <UnifiedWalletContextProvider config={config}>
           {children}
         </UnifiedWalletContextProvider>
       </UnifiedWalletValueProvider>
