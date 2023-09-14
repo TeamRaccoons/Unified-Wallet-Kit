@@ -22,7 +22,7 @@
     "build:types": "tsc --noEmit false --emitDeclarationOnly --outDir dist/types",
     "build:js": "rollup -c",
     "build-lib": "pnpm build:types && pnpm build:js",
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "serve": "npx serve public"
@@ -56,7 +56,7 @@
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@solana/spl-token": "0.1.8",
     "@solana/spl-token-registry": "~0.2.1105",
-    "@solana/wallet-adapter-wallets": "0.19.18",
+    "@solana/wallet-adapter-wallets": "0.19.22",
     "@solana/web3.js": "^1.77.3",
     "@types/bn.js": "^5.1.0",
     "@types/react": "^18.0.26",

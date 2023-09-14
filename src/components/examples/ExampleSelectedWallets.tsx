@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import 'twin.macro';
 
 import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
@@ -8,8 +8,6 @@ import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
   CoinbaseWalletAdapter,
-  BackpackWalletAdapter,
-  GlowWalletAdapter,
   TrustWalletAdapter,
   WalletConnectWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
@@ -47,8 +45,6 @@ const ExampleSelectedWallets = () => {
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
       new CoinbaseWalletAdapter(),
-      new BackpackWalletAdapter(),
-      new GlowWalletAdapter(),
       new TrustWalletAdapter(),
       walletConnectWalletAdapter,
     ].filter((item) => item && item.name && item.icon) as Adapter[];
@@ -70,6 +66,7 @@ const ExampleSelectedWallets = () => {
         walletlistExplanation: {
           href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
         },
+        theme: 'dark',
       },
     }),
     [wallets],
