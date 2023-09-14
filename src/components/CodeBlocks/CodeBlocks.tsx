@@ -47,7 +47,7 @@ const CodeBlocks: React.FC<{ params: Omit<Parameters<typeof UnifiedWalletProvide
       .then((res) => {
         setSnippet(res);
       });
-  }, [])
+  }, [USE_WALLET_SNIPPET])
 
   const [isCopied, setIsCopied] = useState(false);
 
