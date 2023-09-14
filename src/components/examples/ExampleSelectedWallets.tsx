@@ -16,8 +16,9 @@ import { Adapter, BaseSignerWalletAdapter, WalletAdapterNetwork } from '@solana/
 import WalletNotification from './WalletNotification';
 import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
+import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
 
-const ExampleSelectedWallets = () => {
+const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme }> = ({ theme }) => {
   const wallets: Adapter[] = useMemo(() => {
     const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
       (() => {
@@ -66,10 +67,10 @@ const ExampleSelectedWallets = () => {
         walletlistExplanation: {
           href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
         },
-        theme: 'dark',
+        theme,
       },
     }),
-    [wallets],
+    [wallets, theme],
   );
 
   return (

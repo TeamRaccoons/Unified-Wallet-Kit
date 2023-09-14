@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'twin.macro';
 
 import AppHeader from 'src/components/AppHeader/AppHeader';
@@ -7,8 +7,12 @@ import SexyChameleonText from 'src/components/SexyChameleonText/SexyChameleonTex
 import ExampleAllWallets from 'src/components/examples/ExampleAllWallets';
 import ExampleBaseOnly from 'src/components/examples/ExampleBaseOnly';
 import ExampleSelectedWallets from 'src/components/examples/ExampleSelectedWallets';
+import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
+import Toggle from 'src/components/Toggle';
 
 const Index = () => {
+  const [theme, setTheme] = useState<IUnifiedTheme>('dark');
+
   return (
     <>
       <div tw="bg-jupiter-dark-bg h-screen w-screen max-w-[100vw] overflow-x-hidden flex flex-col justify-between">
@@ -30,24 +34,36 @@ const Index = () => {
             </div>
 
             <div tw="flex flex-col space-y-10 items-center justify-center p-4">
-              <div className='hideScrollbar' tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4 pb-0">
+              <div tw='flex space-x-2 text-white font-semibold text-sm'>
+                <span>Dark Mode:</span>
+                <Toggle
+                  tw="min-w-[40px]"
+                  active={theme === 'dark'}
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                />
+              </div>
+
+              <div
+                className="hideScrollbar"
+                tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4 pb-0"
+              >
                 <div tw="font-semibold text-white">Base with Wallet Standard only</div>
                 <div tw="flex w-full mt-4">
-                  <ExampleBaseOnly />
+                  <ExampleBaseOnly theme={theme} />
                 </div>
               </div>
 
-              <div className='hideScrollbar' tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4">
+              <div className="hideScrollbar" tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4">
                 <div tw="font-semibold text-white">With selected wallets</div>
                 <div tw="flex w-full mt-4">
-                  <ExampleSelectedWallets />
+                  <ExampleSelectedWallets theme={theme} />
                 </div>
               </div>
 
-              <div className='hideScrollbar' tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4">
+              <div className="hideScrollbar" tw="bg-black/25 mt-12 max-w-[600px] rounded-xl flex flex-col w-full p-4">
                 <div tw="font-semibold text-white">Example with All Wallets, and Custom Wallets</div>
                 <div tw="flex w-full mt-4">
-                  <ExampleAllWallets />
+                  <ExampleAllWallets theme={theme} />
                 </div>
               </div>
             </div>

@@ -5,12 +5,13 @@ import {
   SolanaMobileWalletAdapter,
   createDefaultAddressSelector,
   createDefaultAuthorizationResultCache,
+  createDefaultWalletNotFoundHandler,
 } from '@solana-mobile/wallet-adapter-mobile';
 import { Cluster } from '@solana/web3.js';
 
 import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
-import { MWA_NOT_FOUND_ERROR } from '../UnifiedWalletContext';
+import { IUnifiedTheme, MWA_NOT_FOUND_ERROR } from '../UnifiedWalletContext';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter });
@@ -44,7 +45,9 @@ export interface IUnifiedWalletConfig {
   };
   walletlistExplanation?: {
     href: string;
-  }
+  },
+  // Default to light
+  theme?: IUnifiedTheme;
 }
 
 export interface IUnifiedWalletMetadata {
@@ -73,9 +76,8 @@ const WalletConnectionProvider: FC<
         },
         authorizationResultCache: createDefaultAuthorizationResultCache(),
         cluster: config.env,
-        onWalletNotFound: async (mobileWalletAdapter: SolanaMobileWalletAdapter) => {
-          throw new Error(MWA_NOT_FOUND_ERROR);
-        },
+        // TODO: Check if MWA still redirects aggressively.
+        onWalletNotFound: createDefaultWalletNotFoundHandler(),
       }),
       ...passedWallets,
       ...(config.hardcodedWallets || []).map((item) => new HardcodedWalletStandardAdapter(item)),

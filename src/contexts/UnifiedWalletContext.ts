@@ -6,6 +6,7 @@ import { createContext } from 'react';
 import { IUnifiedWalletConfig } from './WalletConnectionProvider';
 
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
+export type IUnifiedTheme = 'light' | 'dark';
 
 export interface IUnifiedWalletContext {
   walletPrecedence: IUnifiedWalletConfig['walletPrecedence'];
@@ -13,6 +14,7 @@ export interface IUnifiedWalletContext {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
   walletlistExplanation: IUnifiedWalletConfig['walletlistExplanation'];
+  theme: IUnifiedTheme;
 }
 
 export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
@@ -21,6 +23,7 @@ export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
   showModal: false,
   setShowModal: (showModal: boolean) => {},
   walletlistExplanation: undefined,
+  theme: 'light',
 });
 
 // Copied from @solana/wallet-adapter-react

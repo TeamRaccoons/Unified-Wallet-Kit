@@ -12,6 +12,7 @@ import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
 import WalletNotification from './WalletNotification';
 import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleAllWalletsSnippet';
+import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
 
 export const HARDCODED_WALLET_STANDARDS: { id: string; name: WalletName; url: string; icon: string }[] = [
   {
@@ -28,7 +29,7 @@ export const HARDCODED_WALLET_STANDARDS: { id: string; name: WalletName; url: st
   },
 ];
 
-const ExampleAllWallets = () => {
+const ExampleAllWallets: React.FC<{ theme: IUnifiedTheme }> = ({ theme }) => {
   const wallets = useMemo(() => {
     if (typeof window === 'undefined') {
       return [];
@@ -84,9 +85,10 @@ const ExampleAllWallets = () => {
         walletlistExplanation: {
           href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
         },
+        theme,
       },
     }),
-    [wallets],
+    [wallets, theme],
   );
 
   return (
@@ -97,7 +99,11 @@ const ExampleAllWallets = () => {
         </UnifiedWalletProvider>
       </div>
 
-      <CodeBlocks params={params} unparsedWalletDeclarationString={HARDCODED_DECLARTION_BLOCK} unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK} />
+      <CodeBlocks
+        params={params}
+        unparsedWalletDeclarationString={HARDCODED_DECLARTION_BLOCK}
+        unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK}
+      />
     </div>
   );
 };

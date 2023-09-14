@@ -6,10 +6,11 @@ import WalletNotification from './WalletNotification';
 import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { Cluster } from '@solana/web3.js';
 import { useMemo } from 'react';
+import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
 
 const HARDCODED_WALLET_CODEBLOCK = `wallets={[]}`
 
-const ExampleBaseOnly = () => {
+const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme }> = ({ theme }) => {
   const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(() => ({
     wallets: [],
     config: {
@@ -25,8 +26,9 @@ const ExampleBaseOnly = () => {
       walletlistExplanation: {
         href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
       },
+      theme,
     },
-  }), []);
+  }), [theme]);
 
   return (
     <div tw="w-full">

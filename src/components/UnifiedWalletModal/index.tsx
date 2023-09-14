@@ -10,10 +10,25 @@ import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
 import { isMobile, useOutsideClick } from '../../misc/utils';
-import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletContext';
+import { useUnifiedWalletContext, useUnifiedWallet, IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import CloseIcon from '../../icons/CloseIcon';
-import tw from 'twin.macro';
+import tw, { TwStyle } from 'twin.macro';
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
+
+const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
+  container: {
+    light: [tw`text-black !bg-white shadow-xl`],
+    dark: [tw`text-white !bg-[#3A3B43] border border-white/10`],
+  },
+  shades: {
+    light: [tw`bg-gradient-to-t from-[#ffffff] to-transparent pointer-events-none`],
+    dark: [tw`bg-gradient-to-t from-[#3A3B43] to-transparent pointer-events-none`],
+  },
+  walletItem: {
+    light: [tw`bg-gray-50 hover:shadow-lg hover:border-black/10`],
+    dark: [tw`hover:shadow-2xl hover:bg-white/10`],
+  },
+};
 
 const PRIORITISE: {
   [value in WalletReadyState]: number;
@@ -61,7 +76,7 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
 
 const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
   const { wallets } = useUnifiedWallet();
-  const { walletPrecedence, handleConnectClick, walletlistExplanation } = useUnifiedWalletContext();
+  const { walletPrecedence, handleConnectClick, walletlistExplanation, theme } = useUnifiedWalletContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
@@ -166,7 +181,7 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
         </div>
 
         {walletlistExplanation ? (
-          <div tw="text-xs font-semibold underline mb-8">
+          <div css={[tw`text-xs font-semibold underline`, list.others.length > 6 ? tw`mb-8` : '']}>
             <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
               <span>{`Can't find your wallet?`}</span>
             </a>
@@ -183,14 +198,17 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
   return (
     <div
       ref={contentRef}
-      tw="max-w-md w-full relative flex flex-col overflow-hidden text-white !bg-[#313E4C] border border-white/10 rounded-xl max-h-[90vh] lg:max-h-[576px] transition-height duration-500 ease-in-out "
+      css={[
+        tw`max-w-md w-full relative flex flex-col overflow-hidden rounded-xl max-h-[90vh] lg:max-h-[576px] transition-height duration-500 ease-in-out `,
+        styles.container[theme],
+      ]}
     >
       <div tw="px-5 py-6 flex justify-between leading-none">
         <div>
           <div tw="font-semibold">
             <span>Connect Wallet</span>
           </div>
-          <div tw="text-xs text-white/50 mt-1">
+          <div tw="text-xs text-gray-500 mt-1">
             <span>You need to connect a Solana wallet.</span>
           </div>
         </div>
@@ -221,8 +239,9 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
                 key={idx}
                 onClick={(event) => handleConnectClick(event, adapter)}
                 css={[
-                  tw`p-4 lg:p-5 border border-white/10 rounded-lg hover:bg-white/10 flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
-                  tw`hover:backdrop-blur-xl hover:shadow-2xl transition-all`,
+                  tw`p-4 lg:p-5 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
+                  tw`hover:backdrop-blur-xl transition-all`,
+                  styles.walletItem[theme],
                 ]}
               >
                 {isMobile() ? (
@@ -264,15 +283,9 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
       </div>
 
       {/* Bottom Shades */}
-      {isOpen ? (
+      {isOpen && list.others.length > 6 ? (
         <>
-          <div
-            tw="block w-full h-20 absolute left-0 bottom-7 z-50 "
-            style={{
-              background: 'linear-gradient(180deg, rgba(58, 59, 67, 0) 0%, #313E4C 100%)',
-              pointerEvents: 'none',
-            }}
-          />
+          <div css={[tw`block w-full h-20 absolute left-0 bottom-7 z-50`, styles.shades[theme]]} />
         </>
       ) : null}
     </div>
