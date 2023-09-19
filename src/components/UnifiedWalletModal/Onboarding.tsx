@@ -1,0 +1,140 @@
+import { useRef, useState } from 'react';
+import { HARDCODED_WALLET_STANDARDS } from 'src/misc/constants';
+import tw, { TwStyle } from 'twin.macro';
+import ExternalIcon from '../icons/ExternalIcon';
+import { IUnifiedTheme, useUnifiedWalletContext } from 'src/contexts/UnifiedWalletContext';
+
+const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
+  subtitle: {
+    light: [tw`text-black/70`],
+    dark: [tw`text-white/50`],
+  },
+  button: {
+    light: [tw`bg-[#31333B] text-white hover:bg-black`],
+    dark: [tw`bg-[#31333B] hover:bg-black/30`],
+  },
+  walletButton: {
+    light: [tw`bg-[#F9FAFB] hover:bg-black/5`],
+    dark: [tw`bg-white/10 hover:bg-white/20 border border-white/10 shadow-lg`],
+  },
+  externalIcon: {
+    light: [tw`text-black/30`],
+    dark: [tw`text-white/30`],
+  },
+};
+
+export const OnboardingIntro: React.FC<{ flow: IOnboardingFlow; setFlow: (flow: IOnboardingFlow) => void }> = ({
+  flow,
+  setFlow,
+}) => {
+  const { theme } = useUnifiedWalletContext();
+
+  return (
+    <div tw="flex flex-col justify-center items-center p-10">
+      {/* TODO: We need a permanent domain */}
+      <img src={'/new_user_onboarding.png'} width={160} height={160} />
+
+      <div tw="mt-4 flex flex-col justify-center items-center text-center">
+        <span tw="text-lg font-semibold">New here?</span>
+        <span tw="mt-3 text-sm " css={[styles.subtitle[theme]]}>
+          Welcome to DeFi! Create a crypto wallet to get started!
+        </span>
+      </div>
+
+      <div tw="mt-6 w-full">
+        <button
+          type="button"
+          css={[
+            tw`text-white font-semibold text-base w-full rounded-lg border border-white/10 py-5 leading-none`,
+            styles.button[theme],
+          ]}
+          onClick={() => setFlow('Get Wallet')}
+        >
+          Get Started
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export const OnboardingGetWallets: React.FC<{ flow: IOnboardingFlow; setFlow: (flow: IOnboardingFlow) => void }> = ({
+  flow,
+  setFlow,
+}) => {
+  const { theme } = useUnifiedWalletContext();
+
+  return (
+    <div tw="flex flex-col justify-center py-3 px-10">
+      <span tw="text-base font-semibold">Popular wallets to get started</span>
+      <div tw="mt-4 w-full space-y-2">
+        {HARDCODED_WALLET_STANDARDS.map((item, idx) => {
+          return (
+            <a
+              href={item.url}
+              key={idx}
+              target="_blank"
+              css={[
+                tw`px-5 py-4 flex space-x-4 w-full rounded-lg text-sm font-semibold items-center`,
+                styles.walletButton[theme],
+              ]}
+            >
+              <img src={item.icon} width={20} height={20} alt={item.name} />
+              <span>{item.name}</span>
+            </a>
+          );
+        })}
+
+        <a
+          href={'https://station.jup.ag/partners?category=Wallets'}
+          target="_blank"
+          css={[
+            tw`px-5 py-4 flex space-x-4 w-full rounded-lg text-sm font-semibold items-center`,
+            styles.walletButton[theme],
+          ]}
+        >
+          <div css={[tw`fill-current w-5 h-5 flex items-center p-0.5`, styles.externalIcon[theme]]}>
+            <ExternalIcon width={16} height={16} />
+          </div>
+          <span>{'More wallets'}</span>
+        </a>
+      </div>
+
+      <span css={[tw`mt-3 text-center text-xs`, styles.subtitle[theme]]}>Once installed, refresh this page</span>
+      <button
+        type="button"
+        css={[tw`mt-3 text-xs text-white/50 font-semibold`, styles.subtitle[theme]]}
+        onClick={() => setFlow('Onboarding')}
+      >
+        {'← Go back'}
+      </button>
+    </div>
+  );
+};
+
+export type IOnboardingFlow = 'Onboarding' | 'Get Wallet';
+export const OnboardingFlow = () => {
+  const [flow, setFlow] = useState<IOnboardingFlow>('Onboarding');
+  const [animateOut, setAnimateOut] = useState(false);
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const setFlowAnimated = (flow: IOnboardingFlow) => {
+    setAnimateOut(true);
+
+    setTimeout(() => {
+      contentRef.current?.scrollTo(0, 0);
+      setAnimateOut(false);
+      setFlow(flow);
+    }, 200);
+  };
+
+  return (
+    <div
+      ref={contentRef}
+      css={[tw`duration-500 animate-fade-in overflow-y-scroll`, animateOut ? tw`animate-fade-out opacity-0` : '']}
+      className="hideScrollbar"
+    >
+      {flow === 'Onboarding' ? <OnboardingIntro flow={flow} setFlow={setFlowAnimated} /> : null}
+      {flow === 'Get Wallet' ? <OnboardingGetWallets flow={flow} setFlow={setFlowAnimated} /> : null}
+    </div>
+  );
+};
