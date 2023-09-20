@@ -15,6 +15,7 @@ import CloseIcon from '../../icons/CloseIcon';
 import tw, { TwStyle } from 'twin.macro';
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 import { OnboardingFlow } from './Onboarding';
+import { useTranslation } from 'src/contexts/TranslationProvider';
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
@@ -41,14 +42,16 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
 
 const Header: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { theme } = useUnifiedWalletContext();
+  const { t } = useTranslation();
+
   return (
     <div css={[tw`px-5 py-6 flex justify-between leading-none`, styles.header[theme]]}>
       <div>
         <div tw="font-semibold">
-          <span>Connect Wallet</span>
+          <span>{t(`Connect Wallet`)}</span>
         </div>
         <div css={[tw`text-xs mt-1`, styles.subtitle[theme]]}>
-          <span>You need to connect a Solana wallet.</span>
+          <span>{t(`You need to connect a Solana wallet.`)}</span>
         </div>
       </div>
 
@@ -69,6 +72,7 @@ const ListOfWallets: React.FC<{
   isOpen: boolean;
 }> = ({ list, onToggle, isOpen }) => {
   const { handleConnectClick, walletlistExplanation, theme } = useUnifiedWalletContext();
+  const { t } = useTranslation();
 
   const renderWalletList = useMemo(
     () => (
@@ -86,7 +90,7 @@ const ListOfWallets: React.FC<{
         {list.highlightedBy !== 'Onboarding' && walletlistExplanation ? (
           <div css={[tw`text-xs font-semibold underline`, list.others.length > 6 ? tw`mb-8` : '']}>
             <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
-              <span>{`Can't find your wallet?`}</span>
+              <span>{t(`Can't find your wallet?`)}</span>
             </a>
           </div>
         ) : null}
@@ -98,16 +102,16 @@ const ListOfWallets: React.FC<{
   return (
     <>
       <div className="hideScrollbar" css={[tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`, isOpen && tw`mb-7`]}>
-        <span tw="mt-6 text-xs  font-semibold">
-          {list.highlightedBy === 'PreviouslyConnected' ? `Recently used` : null}
-          {list.highlightedBy === 'Installed' ? `Installed wallets` : null}
-          {list.highlightedBy === 'TopWallet' ? `Popular wallets` : null}
+        <span tw="mt-6 text-xs font-semibold">
+          {list.highlightedBy === 'PreviouslyConnected' ? t(`Recently used`) : null}
+          {list.highlightedBy === 'Installed' ? t(`Installed wallets`) : null}
+          {list.highlightedBy === 'TopWallet' ? t(`Popular wallets`) : null}
         </span>
 
         <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
           {list.highlight.map((adapter, idx) => {
             const adapterName = (() => {
-              if (adapter.name === SolanaMobileWalletAdapterWalletName) return 'Mobile';
+              if (adapter.name === SolanaMobileWalletAdapterWalletName) return t(`Mobile`);
               return adapter.name;
             })();
 
@@ -135,7 +139,7 @@ const ListOfWallets: React.FC<{
         {walletlistExplanation && list.others.length === 0 ? (
           <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
             <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
-              <span>{`Can't find your wallet?`}</span>
+              <span>{t(`Can't find your wallet?`)}</span>
             </a>
           </div>
         ) : null}
@@ -144,7 +148,7 @@ const ListOfWallets: React.FC<{
           <>
             <div tw="mt-5 flex justify-between cursor-pointer" onClick={onToggle}>
               <span tw="text-xs font-semibold">
-                <span>More wallets</span>
+                <span>{t(`More wallets`)}</span>
               </span>
 
               <div tw=" flex items-center">
@@ -273,11 +277,12 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
       const { previouslyConnected, ...rest } = filteredAdapters;
 
       const highlight = filteredAdapters.previouslyConnected.slice(0, 3);
-      const others = Object.values(rest)
+      let others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
         .sort(sortByPrecedence(walletPrecedence || []));
-      others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length));
+      others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length))
+      others = others.filter(Boolean);
 
       return {
         highlightedBy: 'PreviouslyConnected',

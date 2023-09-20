@@ -17,8 +17,9 @@ import WalletNotification from './WalletNotification';
 import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
 import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
+import { AllLanguage } from 'src/contexts/TranslationProvider/i18n';
 
-const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme }> = ({ theme }) => {
+const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
   const wallets: Adapter[] = useMemo(() => {
     const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
       (() => {
@@ -68,20 +69,25 @@ const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme }> = ({ theme }) =
           href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
         },
         theme,
+        lang,
       },
     }),
-    [wallets, theme],
+    [wallets, theme, lang],
   );
 
   return (
-    <div tw="w-full">
-      <div tw="w-[90px] md:w-[130px]">
-        <UnifiedWalletProvider {...params}>
-          <UnifiedWalletButton />
-        </UnifiedWalletProvider>
-      </div>
+    <div tw="flex flex-col items-start">
+      <UnifiedWalletProvider {...params}>
+        <UnifiedWalletButton />
+      </UnifiedWalletProvider>
 
-      <CodeBlocks params={params} unparsedWalletDeclarationString={HARDCODED_DECLARTION_BLOCK} unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK} />
+      <div tw="w-full overflow-x-auto">
+        <CodeBlocks
+          params={params}
+          unparsedWalletDeclarationString={HARDCODED_DECLARTION_BLOCK}
+          unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK}
+        />
+      </div>
     </div>
   );
 };

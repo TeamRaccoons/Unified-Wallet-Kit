@@ -11,7 +11,8 @@ import { Cluster } from '@solana/web3.js';
 
 import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
-import { IUnifiedTheme, MWA_NOT_FOUND_ERROR } from '../UnifiedWalletContext';
+import { IUnifiedTheme } from '../UnifiedWalletContext';
+import { AllLanguage } from '../TranslationProvider/i18n';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter });
@@ -48,6 +49,7 @@ export interface IUnifiedWalletConfig {
   },
   // Default to light
   theme?: IUnifiedTheme;
+  lang?: AllLanguage;
 }
 
 export interface IUnifiedWalletMetadata {

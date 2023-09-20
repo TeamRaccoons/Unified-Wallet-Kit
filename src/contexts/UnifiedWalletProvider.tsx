@@ -17,17 +17,14 @@ import {
   UnifiedWalletContext,
   useUnifiedWalletContext,
 } from './UnifiedWalletContext';
+import { TranslationProvider } from './TranslationProvider';
 
 export type IWalletProps = Omit<
   WalletContextState,
   'autoConnect' | 'disconnecting' | 'sendTransaction' | 'signTransaction' | 'signAllTransactions' | 'signMessage'
 >;
 
-const UnifiedWalletValueProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const UnifiedWalletValueProvider = ({ children }: { children: React.ReactNode }) => {
   const defaultWalletContext = useWallet();
 
   const value = useMemo(() => {
@@ -185,13 +182,13 @@ const UnifiedWalletProvider = ({
   children: React.ReactNode;
 }) => {
   return (
-    <WalletConnectionProvider wallets={wallets} config={config}>
-      <UnifiedWalletValueProvider >
-        <UnifiedWalletContextProvider config={config}>
-          {children}
-        </UnifiedWalletContextProvider>
-      </UnifiedWalletValueProvider>
-    </WalletConnectionProvider>
+    <TranslationProvider lang={config.lang}>
+      <WalletConnectionProvider wallets={wallets} config={config}>
+        <UnifiedWalletValueProvider>
+          <UnifiedWalletContextProvider config={config}>{children}</UnifiedWalletContextProvider>
+        </UnifiedWalletValueProvider>
+      </WalletConnectionProvider>
+    </TranslationProvider>
   );
 };
 

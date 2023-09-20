@@ -5,6 +5,7 @@ import tw, { TwStyle } from 'twin.macro';
 import { CurrentUserBadge } from '../CurrentUserBadge';
 import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletProvider';
 import { IUnifiedTheme, MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
+import { useTranslation } from 'src/contexts/TranslationProvider';
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
@@ -20,24 +21,25 @@ export const UnifiedWalletButton: React.FC<{
 }> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
   const { setShowModal, theme } = useUnifiedWalletContext();
   const { disconnect, connect, connecting, wallet } = useUnifiedWallet();
+  const { t } = useTranslation();
 
   const content = (
     <>
       {connecting && (
         <span tw="text-xs">
-          <span>Connecting...</span>
+          <span>{t(`Connecting...`)}</span>
         </span>
       )}
       {/* Mobile */}
       {!connecting && (
         <span tw="block md:hidden">
-          <span>Connect</span>
+          <span>{t(`Connect`)}</span>
         </span>
       )}
       {/* Desktop */}
       {!connecting && (
         <span tw="hidden md:block">
-          <span>Connect Wallet</span>
+          <span>{t(`Connect Wallet`)}</span>
         </span>
       )}
     </>
@@ -64,7 +66,7 @@ export const UnifiedWalletButton: React.FC<{
       {!wallet?.adapter.connected ? (
         <div
           css={[
-            overrideContent ? undefined : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer`,
+            overrideContent ? undefined : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
             styles.container[theme],
           ]}
           className={className}
