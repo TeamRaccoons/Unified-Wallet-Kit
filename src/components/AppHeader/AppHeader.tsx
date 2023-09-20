@@ -22,8 +22,8 @@ const AppHeader: React.FC<{}> = () => {
 
   return (
     <>
-      <div tw="flex items-center justify-between w-full px-4 py-4 md:px-8">
-        <div tw="flex items-center flex-1">
+      <div tw="flex items-center justify-between w-full bg-black/[.35]">
+        <div tw="flex items-center flex-1 p-4">
           <button onClick={handleToggleMenu} type="button" tw="w-6 mr-3 md:hidden text-white">
             {openMobileMenu ? <CloseIcon /> : <MenuIcon />}
           </button>
@@ -46,7 +46,7 @@ const AppHeader: React.FC<{}> = () => {
           style={{
             height: 'calc(100vh - 70px)',
           }}
-          tw="z-50 md:hidden fixed top-[70px] left-0 w-full bg-[rgba(62,62,69,0.85)] backdrop-blur-[20px]"
+          tw="z-[60] md:hidden fixed top-[60px] left-0 w-full bg-[rgba(62,62,69,0.85)] backdrop-blur-[20px]"
           onClick={handleToggleMenu}
         >
           <HeaderLinksMobile />

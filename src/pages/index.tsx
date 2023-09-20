@@ -3,7 +3,6 @@ import 'twin.macro';
 
 import AppHeader from 'src/components/AppHeader/AppHeader';
 import Footer from 'src/components/Footer/Footer';
-import SexyChameleonText from 'src/components/SexyChameleonText/SexyChameleonText';
 import ExampleAllWallets from 'src/components/examples/ExampleAllWallets';
 import ExampleBaseOnly from 'src/components/examples/ExampleBaseOnly';
 import ExampleSelectedWallets from 'src/components/examples/ExampleSelectedWallets';
@@ -11,6 +10,7 @@ import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
 import Toggle from 'src/components/Toggle';
 import { AllLanguage, DEFAULT_LANGUAGE, LANGUAGE_LABELS, OTHER_LANGUAGES } from 'src/contexts/TranslationProvider/i18n';
 import tw from 'twin.macro';
+import V2SexyChameleonText from 'src/components/SexyChameleonText/V2SexyChameleonText';
 
 const Index = () => {
   const [theme, setTheme] = useState<IUnifiedTheme>('dark');
@@ -18,16 +18,16 @@ const Index = () => {
 
   return (
     <>
-      <div tw="bg-jupiter-dark-bg h-screen w-screen max-w-[100vw] overflow-x-hidden flex flex-col justify-between">
+      <div tw="bg-v3-bg h-screen w-screen max-w-[100vw] overflow-x-hidden flex flex-col justify-between">
         <div>
           <AppHeader />
 
           <div tw="">
             <div tw="flex flex-col items-center h-full w-full mt-4 md:mt-14">
               <div tw="flex flex-col justify-center items-center text-center">
-                <SexyChameleonText>
+                <V2SexyChameleonText>
                   <span tw="text-4xl md:text-[52px] font-semibold px-4 pb-2 md:px-0">Unified Wallet Kit</span>
-                </SexyChameleonText>
+                </V2SexyChameleonText>
                 <p tw="text-[#9D9DA6] text-base mt-4 px-2">
                   Unified Wallet Kit is an open-sourced, the Swiss Army Knife wallet adapter.
                   <br />
@@ -101,7 +101,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div tw="w-full bg-jupiter-bg mt-12">
+        <div tw="w-full mt-12">
           <Footer />
         </div>
       </div>

@@ -16,6 +16,9 @@ module.exports = {
         'v2-background': '#304256',
         'v2-background-dark': '#19232D',
         'v2-lily': '#E8F9FF',
+
+        'v3-bg': 'rgba(28, 41, 54, 1)',
+        'v3-primary': '#c7f284',
       },
       transitionProperty: {
         'height': 'height',
@@ -42,10 +45,18 @@ module.exports = {
       animation: {
         'fade-in': 'fade-in 0.15s ease-in-out',
         'fade-out': 'fade-out 0.15s ease-out',
+        shine: 'shine 3.5s linear infinite',
+        hue: 'hue 10s infinite linear',
       },
       backgroundImage: {
         'v2-text-gradient': 'linear-gradient(247.44deg, #C7F284 13.88%, #00BEF0 99.28%)',
       }
+    },
+  },
+  variants: {
+    extend: {
+      // Enable dark mode, hover, on backgroundImage utilities
+      backgroundImage: ['dark', 'hover', 'focus-within', 'focus'],
     },
   },
 }

@@ -21,8 +21,8 @@ const HeaderLink = ({
     <a
       href={href}
       css={[
-        tw`flex items-center font-semibold hover:text-white`,
-        isActive && tw`!text-white`,
+        tw`flex items-center font-semibold text-white/50 hover:text-white fill-current h-[60px] px-4`,
+        isActive && tw`bg-v3-bg !text-v3-primary`,
       ]}
       {...(external
         ? {
@@ -39,7 +39,7 @@ const HeaderLink = ({
 
 const HeaderLinks = () => {
   return (
-    <div tw="flex-1 justify-center hidden md:!flex text-sm text-white/[.35] space-x-10 fill-current">
+    <div tw="flex-1 justify-center hidden md:!flex text-sm h-full">
       <HeaderLink href="/" isActive title={'Demo'} icon={<SwapIcon width="20" height="20" />} />
       <HeaderLink
         href="https://github.com/TeamRaccoons/wallet-kit"
