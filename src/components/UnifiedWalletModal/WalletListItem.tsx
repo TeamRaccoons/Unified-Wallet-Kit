@@ -19,6 +19,7 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
     light: [tw`bg-gray-50 hover:shadow-lg hover:border-black/10`],
     dark: [tw`hover:shadow-2xl hover:bg-white/10`],
+    jupiter: [tw`hover:shadow-2xl hover:bg-white/10`],
   },
 };
 

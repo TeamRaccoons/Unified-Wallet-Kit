@@ -21,22 +21,27 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
     light: [tw`text-black !bg-white shadow-xl`],
     dark: [tw`text-white !bg-[#3A3B43] border border-white/10`],
+    jupiter: [tw`text-white bg-[rgb(49, 62, 76)]`],
   },
   shades: {
     light: [tw`bg-gradient-to-t from-[#ffffff] to-transparent pointer-events-none`],
     dark: [tw`bg-gradient-to-t from-[#3A3B43] to-transparent pointer-events-none`],
+    jupiter: [tw`bg-gradient-to-t from-[rgb(49, 62, 76)] to-transparent pointer-events-none`],
   },
   walletItem: {
     light: [tw`bg-gray-50 hover:shadow-lg hover:border-black/10`],
     dark: [tw`hover:shadow-2xl hover:bg-white/10`],
+    jupiter: [tw`hover:shadow-2xl hover:bg-white/10`],
   },
   subtitle: {
     light: [tw`text-black/50`],
     dark: [tw`text-white/50`],
+    jupiter: [tw`text-white/50`]
   },
   header: {
     light: [tw`border-b`],
     dark: [],
+    jupiter: [],
   },
 };
 

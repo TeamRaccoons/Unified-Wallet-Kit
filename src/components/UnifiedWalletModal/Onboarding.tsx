@@ -9,18 +9,22 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   subtitle: {
     light: [tw`text-black/70`],
     dark: [tw`text-white/50`],
+    jupiter: [tw`text-white/50`],
   },
   button: {
     light: [tw`bg-[#31333B] text-white hover:bg-black`],
     dark: [tw`bg-[#31333B] hover:bg-black/30`],
+    jupiter: [tw`bg-black hover:bg-black/50`],
   },
   walletButton: {
     light: [tw`bg-[#F9FAFB] hover:bg-black/5`],
     dark: [tw`bg-white/10 hover:bg-white/20 border border-white/10 shadow-lg`],
+    jupiter: [tw`bg-white/5 hover:bg-white/20 border border-white/10 shadow-lg`],
   },
   externalIcon: {
     light: [tw`text-black/30`],
     dark: [tw`text-white/30`],
+    jupiter: [tw`text-white/30`],
   },
 };
 

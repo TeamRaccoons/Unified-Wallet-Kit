@@ -6,7 +6,7 @@ import { createContext } from 'react';
 import { IUnifiedWalletConfig } from './WalletConnectionProvider';
 
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
-export type IUnifiedTheme = 'light' | 'dark';
+export type IUnifiedTheme = 'light' | 'dark' | 'jupiter';
 
 export interface IUnifiedWalletContext {
   walletPrecedence: IUnifiedWalletConfig['walletPrecedence'];

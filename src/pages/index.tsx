@@ -42,12 +42,12 @@ const Index = () => {
                   <div tw="w-full border-b border-b-white/10 font-semibold text-center mb-2 pb-2">Theme</div>
 
                   <div tw="flex flex-wrap gap-3">
-                    {(['light', 'dark'] as IUnifiedTheme[]).map((t) => (
+                    {(['light', 'dark', 'jupiter'] as IUnifiedTheme[]).map((t) => (
                       <div
                         key={t}
                         onClick={() => setTheme(t)}
                         css={[
-                          tw`cursor-pointer border border-white/10 rounded-lg py-0.5 px-2`,
+                          tw`cursor-pointer border border-white/10 rounded-lg py-1.5 px-3`,
                           theme === t ? tw`bg-white text-black` : 'hover:bg-white/10',
                         ]}
                       >
@@ -66,7 +66,7 @@ const Index = () => {
                         key={l}
                         onClick={() => setLang(l)}
                         css={[
-                          tw`cursor-pointer border border-white/10 rounded-lg py-0.5 px-2`,
+                          tw`cursor-pointer border border-white/10 rounded-lg py-1.5 px-3`,
                           lang === l ? tw`bg-white text-black` : 'hover:bg-white/10',
                         ]}
                       >

@@ -11,6 +11,7 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
     light: [tw`bg-white text-black`],
     dark: [tw`bg-[#31333B] text-white`],
+    jupiter: [tw`bg-v3-bg text-white`],
   },
 };
 
