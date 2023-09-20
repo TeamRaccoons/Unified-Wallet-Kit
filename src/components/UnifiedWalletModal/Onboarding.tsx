@@ -37,8 +37,7 @@ export const OnboardingIntro: React.FC<{ flow: IOnboardingFlow; setFlow: (flow: 
 
   return (
     <div tw="flex flex-col justify-center items-center p-10">
-      {/* TODO: We need a permanent domain */}
-      <img src={'/new_user_onboarding.png'} width={160} height={160} />
+      <img src={'https://unified.jup.ag/new_user_onboarding.png'} width={160} height={160} />
 
       <div tw="mt-4 flex flex-col justify-center items-center text-center">
         <span tw="text-lg font-semibold">{t(`New here?`)}</span>

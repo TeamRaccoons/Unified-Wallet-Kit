@@ -5,6 +5,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <title>Unified Wallet Kit</title>
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon-96x96.png" />
           <meta name="theme-color" content="#103145" />

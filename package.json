@@ -24,7 +24,7 @@
     "build-lib": "pnpm build:types && pnpm build:js",
     "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "serve": "npx serve public"
   },
   "peerDependencies": {
