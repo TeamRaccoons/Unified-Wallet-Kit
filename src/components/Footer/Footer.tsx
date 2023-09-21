@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import 'twin.macro'
 
-import DiscordIcon from 'src/icons/DiscordIcon';
-import TwitterIcon from 'src/icons/TwitterIcon';
+import DiscordIcon from '../../icons/DiscordIcon';
+import TwitterIcon from '../../icons/TwitterIcon';
 
 const Footer = () => {
   return (

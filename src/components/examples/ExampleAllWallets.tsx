@@ -8,13 +8,13 @@ export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
 
 import { UnifiedWalletButton } from '..';
 import { WalletAdapterWithMutableSupportedTransactionVersions, metadata } from './constants';
-import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
+import { UnifiedWalletProvider } from '../../contexts/UnifiedWalletProvider';
 import WalletNotification from './WalletNotification';
 import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleAllWalletsSnippet';
-import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
-import { HARDCODED_WALLET_STANDARDS } from 'src/misc/constants';
-import { AllLanguage } from 'src/contexts/TranslationProvider/i18n';
+import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
+import { HARDCODED_WALLET_STANDARDS } from '../../misc/constants';
+import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
 
 const ExampleAllWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
   const wallets = useMemo(() => {

@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
-import { HARDCODED_WALLET_STANDARDS } from 'src/misc/constants';
+import { HARDCODED_WALLET_STANDARDS } from '../../misc/constants';
 import tw, { TwStyle } from 'twin.macro';
 import ExternalIcon from '../icons/ExternalIcon';
-import { IUnifiedTheme, useUnifiedWalletContext } from 'src/contexts/UnifiedWalletContext';
-import { useTranslation } from 'src/contexts/TranslationProvider';
+import { IUnifiedTheme, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
+import { useTranslation } from '../../contexts/TranslationProvider';
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   subtitle: {

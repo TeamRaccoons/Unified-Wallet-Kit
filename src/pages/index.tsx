@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import 'twin.macro';
 
-import AppHeader from 'src/components/AppHeader/AppHeader';
-import Footer from 'src/components/Footer/Footer';
-import ExampleAllWallets from 'src/components/examples/ExampleAllWallets';
-import ExampleBaseOnly from 'src/components/examples/ExampleBaseOnly';
-import ExampleSelectedWallets from 'src/components/examples/ExampleSelectedWallets';
-import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
-import Toggle from 'src/components/Toggle';
-import { AllLanguage, DEFAULT_LANGUAGE, LANGUAGE_LABELS, OTHER_LANGUAGES } from 'src/contexts/TranslationProvider/i18n';
+import AppHeader from '../components/AppHeader/AppHeader';
+import Footer from '../components/Footer/Footer';
+import ExampleAllWallets from '../components/examples/ExampleAllWallets';
+import ExampleBaseOnly from '../components/examples/ExampleBaseOnly';
+import ExampleSelectedWallets from '../components/examples/ExampleSelectedWallets';
+import { IUnifiedTheme } from '../contexts/UnifiedWalletContext';
+import { AllLanguage, DEFAULT_LANGUAGE, LANGUAGE_LABELS, OTHER_LANGUAGES } from '../contexts/TranslationProvider/i18n';
 import tw from 'twin.macro';
-import V2SexyChameleonText from 'src/components/SexyChameleonText/V2SexyChameleonText';
+import V2SexyChameleonText from '../components/SexyChameleonText/V2SexyChameleonText';
 
 const Index = () => {
   const [theme, setTheme] = useState<IUnifiedTheme>('dark');

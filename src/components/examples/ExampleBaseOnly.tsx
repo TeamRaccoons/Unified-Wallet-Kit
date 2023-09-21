@@ -1,13 +1,13 @@
 import 'twin.macro';
 
-import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
+import { UnifiedWalletProvider } from '../../contexts/UnifiedWalletProvider';
 import { UnifiedWalletButton } from '../UnifiedWalletButton';
 import WalletNotification from './WalletNotification';
 import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { Cluster } from '@solana/web3.js';
 import { useMemo } from 'react';
-import { IUnifiedTheme } from 'src/contexts/UnifiedWalletContext';
-import { AllLanguage } from 'src/contexts/TranslationProvider/i18n';
+import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
+import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
 
 const HARDCODED_WALLET_CODEBLOCK = `wallets={[]}`;
 

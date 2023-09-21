@@ -5,7 +5,7 @@ import tw, { TwStyle } from 'twin.macro';
 import { CurrentUserBadge } from '../CurrentUserBadge';
 import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletProvider';
 import { IUnifiedTheme, MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
-import { useTranslation } from 'src/contexts/TranslationProvider';
+import { useTranslation } from '../../contexts/TranslationProvider';
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {

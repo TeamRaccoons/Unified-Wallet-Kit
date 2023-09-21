@@ -21,10 +21,6 @@
     "noImplicitReturns": false,
     "noImplicitAny": false,
     "baseUrl": ".",
-    "paths": {
-      "src/*": ["src/*"],
-      "public/*": ["public/*"]
-    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,

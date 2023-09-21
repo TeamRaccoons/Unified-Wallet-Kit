@@ -5,9 +5,9 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { vs2015 } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import Collapse from '../Collapse';
 import tw from 'twin.macro';
-import ChevronDownIcon from 'src/icons/ChevronDownIcon';
-import ChevronUpIcon from 'src/icons/ChevronUpIcon';
-import { UnifiedWalletProvider } from 'src/contexts/UnifiedWalletProvider';
+import ChevronDownIcon from '../icons/ChevronDownIcon';
+import ChevronUpIcon from '../icons/ChevronUpIcon';
+import { UnifiedWalletProvider } from '../../contexts/UnifiedWalletProvider';
 
 import prettier from 'prettier/standalone';
 import prettierPluginBabel from 'prettier/plugins/babel';

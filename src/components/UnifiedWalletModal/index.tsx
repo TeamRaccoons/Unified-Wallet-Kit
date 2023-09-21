@@ -15,7 +15,7 @@ import CloseIcon from '../../icons/CloseIcon';
 import tw, { TwStyle } from 'twin.macro';
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 import { OnboardingFlow } from './Onboarding';
-import { useTranslation } from 'src/contexts/TranslationProvider';
+import { useTranslation } from '../../contexts/TranslationProvider';
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
