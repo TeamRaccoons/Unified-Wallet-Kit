@@ -1,6 +1,6 @@
 export const DEFAULT_LANGUAGE = 'en' as const;
 export const OTHER_LANGUAGES = ['zh', 'vi', 'fr', 'ja', 'id', 'ru'] as const;
-export type AllLanguage = typeof DEFAULT_LANGUAGE | typeof OTHER_LANGUAGES[number];
+export type AllLanguage = typeof DEFAULT_LANGUAGE | (typeof OTHER_LANGUAGES)[number];
 
 export const LANGUAGE_LABELS: Record<AllLanguage, string> = {
   en: 'English',
@@ -10,10 +10,10 @@ export const LANGUAGE_LABELS: Record<AllLanguage, string> = {
   ja: '日本語',
   id: 'Indonesian',
   ru: 'Русский',
-}
+};
 
 // TODO: Depending on language requirement, we might need a library that supports pluralization
-export const i18n: Record<string, { [key in typeof OTHER_LANGUAGES[number]]?: string }> = {
+export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: string }> = {
   [`Connecting...`]: {
     zh: `连接中...`,
     vi: `Đang kết nối...`,
@@ -134,5 +134,13 @@ export const i18n: Record<string, { [key in typeof OTHER_LANGUAGES[number]]?: st
     ja: `ウォレットが見つかりませんか？`,
     id: `Tidak dapat menemukan dompet Anda?`,
     ru: `Не можете найти свой кошелек?`,
+  },
+  [`I don't have a wallet`]: {
+    zh: `我没有钱包`,
+    vi: `Tôi không có ví`,
+    fr: `Je n'ai pas de portefeuille`,
+    ja: `私はウォレットを持っていません`,
+    id: `Saya tidak punya dompet`,
+    ru: `У меня нет кошелька`,
   },
 };
