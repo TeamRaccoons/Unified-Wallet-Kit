@@ -21,8 +21,8 @@ dependencies:
     specifier: 0.9.23
     version: 0.9.23(@solana/web3.js@1.77.3)
   '@solana/wallet-adapter-react':
-    specifier: 0.15.32
-    version: 0.15.32(@solana/web3.js@1.77.3)(bs58@4.0.1)(react-native@0.72.4)(react@18.2.0)
+    specifier: 0.15.35
+    version: 0.15.35(@solana/web3.js@1.77.3)(bs58@4.0.1)(react-native@0.72.4)(react@18.2.0)
   react-use:
     specifier: '>=17.2.4'
     version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -2766,11 +2766,11 @@ packages:
       '@solana/web3.js': 1.77.3
     dev: true
 
-  /@solana/wallet-adapter-react@0.15.32(@solana/web3.js@1.77.3)(bs58@4.0.1)(react-native@0.72.4)(react@18.2.0):
-    resolution: {integrity: sha512-dnbMVQeO2WBvK13M4kiUo1TBONJpfpO1r9JA5FuXG/Zwdt4RbGT+h6HSOaplHPO6pzDVk2nT/bU8wjqI9GxTYQ==}
+  /@solana/wallet-adapter-react@0.15.35(@solana/web3.js@1.77.3)(bs58@4.0.1)(react-native@0.72.4)(react@18.2.0):
+    resolution: {integrity: sha512-i4hc/gNLTYNLMEt2LS+4lrrc0QAwa5SU2PtYMnZ2A3rsoKF5m1bv1h6cjLj2KBry4/zRGEBoqkiMOC5zHkLnRQ==}
     engines: {node: '>=16'}
     peerDependencies:
-      '@solana/web3.js': ^1.58.0
+      '@solana/web3.js': ^1.77.3
       react: '*'
     dependencies:
       '@solana-mobile/wallet-adapter-mobile': 2.0.1(@solana/web3.js@1.77.3)(react-native@0.72.4)
@@ -2943,7 +2943,7 @@ packages:
     resolution: {integrity: sha512-OfJ69YA+WscghZJPpS/FWRlIPdjm83+AOX8TNdhJy/Qmg99uAyCCpm8uDVO/rsucPmMSi8j7l3IxYK7X8qbKrA==}
     engines: {node: '>=16'}
     peerDependencies:
-      '@solana/web3.js': 1.78.4
+      '@solana/web3.js': ^1.77.3
     dependencies:
       '@solana/wallet-adapter-alpha': 0.1.10(@solana/web3.js@1.77.3)
       '@solana/wallet-adapter-avana': 0.1.13(@solana/web3.js@1.77.3)
