@@ -28,10 +28,12 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   },
 };
 
-export const OnboardingIntro: React.FC<{ flow: IOnboardingFlow; setFlow: (flow: IOnboardingFlow) => void }> = ({
-  flow,
-  setFlow,
-}) => {
+export const OnboardingIntro: React.FC<{
+  flow: IOnboardingFlow;
+  setFlow: (flow: IOnboardingFlow) => void;
+  onClose: () => void;
+  showBack: boolean;
+}> = ({ flow, setFlow, onClose, showBack }) => {
   const { theme } = useUnifiedWalletContext();
   const { t } = useTranslation();
 
@@ -58,6 +60,15 @@ export const OnboardingIntro: React.FC<{ flow: IOnboardingFlow; setFlow: (flow: 
           {t(`Get Started`)}
         </button>
       </div>
+      {showBack && (
+        <button
+          type="button"
+          css={[tw`mt-3 text-xs text-white/50 font-semibold`, styles.subtitle[theme]]}
+          onClick={() => onClose()}
+        >
+          {'← ' + t(`Go back`)}
+        </button>
+      )}
     </div>
   );
 };
@@ -118,7 +129,7 @@ export const OnboardingGetWallets: React.FC<{ flow: IOnboardingFlow; setFlow: (f
 };
 
 export type IOnboardingFlow = 'Onboarding' | 'Get Wallet';
-export const OnboardingFlow = () => {
+export const OnboardingFlow = ({ onClose, showBack }: { onClose: () => void; showBack: boolean }) => {
   const [flow, setFlow] = useState<IOnboardingFlow>('Onboarding');
   const [animateOut, setAnimateOut] = useState(false);
 
@@ -139,7 +150,9 @@ export const OnboardingFlow = () => {
       css={[tw`duration-500 animate-fade-in overflow-y-scroll`, animateOut ? tw`animate-fade-out opacity-0` : '']}
       className="hideScrollbar"
     >
-      {flow === 'Onboarding' ? <OnboardingIntro flow={flow} setFlow={setFlowAnimated} /> : null}
+      {flow === 'Onboarding' ? (
+        <OnboardingIntro showBack={showBack} flow={flow} setFlow={setFlowAnimated} onClose={onClose} />
+      ) : null}
       {flow === 'Get Wallet' ? <OnboardingGetWallets flow={flow} setFlow={setFlowAnimated} /> : null}
     </div>
   );

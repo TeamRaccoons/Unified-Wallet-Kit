@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import { useToggle } from 'react-use';
 
@@ -36,7 +36,7 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   subtitle: {
     light: [tw`text-black/50`],
     dark: [tw`text-white/50`],
-    jupiter: [tw`text-white/50`]
+    jupiter: [tw`text-white/50`],
   },
   header: {
     light: [tw`border-b`],
@@ -78,6 +78,7 @@ const ListOfWallets: React.FC<{
 }> = ({ list, onToggle, isOpen }) => {
   const { handleConnectClick, walletlistExplanation, theme } = useUnifiedWalletContext();
   const { t } = useTranslation();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const renderWalletList = useMemo(
     () => (
@@ -91,7 +92,6 @@ const ListOfWallets: React.FC<{
             );
           })}
         </div>
-
         {list.highlightedBy !== 'Onboarding' && walletlistExplanation ? (
           <div css={[tw`text-xs font-semibold underline`, list.others.length > 6 ? tw`mb-8` : '']}>
             <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
@@ -104,6 +104,20 @@ const ListOfWallets: React.FC<{
     [handleConnectClick, list.others],
   );
 
+  const hasNoWallets = useMemo(() => {
+    return list.highlight.length === 0 && list.others.length === 0;
+  }, [list]);
+
+  useEffect(() => {
+    if (hasNoWallets) {
+      setShowOnboarding(true);
+    }
+  }, [hasNoWallets]);
+
+  if (showOnboarding) {
+    return <OnboardingFlow showBack={!hasNoWallets} onClose={() => setShowOnboarding(false)} />;
+  }
+
   return (
     <>
       <div className="hideScrollbar" css={[tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`, isOpen && tw`mb-7`]}>
@@ -112,7 +126,6 @@ const ListOfWallets: React.FC<{
           {list.highlightedBy === 'Installed' ? t(`Installed wallets`) : null}
           {list.highlightedBy === 'TopWallet' ? t(`Popular wallets`) : null}
         </span>
-
         <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
           {list.highlight.map((adapter, idx) => {
             const adapterName = (() => {
@@ -166,6 +179,11 @@ const ListOfWallets: React.FC<{
             </Collapse>
           </>
         ) : null}
+        <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
+          <a onClick={() => setShowOnboarding(true)}>
+            <span>{t(`I don't have a wallet`)}</span>
+          </a>
+        </div>
       </div>
 
       {/* Bottom Shades */}
@@ -286,7 +304,7 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
         .sort(sortByPrecedence(walletPrecedence || []));
-      others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length))
+      others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length));
       others = others.filter(Boolean);
 
       return {
@@ -308,7 +326,7 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
       return { highlightedBy: 'Installed', highlight, others };
     }
 
-    if (filteredAdapters.installed.length === 0) {
+    if (filteredAdapters.loadable.length === 0) {
       return { highlightedBy: 'Onboarding', highlight: [], others: [] };
     }
 
@@ -332,14 +350,8 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
       ]}
     >
       <Header onClose={onClose} />
-
       <div tw="border-t-[1px] border-white/10" />
-
-      {list.highlightedBy === 'Onboarding' ? (
-        <OnboardingFlow />
-      ) : (
-        <ListOfWallets list={list} onToggle={onToggle} isOpen={isOpen} />
-      )}
+      <ListOfWallets list={list} onToggle={onToggle} isOpen={isOpen} />
     </div>
   );
 };
