@@ -31,10 +31,15 @@ export default {
   ],
   plugins: [
     nodeExternals(),
-
     nodeResolve({ extensions: config.extensions }),
 
-    commonjs(),
+
+
+    commonjs({
+      namedExports: {
+        'bn.js':['BN'],
+      }
+    }),
     babel({
       babelHelpers: 'runtime',
       extensions: config.extensions,

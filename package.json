@@ -30,9 +30,7 @@
   "peerDependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@solana/spl-token": "*",
     "@solana/web3.js": ">=1.77.3",
-    "decimal.js": ">=10.4.3",
     "react": ">=18",
     "styled-components": "*"
   },
