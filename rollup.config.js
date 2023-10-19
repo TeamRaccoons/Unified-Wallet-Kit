@@ -35,11 +35,7 @@ export default {
 
 
 
-    commonjs({
-      namedExports: {
-        'bn.js':['BN'],
-      }
-    }),
+    commonjs(),
     babel({
       babelHelpers: 'runtime',
       extensions: config.extensions,
