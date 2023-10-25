@@ -92,6 +92,7 @@ export default ExampleBaseOnly;
   - checkout `src/components/examples/WalletNotification.tsx` for an example of how to use the notification system
  
 - How to add/develop a new wallet?
+  - We recommend new developer develops Wallets that comforms to WalletStandard or MWA, to get instant discoverability.
   - https://github.com/solana-labs/wallet-adapter/blob/master/WALLET.md
 
 
