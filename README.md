@@ -96,5 +96,5 @@ export default ExampleBaseOnly;
   - https://github.com/solana-labs/wallet-adapter/blob/master/WALLET.md
 
 
-### #By Racoons
+### #By Raccoons
 <img src="public/raccoons_wallet.jpg" width="200" />
