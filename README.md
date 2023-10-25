@@ -16,6 +16,7 @@ Why not just use the existing wallet adapters?
   - themeing support
   - Internationalization (i18n) support
   - new user onboarding
+- Based on `@solana/wallet-adapter-base`, `@solana/wallet-adapter-react` and `@solana-mobile/wallet-adapter-mobile`, you are always welcomed to onboard or depart.
 
 ## Philosophy
 - Set a sensible defaults
@@ -89,6 +90,9 @@ export default ExampleBaseOnly;
 - why not ship with notification by default
   - existing dApp might already have their own notification system
   - checkout `src/components/examples/WalletNotification.tsx` for an example of how to use the notification system
+ 
+- How to add/develop a new wallet?
+  - https://github.com/solana-labs/wallet-adapter/blob/master/WALLET.md
 
 
 ### #By Racoons
