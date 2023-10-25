@@ -7,13 +7,21 @@ Along with [Terminal](https://terminal.jup.ag), it's the fastest way to get star
 
 Used by Jupiter and Meteora.
 
+## Motives
+Why not just use the existing wallet adapters?
+- To bootstrap a dApp, we always find ourself doing the same thing over and over again, such as:
+  - notification when wallets are selected, connecting, connected, disconnected.
+  - auto reconnect to the last connected wallet
+  - mobile-first, responsive design
+  - themeing support
+  - Internationalization (i18n) support
+  - new user onboarding
 
 ## Philosophy
 - Set a sensible defaults
 - Lightweight, easy to adopt, fast to access
 - Extensible wallets, with a BYOW (Bring your own wallets) approach
 - Better onboarding experience for new users
-
 
 ## Core features
 - [x] Main esm bundle at 94Kb (~20Kb gzipped)
@@ -31,10 +39,7 @@ Used by Jupiter and Meteora.
 - [x] Theming 
   - Light, Dark, Jupiter
   - More thmes coming soon
-
-## Upcoming features
-- [ ] Pluralization for i18n (not required now)
-- [ ] Even more customisation
+- [x] Pluralization for i18n
 
 ## Getting Started
 - `pnpm i @jup-ag/wallet-adapter`
@@ -73,15 +78,6 @@ export default ExampleBaseOnly;
 
 
 ## FAQs
-- Why not just use the existing wallet adapters?
-  - To bootstrap a dApp, we always find ourself doing the same thing over and over again, such as:
-    - notification when wallets are selected, connecting, connected, disconnected.
-    - auto reconnect to the last connected wallet
-    - mobile-first, responsive design
-    - themeing support
-    - Internationalization (i18n) support
-    - new user onboarding
-
 - Why not ship with all wallets?
   - Unnecessary bloat and bundle size on your dApp
   - It's not sensible to always maintain an ever-growing list of wallets
