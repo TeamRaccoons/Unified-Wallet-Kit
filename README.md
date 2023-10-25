@@ -10,12 +10,12 @@ Used by Jupiter and Meteora.
 ## Motives
 Why not just use the existing wallet adapters?
 - To bootstrap a dApp, we always find ourself doing the same thing over and over again, such as:
-  - notification when wallets are selected, connecting, connected, disconnected.
-  - auto reconnect to the last connected wallet
-  - mobile-first, responsive design
-  - themeing support
+  - Notification when wallets are selected, connecting, connected, disconnected.
+  - Auto reconnect to the last connected wallet
+  - Mobile-first, responsive design
+  - Themeing support
   - Internationalization (i18n) support
-  - new user onboarding
+  - New user onboarding
 - Built on-top of `@solana/wallet-adapter-base`, `@solana/wallet-adapter-react` and `@solana-mobile/wallet-adapter-mobile`, you are always welcomed to onboard or depart.
 
 ## Philosophy
@@ -82,14 +82,14 @@ export default ExampleBaseOnly;
 - Why not ship with all wallets?
   - Unnecessary bloat and bundle size on your dApp
   - It's not sensible to always maintain an ever-growing list of wallets
-  - many existing wallets are not well maintained, often with unpatched security, or abandoned development
-  - lack of users
-  - does not support Versioned Transaction, severely limiting the adoption of many innovative functionalities of dApp.
-  - and hopefully, a gradually disappearing list of installed wallet adapter, as they migrate to wallet-standard
+  - Many existing wallets are not well maintained, often with unpatched security, or abandoned development
+  - Lack of users
+  - Does not support Versioned Transaction, severely limiting the adoption of many innovative functionalities of dApp.
+  - And hopefully, a gradually disappearing list of installed wallet adapter, as they migrate to wallet-standard
 
-- why not ship with notification by default
-  - existing dApp might already have their own notification system
-  - checkout `src/components/examples/WalletNotification.tsx` for an example of how to use the notification system
+- Why not ship with notification by default
+  - Existing dApp might already have their own notification system
+  - Checkout `src/components/examples/WalletNotification.tsx` for an example of how to use the notification system
  
 - How to add/develop a new wallet?
   - We recommend new developer develops Wallets that comforms to WalletStandard or MWA, to get instant discoverability.
