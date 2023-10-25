@@ -16,7 +16,7 @@ Why not just use the existing wallet adapters?
   - themeing support
   - Internationalization (i18n) support
   - new user onboarding
-- Based on `@solana/wallet-adapter-base`, `@solana/wallet-adapter-react` and `@solana-mobile/wallet-adapter-mobile`, you are always welcomed to onboard or depart.
+- Built on-top of `@solana/wallet-adapter-base`, `@solana/wallet-adapter-react` and `@solana-mobile/wallet-adapter-mobile`, you are always welcomed to onboard or depart.
 
 ## Philosophy
 - Set a sensible defaults
