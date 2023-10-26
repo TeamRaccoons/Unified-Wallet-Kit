@@ -1,6 +1,6 @@
 // This is a duplicated snippet for Codeblock generations
 export const HARDCODED_DECLARTION_BLOCK = `
-const wallets: Adapter[] = React.useMemo(() => {
+const wallets: Adapter[] = useMemo(() => {
   const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
     (() => {
       const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> =
@@ -27,8 +27,6 @@ const wallets: Adapter[] = React.useMemo(() => {
     new PhantomWalletAdapter(),
     new SolflareWalletAdapter(),
     new CoinbaseWalletAdapter(),
-    new BackpackWalletAdapter(),
-    new GlowWalletAdapter(),
     new TrustWalletAdapter(),
     walletConnectWalletAdapter,
   ].filter((item) => item && item.name && item.icon) as Adapter[];
