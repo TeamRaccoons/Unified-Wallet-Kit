@@ -30,18 +30,17 @@ export default {
     },
   ],
   plugins: [
-    nodeExternals({
-      // Specificially bundle react-use in
-      exclude: /^react-use/,
-    }),
-
+    nodeExternals(),
     nodeResolve({ extensions: config.extensions }),
+
+
 
     commonjs(),
     babel({
+      babelHelpers: 'runtime',
       extensions: config.extensions,
       include: ['src/**/*',],
-      exclude: 'node_modules/**',
+      exclude: 'node_modules/**'
     }),
   ],
 };

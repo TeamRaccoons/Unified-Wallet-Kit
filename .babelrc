@@ -1,4 +1,4 @@
 {
   "presets": ["@babel/preset-react", "@babel/preset-typescript", "@emotion/babel-preset-css-prop"],
-  "plugins": ["@emotion/babel-plugin", "babel-plugin-macros"]
+  "plugins": ["@emotion/babel-plugin", "babel-plugin-macros", "@babel/plugin-transform-runtime"]
 }
