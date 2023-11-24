@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useMemo } from 'react';
+import React, { FC, PropsWithChildren, ReactNode, useMemo } from 'react';
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base';
 import {
@@ -46,10 +46,14 @@ export interface IUnifiedWalletConfig {
   };
   walletlistExplanation?: {
     href: string;
-  },
+  };
   // Default to light
   theme?: IUnifiedTheme;
   lang?: AllLanguage;
+  walletAttachments?: Array<{
+    name: string;
+    attachment: ReactNode;
+  }>;
 }
 
 export interface IUnifiedWalletMetadata {
