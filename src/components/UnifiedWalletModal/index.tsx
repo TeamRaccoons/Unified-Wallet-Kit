@@ -1,21 +1,22 @@
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useToggle } from 'react-use';
 
-import { WalletListItem, WalletIcon } from './WalletListItem';
+import { WalletIcon, WalletListItem } from './WalletListItem';
 
 import Collapse from '../../components/Collapse';
 
-import ChevronUpIcon from '../../icons/ChevronUpIcon';
-import ChevronDownIcon from '../../icons/ChevronDownIcon';
-import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
-import { isMobile, useOutsideClick } from '../../misc/utils';
-import { useUnifiedWalletContext, useUnifiedWallet, IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
-import CloseIcon from '../../icons/CloseIcon';
-import tw, { TwStyle } from 'twin.macro';
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
-import { OnboardingFlow } from './Onboarding';
+import tw, { TwStyle } from 'twin.macro';
 import { useTranslation } from '../../contexts/TranslationProvider';
+import { IUnifiedTheme, useUnifiedWallet, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
+import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
+import ChevronDownIcon from '../../icons/ChevronDownIcon';
+import ChevronUpIcon from '../../icons/ChevronUpIcon';
+import CloseIcon from '../../icons/CloseIcon';
+import { isMobile, useOutsideClick } from '../../misc/utils';
+import NotInstalled from './NotInstalled';
+import { OnboardingFlow } from './Onboarding';
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
@@ -79,6 +80,15 @@ const ListOfWallets: React.FC<{
   const { handleConnectClick, walletlistExplanation, walletAttachments, theme } = useUnifiedWalletContext();
   const { t } = useTranslation();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showNotInstalled, setShowNotInstalled] = useState<Adapter | false>(false);
+
+  const onClickWallet = React.useCallback((event: React.MouseEvent<HTMLElement, MouseEvent>, adapter: Adapter) => {
+    if (adapter.readyState === WalletReadyState.NotDetected) {
+      setShowNotInstalled(adapter);
+      return;
+    }
+    handleConnectClick(event, adapter);
+  }, []);
 
   const renderWalletList = useMemo(
     () => (
@@ -87,7 +97,7 @@ const ListOfWallets: React.FC<{
           {list.others.map((adapter, index) => {
             return (
               <ul key={index}>
-                <WalletListItem handleClick={(event) => handleConnectClick(event, adapter)} wallet={adapter} />
+                <WalletListItem handleClick={(e) => onClickWallet(e, adapter)} wallet={adapter} />
               </ul>
             );
           })}
@@ -118,6 +128,19 @@ const ListOfWallets: React.FC<{
     return <OnboardingFlow showBack={!hasNoWallets} onClose={() => setShowOnboarding(false)} />;
   }
 
+  if (showNotInstalled) {
+    return (
+      <NotInstalled
+        adapter={showNotInstalled}
+        onClose={() => setShowNotInstalled(false)}
+        onGoOnboarding={() => {
+          setShowOnboarding(true);
+          setShowNotInstalled(false);
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <div className="hideScrollbar" css={[tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`, isOpen && tw`mb-7`]}>
@@ -138,7 +161,7 @@ const ListOfWallets: React.FC<{
             return (
               <div
                 key={idx}
-                onClick={(event) => handleConnectClick(event, adapter)}
+                onClick={(event) => onClickWallet(event, adapter)}
                 css={[
                   tw`py-4 px-4 lg:px-2 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
                   tw`hover:backdrop-blur-xl transition-all`,
@@ -183,9 +206,9 @@ const ListOfWallets: React.FC<{
           </>
         ) : null}
         <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
-          <a onClick={() => setShowOnboarding(true)}>
+          <button type="button" onClick={() => setShowOnboarding(true)}>
             <span>{t(`I don't have a wallet`)}</span>
-          </a>
+          </button>
         </div>
       </div>
 
