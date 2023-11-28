@@ -50,10 +50,7 @@ export interface IUnifiedWalletConfig {
   // Default to light
   theme?: IUnifiedTheme;
   lang?: AllLanguage;
-  walletAttachments?: Array<{
-    name: string;
-    attachment: ReactNode;
-  }>;
+  walletAttachments?: Record<string, { attachment: ReactNode }>;
 }
 
 export interface IUnifiedWalletMetadata {

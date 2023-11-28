@@ -92,9 +92,11 @@ export default ExampleBaseOnly;
 
 ```tsx
 config={{
-  walletAttachments: [
-    { name: 'Phantom', attachment: <div tw="text-xs rounded-md bg-red-500 px-2 mx-2 text-center">Auto Confirm</div> },
-  ]
+  walletAttachments: { 
+    'Phantom': {
+      attachment: <div tw="text-xs rounded-md bg-red-500 px-2 mx-2 text-center">Auto Confirm</div>
+    } 
+  }
 }}
 ```
 

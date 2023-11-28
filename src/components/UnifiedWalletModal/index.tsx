@@ -156,7 +156,7 @@ const ListOfWallets: React.FC<{
               return adapter.name;
             })();
 
-            const attachment = walletAttachments?.find((item) => item.name === adapter.name)?.attachment || null;
+            const attachment = walletAttachments ? walletAttachments[adapter.name]?.attachment : null;
 
             return (
               <div
