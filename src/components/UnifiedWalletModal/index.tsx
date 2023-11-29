@@ -77,7 +77,7 @@ const ListOfWallets: React.FC<{
   onToggle: (nextValue?: any) => void;
   isOpen: boolean;
 }> = ({ list, onToggle, isOpen }) => {
-  const { handleConnectClick, walletlistExplanation, theme } = useUnifiedWalletContext();
+  const { handleConnectClick, walletlistExplanation, walletAttachments, theme } = useUnifiedWalletContext();
   const { t } = useTranslation();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showNotInstalled, setShowNotInstalled] = useState<Adapter | false>(false);
@@ -156,12 +156,14 @@ const ListOfWallets: React.FC<{
               return adapter.name;
             })();
 
+            const attachment = walletAttachments ? walletAttachments[adapter.name]?.attachment : null;
+
             return (
               <div
                 key={idx}
                 onClick={(event) => onClickWallet(event, adapter)}
                 css={[
-                  tw`p-4 lg:p-5 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
+                  tw`py-4 px-4 lg:px-2 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
                   tw`hover:backdrop-blur-xl transition-all`,
                   styles.walletItem[theme],
                 ]}
@@ -172,6 +174,7 @@ const ListOfWallets: React.FC<{
                   <WalletIcon wallet={adapter} width={30} height={30} />
                 )}
                 <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapterName}</span>
+                {attachment ? <div>{attachment}</div> : null}
               </div>
             );
           })}
@@ -265,7 +268,7 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
 
 const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
   const { wallets } = useUnifiedWallet();
-  const { walletPrecedence, handleConnectClick, walletlistExplanation, theme } = useUnifiedWalletContext();
+  const { walletPrecedence, theme } = useUnifiedWalletContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
