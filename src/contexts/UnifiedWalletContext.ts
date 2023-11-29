@@ -25,7 +25,7 @@ export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
   setShowModal: (showModal: boolean) => {},
   walletlistExplanation: undefined,
   theme: 'light',
-  walletAttachments: [],
+  walletAttachments: undefined,
 });
 
 // Copied from @solana/wallet-adapter-react
