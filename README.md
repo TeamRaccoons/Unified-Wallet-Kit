@@ -8,6 +8,8 @@ Along with [Terminal](https://terminal.jup.ag), it's the fastest way to get star
 
 Used by Jupiter and Meteora.
 
+NPM: https://www.npmjs.com/package/@jup-ag/wallet-adapter
+
 ## Motives
 
 Why not just use the existing wallet adapters?
