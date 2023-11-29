@@ -1,7 +1,7 @@
 import { Adapter } from '@solana/wallet-adapter-base';
 import React from 'react';
-import { useTranslation } from 'src/contexts/TranslationProvider';
-import { IUnifiedTheme, useUnifiedWalletContext } from 'src/contexts/UnifiedWalletContext';
+import { useTranslation } from '../../contexts/TranslationProvider';
+import { IUnifiedTheme, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import tw, { TwStyle } from 'twin.macro';
 import ExternalIcon from '../icons/ExternalIcon';
 
