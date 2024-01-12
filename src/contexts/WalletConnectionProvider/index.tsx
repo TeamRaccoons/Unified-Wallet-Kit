@@ -13,6 +13,7 @@ import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
 import { IUnifiedTheme } from '../UnifiedWalletContext';
 import { AllLanguage } from '../TranslationProvider/i18n';
+import { dedupeList } from '../../misc/utils';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter });
@@ -68,23 +69,26 @@ const WalletConnectionProvider: FC<
   }
 > = ({ wallets: passedWallets, config, children }) => {
   const wallets = useMemo(() => {
-    return [
-      new SolanaMobileWalletAdapter({
-        addressSelector: createDefaultAddressSelector(),
-        appIdentity: {
-          uri: config.metadata.url,
-          // TODO: Icon support looks flaky
-          icon: '',
-          name: config.metadata.name,
-        },
-        authorizationResultCache: createDefaultAuthorizationResultCache(),
-        cluster: config.env,
-        // TODO: Check if MWA still redirects aggressively.
-        onWalletNotFound: createDefaultWalletNotFoundHandler(),
-      }),
-      ...passedWallets,
-      ...(config.hardcodedWallets || []).map((item) => new HardcodedWalletStandardAdapter(item)),
-    ];
+    return dedupeList(
+      [
+        new SolanaMobileWalletAdapter({
+          addressSelector: createDefaultAddressSelector(),
+          appIdentity: {
+            uri: config.metadata.url,
+            // TODO: Icon support looks flaky
+            icon: '',
+            name: config.metadata.name,
+          },
+          authorizationResultCache: createDefaultAuthorizationResultCache(),
+          cluster: config.env,
+          // TODO: Check if MWA still redirects aggressively.
+          onWalletNotFound: createDefaultWalletNotFoundHandler(),
+        }),
+        ...passedWallets,
+        ...(config.hardcodedWallets || []).map((item) => new HardcodedWalletStandardAdapter(item)),
+      ],
+      (adapter) => adapter.name,
+    );
   }, []);
 
   return (

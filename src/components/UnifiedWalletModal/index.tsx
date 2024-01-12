@@ -18,6 +18,38 @@ import { isMobile, useOutsideClick } from '../../misc/utils';
 import NotInstalled from './NotInstalled';
 import { OnboardingFlow } from './Onboarding';
 
+// TENSOR TRADE FIX: implemented missing deeplinks when clicking non-mobile wallet-adapters when using mobile chrome
+export const mobileUniLink = (adapter: Adapter) => {
+  const isIOSOrAndroidDevice = /Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent);
+
+  if (!isIOSOrAndroidDevice) return null;
+
+  const uniLink =
+    adapter.name === 'Backpack'
+      ? 'https://backpack.app/ul/v1/browse/'
+      : adapter.name === 'Solflare'
+      ? 'https://solflare.com/ul/v1/browse/'
+      : adapter.name === 'Phantom'
+      ? 'https://phantom.app/ul/browse/'
+      : adapter.name === 'OKX'
+      ? `https://www.okx.com/download?deeplink=${encodeURIComponent('okx://wallet/dapp/url?dappUrl=')}`
+      : undefined;
+  if (!uniLink) return null;
+
+  const defaultLink = encodeURIComponent('https://www.tensor.trade');
+
+  let suffix =
+    typeof window === 'undefined' || !window?.location?.href
+      ? `${encodeURIComponent(defaultLink)}`
+      : `${encodeURIComponent(window.location.href)}`;
+
+  if (adapter.name === 'Solflare') {
+    suffix = `${suffix}?ref=${window?.location?.origin || defaultLink}`;
+  }
+
+  return window.open(`${uniLink}${suffix}`, '_blank');
+};
+
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
     light: [tw`text-black !bg-white shadow-xl`],
@@ -83,6 +115,14 @@ const ListOfWallets: React.FC<{
   const [showNotInstalled, setShowNotInstalled] = useState<Adapter | false>(false);
 
   const onClickWallet = React.useCallback((event: React.MouseEvent<HTMLElement, MouseEvent>, adapter: Adapter) => {
+    if (
+      ![WalletReadyState.Installed, WalletReadyState.Loadable].includes(adapter.readyState) ||
+      ([WalletReadyState.Loadable].includes(adapter.readyState) && adapter.name === 'Solflare')
+    ) {
+      if (mobileUniLink(adapter)) {
+        return;
+      }
+    }
     if (adapter.readyState === WalletReadyState.NotDetected) {
       setShowNotInstalled(adapter);
       return;
@@ -157,13 +197,13 @@ const ListOfWallets: React.FC<{
             })();
 
             const attachment = walletAttachments ? walletAttachments[adapter.name]?.attachment : null;
-
             return (
               <div
                 key={idx}
                 onClick={(event) => onClickWallet(event, adapter)}
                 css={[
-                  tw`py-4 px-4 lg:px-2 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
+                  tw`py-4 px-4 lg:px-2 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1`,
+                  list.highlightedBy === 'TopWallet' ? tw`lg:max-w-[100%]` : tw`lg:max-w-[33%]`,
                   tw`hover:backdrop-blur-xl transition-all`,
                   styles.walletItem[theme],
                 ]}
@@ -237,11 +277,7 @@ export interface WalletModalProps {
 }
 
 type HIGHLIGHTED_BY = 'PreviouslyConnected' | 'Installed' | 'TopWallet' | 'Onboarding';
-const TOP_WALLETS: WalletName[] = [
-  'Phantom' as WalletName<'Phantom'>,
-  'Solflare' as WalletName<'Solflare'>,
-  'Backpack' as WalletName<'Backpack'>,
-];
+const TOP_WALLETS: WalletName[] = ['Backpack' as WalletName<'Backpack'>];
 
 interface IUnifiedWalletModal {
   onClose: () => void;
@@ -287,12 +323,20 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
         // Previously connected takes highest
         const previouslyConnectedIndex = previouslyConnected.indexOf(adapterName);
         if (previouslyConnectedIndex >= 0) {
-          acc.previouslyConnected[previouslyConnectedIndex] = wallet.adapter;
+          if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+            acc.installed.unshift(wallet.adapter);
+          } else {
+            acc.previouslyConnected[previouslyConnectedIndex] = wallet.adapter;
+          }
           return acc;
         }
         // Then Installed
         if (wallet.readyState === WalletReadyState.Installed) {
-          acc.installed.push(wallet.adapter);
+          if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+            acc.installed.unshift(wallet.adapter);
+          } else {
+            acc.installed.push(wallet.adapter);
+          }
           return acc;
         }
         // Top 3
@@ -303,12 +347,20 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
         }
         // Loadable
         if (wallet.readyState === WalletReadyState.Loadable) {
-          acc.loadable.push(wallet.adapter);
+          if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+            acc.installed.unshift(wallet.adapter);
+          } else {
+            acc.loadable.push(wallet.adapter);
+          }
           return acc;
         }
         // NotDetected
         if (wallet.readyState === WalletReadyState.NotDetected) {
-          acc.loadable.push(wallet.adapter);
+          if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+            acc.installed.unshift(wallet.adapter);
+          } else {
+            acc.loadable.push(wallet.adapter);
+          }
           return acc;
         }
         return acc;

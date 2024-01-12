@@ -4,3 +4,4 @@
 dist/
 .next/
 .DS_Store
+tsconfig.tsbuildinfo

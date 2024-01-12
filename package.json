@@ -1,6 +1,6 @@
 {
-  "name": "@jup-ag/wallet-adapter",
-  "version": "0.1.5",
+  "name": "@tensor-hq/wallet-adapter",
+  "version": "0.1.14",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
@@ -15,6 +15,9 @@
       "preset": "emotion"
     }
   },
+  "publishConfig": {
+    "@tensor-hq:registry": "https://npm.pkg.github.com"
+  },
   "sideEffects": false,
   "scripts": {
     "type-check": "tsc --noEmit",
@@ -25,7 +28,8 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "serve": "npx serve public"
+    "serve": "npx serve public",
+    "publish:private": "pnpm build-lib && pnpm publish --publish-branch tensor-main"
   },
   "peerDependencies": {
     "@emotion/react": "^11.10.5",
@@ -42,6 +46,7 @@
     "@solana-mobile/wallet-adapter-mobile": "^2.0.0",
     "@solana/wallet-adapter-base": "0.9.23",
     "@solana/wallet-adapter-react": "0.15.35",
+    "@solana/wallet-adapter-solflare": "latest",
     "react-use": ">=17.2.4"
   },
   "devDependencies": {

@@ -121,3 +121,20 @@ export function useDebouncedEffect(fn: Function, deps: any[], time: number) {
     };
   }, dependencies);
 }
+
+/** Earlier items take precedence IF `getKey` is specified. */
+export const dedupeList = <T, K>(arr: Array<T>, getKey?: (item: T) => K) => {
+  if (!getKey) {
+    return [...new Set(arr)];
+  }
+
+  const seen = new Set();
+  const out: T[] = [];
+  for (const item of arr) {
+    const k = getKey(item);
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(item);
+  }
+  return out;
+};
