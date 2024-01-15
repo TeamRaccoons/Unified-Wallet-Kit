@@ -70,23 +70,7 @@ const WalletConnectionProvider: FC<
 > = ({ wallets: passedWallets, config, children }) => {
   const wallets = useMemo(() => {
     return dedupeList(
-      [
-        new SolanaMobileWalletAdapter({
-          addressSelector: createDefaultAddressSelector(),
-          appIdentity: {
-            uri: config.metadata.url,
-            // TODO: Icon support looks flaky
-            icon: '',
-            name: config.metadata.name,
-          },
-          authorizationResultCache: createDefaultAuthorizationResultCache(),
-          cluster: config.env,
-          // TODO: Check if MWA still redirects aggressively.
-          onWalletNotFound: createDefaultWalletNotFoundHandler(),
-        }),
-        ...passedWallets,
-        ...(config.hardcodedWallets || []).map((item) => new HardcodedWalletStandardAdapter(item)),
-      ],
+      [...passedWallets, ...(config.hardcodedWallets || []).map((item) => new HardcodedWalletStandardAdapter(item))],
       (adapter) => adapter.name,
     );
   }, []);
