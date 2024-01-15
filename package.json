@@ -1,6 +1,6 @@
 {
   "name": "@tensor-hq/wallet-adapter",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
