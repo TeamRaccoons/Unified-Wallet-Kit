@@ -1,10 +1,9 @@
 import React, { ReactNode, useCallback } from 'react';
-import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 import tw, { TwStyle } from 'twin.macro';
 
 import { CurrentUserBadge } from '../CurrentUserBadge';
 import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletProvider';
-import { IUnifiedTheme, MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
+import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
@@ -47,19 +46,7 @@ export const UnifiedWalletButton: React.FC<{
   );
 
   const handleClick = useCallback(async () => {
-    try {
-      if (wallet?.adapter?.name === SolanaMobileWalletAdapterWalletName) {
-        await connect();
-
-        return;
-      } else {
-        setShowModal(true);
-      }
-    } catch (error) {
-      if (error instanceof Error && error.message === MWA_NOT_FOUND_ERROR) {
-        setShowModal(true);
-      }
-    }
+    setShowModal(true);
   }, [wallet, connect]);
 
   return (
@@ -67,7 +54,9 @@ export const UnifiedWalletButton: React.FC<{
       {!wallet?.adapter.connected ? (
         <div
           css={[
-            overrideContent ? undefined : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
+            overrideContent
+              ? undefined
+              : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
             styles.container[theme],
           ]}
           className={className}

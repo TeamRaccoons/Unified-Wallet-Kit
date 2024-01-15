@@ -18,10 +18,42 @@ import { isMobile, useOutsideClick } from '../../misc/utils';
 import NotInstalled from './NotInstalled';
 import { OnboardingFlow } from './Onboarding';
 
+// TENSOR TRADE FIX: implemented missing deeplinks when clicking non-mobile wallet-adapters when using mobile chrome
+export const mobileUniLink = (adapter: Adapter) => {
+  const isIOSOrAndroidDevice = /Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent);
+
+  if (!isIOSOrAndroidDevice) return null;
+
+  const uniLink =
+    adapter.name === 'Backpack'
+      ? 'https://backpack.app/ul/v1/browse/'
+      : adapter.name === 'Solflare'
+      ? 'https://solflare.com/ul/v1/browse/'
+      : adapter.name === 'Phantom'
+      ? 'https://phantom.app/ul/browse/'
+      : adapter.name === 'OKX'
+      ? `https://www.okx.com/download?deeplink=${encodeURIComponent('okx://wallet/dapp/url?dappUrl=')}`
+      : undefined;
+  if (!uniLink) return null;
+
+  const defaultLink = encodeURIComponent('https://www.tensor.trade');
+
+  let suffix =
+    typeof window === 'undefined' || !window?.location?.href
+      ? `${encodeURIComponent(defaultLink)}`
+      : `${encodeURIComponent(window.location.href)}`;
+
+  if (adapter.name === 'Solflare') {
+    suffix = `${suffix}?ref=${window?.location?.origin || defaultLink}`;
+  }
+
+  return window.open(`${uniLink}${suffix}`, '_blank');
+};
+
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
     light: [tw`text-black !bg-white shadow-xl`],
-    dark: [tw`text-white !bg-[#3A3B43] border border-white/10`],
+    dark: [tw`text-white !bg-[#111314]`],
     jupiter: [tw`text-white bg-[rgb(49, 62, 76)]`],
   },
   shades: {
@@ -44,6 +76,48 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
     dark: [],
     jupiter: [],
   },
+};
+
+const HighlightedWallet = ({
+  theme,
+  popularWallet,
+  highlightedBy,
+  adapter,
+  attachment,
+  onClickWallet,
+}: {
+  theme: IUnifiedTheme;
+  popularWallet?: boolean;
+  highlightedBy: HIGHLIGHTED_BY;
+  adapter: Adapter;
+  attachment: React.ReactNode;
+  onClickWallet: (event: React.MouseEvent<HTMLElement, MouseEvent>, adapter: Adapter) => void;
+}) => {
+  const { t } = useTranslation();
+  const adapterName = (() => {
+    if (adapter.name === SolanaMobileWalletAdapterWalletName) return t(`Mobile`);
+    return adapter.name;
+  })();
+
+  return (
+    <div
+      onClick={(event) => onClickWallet(event, adapter)}
+      css={[
+        tw`py-4 px-4 lg:px-2 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1`,
+        popularWallet || highlightedBy === 'PreviouslyConnected' ? tw`lg:max-w-[100%]` : tw`lg:max-w-[33%]`,
+        tw`hover:backdrop-blur-xl transition-all`,
+        styles.walletItem[theme],
+      ]}
+    >
+      {isMobile() ? (
+        <WalletIcon wallet={adapter} width={24} height={24} />
+      ) : (
+        <WalletIcon wallet={adapter} width={30} height={30} />
+      )}
+      <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapterName}</span>
+      {attachment ? <div>{attachment}</div> : null}
+    </div>
+  );
 };
 
 const Header: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -70,6 +144,7 @@ const Header: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
 const ListOfWallets: React.FC<{
   list: {
+    popularWallets: Adapter[];
     highlightedBy: HIGHLIGHTED_BY;
     highlight: Adapter[];
     others: Adapter[];
@@ -83,6 +158,14 @@ const ListOfWallets: React.FC<{
   const [showNotInstalled, setShowNotInstalled] = useState<Adapter | false>(false);
 
   const onClickWallet = React.useCallback((event: React.MouseEvent<HTMLElement, MouseEvent>, adapter: Adapter) => {
+    if (
+      ![WalletReadyState.Installed, WalletReadyState.Loadable].includes(adapter.readyState) ||
+      ([WalletReadyState.Loadable].includes(adapter.readyState) && adapter.name === 'Solflare')
+    ) {
+      if (mobileUniLink(adapter)) {
+        return;
+      }
+    }
     if (adapter.readyState === WalletReadyState.NotDetected) {
       setShowNotInstalled(adapter);
       return;
@@ -144,41 +227,49 @@ const ListOfWallets: React.FC<{
   return (
     <>
       <div className="hideScrollbar" css={[tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`, isOpen && tw`mb-7`]}>
-        <span tw="mt-6 text-xs font-semibold">
-          {list.highlightedBy === 'PreviouslyConnected' ? t(`Recently used`) : null}
-          {list.highlightedBy === 'Installed' ? t(`Installed wallets`) : null}
-          {list.highlightedBy === 'TopWallet' ? t(`Popular wallets`) : null}
-        </span>
+        <span tw="mt-6 text-xs font-semibold">{t(`Recommended Wallets`)}</span>
         <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
-          {list.highlight.map((adapter, idx) => {
-            const adapterName = (() => {
-              if (adapter.name === SolanaMobileWalletAdapterWalletName) return t(`Mobile`);
-              return adapter.name;
-            })();
-
+          {list.popularWallets.map((adapter, idx) => {
             const attachment = walletAttachments ? walletAttachments[adapter.name]?.attachment : null;
 
             return (
-              <div
+              <HighlightedWallet
                 key={idx}
-                onClick={(event) => onClickWallet(event, adapter)}
-                css={[
-                  tw`py-4 px-4 lg:px-2 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
-                  tw`hover:backdrop-blur-xl transition-all`,
-                  styles.walletItem[theme],
-                ]}
-              >
-                {isMobile() ? (
-                  <WalletIcon wallet={adapter} width={24} height={24} />
-                ) : (
-                  <WalletIcon wallet={adapter} width={30} height={30} />
-                )}
-                <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapterName}</span>
-                {attachment ? <div>{attachment}</div> : null}
-              </div>
+                theme={theme}
+                popularWallet
+                highlightedBy={list.highlightedBy}
+                adapter={adapter}
+                attachment={attachment}
+                onClickWallet={onClickWallet}
+              />
             );
           })}
         </div>
+        {list.highlight.length > 0 && (
+          <>
+            <span tw="mt-6 text-xs font-semibold">
+              {list.highlightedBy === 'PreviouslyConnected' ? t(`Recently used`) : null}
+              {list.highlightedBy === 'Installed' ? t(`Installed wallets`) : null}
+              {list.highlightedBy === 'TopWallet' ? t(`Recommended Wallets`) : null}
+            </span>
+            <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
+              {list.highlight.map((adapter, idx) => {
+                const attachment = walletAttachments ? walletAttachments[adapter.name]?.attachment : null;
+
+                return (
+                  <HighlightedWallet
+                    key={idx}
+                    theme={theme}
+                    highlightedBy={list.highlightedBy}
+                    adapter={adapter}
+                    attachment={attachment}
+                    onClickWallet={onClickWallet}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
 
         {walletlistExplanation && list.others.length === 0 ? (
           <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
@@ -237,11 +328,7 @@ export interface WalletModalProps {
 }
 
 type HIGHLIGHTED_BY = 'PreviouslyConnected' | 'Installed' | 'TopWallet' | 'Onboarding';
-const TOP_WALLETS: WalletName[] = [
-  'Phantom' as WalletName<'Phantom'>,
-  'Solflare' as WalletName<'Solflare'>,
-  'Backpack' as WalletName<'Backpack'>,
-];
+const TOP_WALLETS: WalletName[] = ['Backpack' as WalletName<'Backpack'>];
 
 interface IUnifiedWalletModal {
   onClose: () => void;
@@ -272,97 +359,124 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
-  const list: { highlightedBy: HIGHLIGHTED_BY; highlight: Adapter[]; others: Adapter[] } = useMemo(() => {
-    // Then, Installed, Top 3, Loadable, NotDetected
-    const filteredAdapters = wallets.reduce<{
-      previouslyConnected: Adapter[];
-      installed: Adapter[];
-      top3: Adapter[];
-      loadable: Adapter[];
-      notDetected: Adapter[];
-    }>(
-      (acc, wallet) => {
-        const adapterName = wallet.adapter.name;
+  const list: { popularWallets: Adapter[]; highlightedBy: HIGHLIGHTED_BY; highlight: Adapter[]; others: Adapter[] } =
+    useMemo(() => {
+      // Then, Installed, Top 3, Loadable, NotDetected
+      const filteredAdapters = wallets.reduce<{
+        popularWallets: Adapter[];
+        previouslyConnected: Adapter[];
+        installed: Adapter[];
+        top3: Adapter[];
+        loadable: Adapter[];
+        notDetected: Adapter[];
+      }>(
+        (acc, wallet) => {
+          const adapterName = wallet.adapter.name;
 
-        // Previously connected takes highest
-        const previouslyConnectedIndex = previouslyConnected.indexOf(adapterName);
-        if (previouslyConnectedIndex >= 0) {
-          acc.previouslyConnected[previouslyConnectedIndex] = wallet.adapter;
-          return acc;
-        }
-        // Then Installed
-        if (wallet.readyState === WalletReadyState.Installed) {
-          acc.installed.push(wallet.adapter);
-          return acc;
-        }
-        // Top 3
-        const topWalletsIndex = TOP_WALLETS.indexOf(adapterName);
-        if (topWalletsIndex >= 0) {
-          acc.top3[topWalletsIndex] = wallet.adapter;
-          return acc;
-        }
-        // Loadable
-        if (wallet.readyState === WalletReadyState.Loadable) {
-          acc.loadable.push(wallet.adapter);
-          return acc;
-        }
-        // NotDetected
-        if (wallet.readyState === WalletReadyState.NotDetected) {
-          acc.loadable.push(wallet.adapter);
-          return acc;
-        }
-        return acc;
-      },
-      {
-        previouslyConnected: [],
-        installed: [],
-        top3: [],
-        loadable: [],
-        notDetected: [],
-      },
-    );
+          // popular takes highest
+          if (TOP_WALLETS.some((wallet) => wallet === adapterName)) {
+            acc.popularWallets.push(wallet.adapter);
+            return acc;
+          }
 
-    if (filteredAdapters.previouslyConnected.length > 0) {
-      const { previouslyConnected, ...rest } = filteredAdapters;
+          // Then previously connected
+          const previouslyConnectedIndex = previouslyConnected.indexOf(adapterName);
+          if (previouslyConnectedIndex >= 0) {
+            if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+              acc.installed.unshift(wallet.adapter);
+            } else {
+              acc.previouslyConnected[previouslyConnectedIndex] = wallet.adapter;
+            }
+            return acc;
+          }
+          // Then Installed
+          if (wallet.readyState === WalletReadyState.Installed) {
+            if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+              acc.installed.unshift(wallet.adapter);
+            } else {
+              acc.installed.push(wallet.adapter);
+            }
+            return acc;
+          }
+          // Top 3
+          const topWalletsIndex = TOP_WALLETS.indexOf(adapterName);
+          if (topWalletsIndex >= 0) {
+            acc.top3[topWalletsIndex] = wallet.adapter;
+            return acc;
+          }
+          // Loadable
+          if (wallet.readyState === WalletReadyState.Loadable) {
+            if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+              acc.installed.unshift(wallet.adapter);
+            } else {
+              acc.loadable.push(wallet.adapter);
+            }
+            return acc;
+          }
+          // NotDetected
+          if (wallet.readyState === WalletReadyState.NotDetected) {
+            if (TOP_WALLETS.indexOf(adapterName) >= 0) {
+              acc.installed.unshift(wallet.adapter);
+            } else {
+              acc.loadable.push(wallet.adapter);
+            }
+            return acc;
+          }
+          return acc;
+        },
+        {
+          popularWallets: [],
+          previouslyConnected: [],
+          installed: [],
+          top3: [],
+          loadable: [],
+          notDetected: [],
+        },
+      );
 
-      const highlight = filteredAdapters.previouslyConnected.slice(0, 3);
-      let others = Object.values(rest)
-        .flat()
-        .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-        .sort(sortByPrecedence(walletPrecedence || []));
-      others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length));
-      others = others.filter(Boolean);
+      if (filteredAdapters.previouslyConnected.length > 0) {
+        const { popularWallets, previouslyConnected, ...rest } = filteredAdapters;
 
-      return {
-        highlightedBy: 'PreviouslyConnected',
-        highlight,
-        others,
-      };
-    }
+        const highlight = filteredAdapters.previouslyConnected.slice(0, 3);
+        let others = Object.values(rest)
+          .flat()
+          .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
+          .sort(sortByPrecedence(walletPrecedence || []));
+        others.unshift(...filteredAdapters.previouslyConnected.slice(3, filteredAdapters.previouslyConnected.length));
+        others = others.filter(Boolean);
 
-    if (filteredAdapters.installed.length > 0) {
-      const { installed, ...rest } = filteredAdapters;
-      const highlight = filteredAdapters.installed.slice(0, 3);
+        return {
+          popularWallets: filteredAdapters.popularWallets,
+          highlightedBy: 'PreviouslyConnected',
+          highlight,
+          others,
+        };
+      }
+
+      if (filteredAdapters.installed.length > 0) {
+        const { popularWallets, installed, ...rest } = filteredAdapters;
+        const highlight = filteredAdapters.installed.slice(0, 3);
+        const others = Object.values(rest)
+          .flat()
+          .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
+          .sort(sortByPrecedence(walletPrecedence || []));
+        others.unshift(...filteredAdapters.installed.slice(3, filteredAdapters.installed.length));
+
+        return { popularWallets, highlightedBy: 'Installed', highlight, others };
+      }
+
+      if (filteredAdapters.loadable.length === 0) {
+        const { popularWallets, installed, ...rest } = filteredAdapters;
+        return { popularWallets, highlightedBy: 'Onboarding', highlight: [], others: [] };
+      }
+
+      const { popularWallets, top3, ...rest } = filteredAdapters;
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
         .sort(sortByPrecedence(walletPrecedence || []));
-      others.unshift(...filteredAdapters.installed.slice(3, filteredAdapters.installed.length));
-
-      return { highlightedBy: 'Installed', highlight, others };
-    }
-
-    if (filteredAdapters.loadable.length === 0) {
-      return { highlightedBy: 'Onboarding', highlight: [], others: [] };
-    }
-
-    const { top3, ...rest } = filteredAdapters;
-    const others = Object.values(rest)
-      .flat()
-      .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
-      .sort(sortByPrecedence(walletPrecedence || []));
-    return { highlightedBy: 'TopWallet', highlight: top3, others };
-  }, [wallets, previouslyConnected]);
+      return { popularWallets, highlightedBy: 'TopWallet', highlight: top3, others };
+    }, [wallets, previouslyConnected]);
 
   const contentRef = useRef<HTMLDivElement>(null);
   useOutsideClick(contentRef, onClose);

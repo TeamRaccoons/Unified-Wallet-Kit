@@ -3,17 +3,7 @@ import tw from 'twin.macro';
 
 const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithChildren> = ({ open, onClose: onCloseFunc, children }) => {
   const ref = useRef<HTMLDialogElement>(null);
-
-  const [isLocalOpen, setIsLocalOpen] = useState(false);
-  useEffect(() => {
-    if (!isLocalOpen) setIsLocalOpen(open);
-
-    if (isLocalOpen) {
-      setTimeout(() => {
-        setIsLocalOpen(open);
-      }, 150);
-    }
-  }, [open])
+  // TENSOR TRADE FIX: Removed isLocalOpen useState, because the modal flashes on low end mobile and on CPU throttled chrome.
 
   const onClose = useCallback(() => {
     ref.current?.close();
@@ -22,7 +12,7 @@ const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithCh
 
   useEffect(() => {
     if (ref.current) {
-      if (isLocalOpen) {
+      if (open) {
         if (!ref.current.open) {
           ref.current.showModal();
         }
@@ -32,23 +22,23 @@ const ModalDialog: React.FC<{ open: boolean; onClose: () => void } & PropsWithCh
     }
 
     // Make sure when `ESC` (browser default) is clicked, we close the dialog
-    if (isLocalOpen) {
+    if (open) {
       const refNode = ref.current;
       refNode?.addEventListener('close', onClose);
       return () => {
         refNode?.removeEventListener('close', onClose);
       };
     }
-  }, [onClose, isLocalOpen]);
+  }, [onClose, open]);
 
-  if (!isLocalOpen) return null;
+  if (!open) return null;
   return (
     <dialog
       role="dialog"
       aria-modal="true"
       css={[
         tw`top-0 left-0 h-full w-full flex items-center justify-center bg-black/25 backdrop-blur-sm animate-fade-in cursor-auto z-50`,
-        isLocalOpen && !open && tw`animate-fade-out opacity-0`,
+        !open && tw`animate-fade-out opacity-0`,
       ]}
       ref={ref}
     >

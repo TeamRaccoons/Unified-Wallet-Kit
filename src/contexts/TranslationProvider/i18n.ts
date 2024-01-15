@@ -119,7 +119,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     id: `Dompet yang diinstal`,
     ru: `Установленные кошельки`,
   },
-  [`Popular wallets`]: {
+  [`Recommended Wallets`]: {
     zh: `热门钱包`,
     vi: `Ví phổ biến`,
     fr: `Portefeuilles populaires`,

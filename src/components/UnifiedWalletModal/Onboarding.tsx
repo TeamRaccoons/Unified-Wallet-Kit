@@ -130,7 +130,7 @@ export const OnboardingGetWallets: React.FC<{ flow: IOnboardingFlow; setFlow: (f
 
 export type IOnboardingFlow = 'Onboarding' | 'Get Wallet';
 export const OnboardingFlow = ({ onClose, showBack }: { onClose: () => void; showBack: boolean }) => {
-  const [flow, setFlow] = useState<IOnboardingFlow>('Onboarding');
+  const [flow, setFlow] = useState<IOnboardingFlow>('Get Wallet');
   const [animateOut, setAnimateOut] = useState(false);
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -153,7 +153,7 @@ export const OnboardingFlow = ({ onClose, showBack }: { onClose: () => void; sho
       {flow === 'Onboarding' ? (
         <OnboardingIntro showBack={showBack} flow={flow} setFlow={setFlowAnimated} onClose={onClose} />
       ) : null}
-      {flow === 'Get Wallet' ? <OnboardingGetWallets flow={flow} setFlow={setFlowAnimated} /> : null}
+      {flow === 'Get Wallet' ? <OnboardingGetWallets flow={flow} setFlow={onClose} /> : null}
     </div>
   );
 };
