@@ -53,7 +53,7 @@ export const mobileUniLink = (adapter: Adapter) => {
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
   container: {
     light: [tw`text-black !bg-white shadow-xl`],
-    dark: [tw`text-white !bg-[#3A3B43] border border-white/10`],
+    dark: [tw`text-white !bg-[#111314]`],
     jupiter: [tw`text-white bg-[rgb(49, 62, 76)]`],
   },
   shades: {
