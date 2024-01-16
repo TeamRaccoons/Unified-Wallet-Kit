@@ -20,7 +20,8 @@ import { OnboardingFlow } from './Onboarding';
 
 // TENSOR TRADE FIX: implemented missing deeplinks when clicking non-mobile wallet-adapters when using mobile chrome
 export const mobileUniLink = (adapter: Adapter) => {
-  const isIOSOrAndroidDevice = /Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent);
+  // (!!) universal links on iPhone|iPad|iPod break the wallet flow
+  const isIOSOrAndroidDevice = /Android|webOS|Opera Mini/i.test(navigator.userAgent);
 
   if (!isIOSOrAndroidDevice) return null;
 
