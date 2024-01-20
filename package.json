@@ -1,6 +1,6 @@
 {
   "name": "@tensor-hq/wallet-adapter",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
@@ -25,11 +25,11 @@
     "build:types": "tsc --noEmit false --emitDeclarationOnly --outDir dist/types",
     "build:js": "rollup -c",
     "build-lib": "pnpm build:types && pnpm build:js",
-    "dev": "next dev -p 3001",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "next start",
     "serve": "npx serve public",
-    "publish:private": "pnpm build-lib && pnpm publish --publish-branch tensor-main"
+    "publish:private": "pnpm build-lib && pnpm publish --publish-branch main"
   },
   "peerDependencies": {
     "@emotion/react": "^11.10.5",

@@ -20,10 +20,14 @@ import { OnboardingFlow } from './Onboarding';
 
 // TENSOR TRADE FIX: implemented missing deeplinks when clicking non-mobile wallet-adapters when using mobile chrome
 export const mobileUniLink = (adapter: Adapter) => {
-  // (!!) universal links on iPhone|iPad|iPod break the wallet flow
-  const isIOSOrAndroidDevice = /Android|webOS|Opera Mini/i.test(navigator.userAgent);
+  const isIOSOrAndroidDevice = /Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent);
+  const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isIOSPhantomApp = /Phantom/i.test(navigator.userAgent) && isIOSDevice;
 
-  if (!isIOSOrAndroidDevice) return null;
+  // no deeplinks on desktop, or IOS phantom app
+  // (!!) universal links break the iPhone phantom app wallet flow. after clicking a deeplink and coming back, Phantom gets stuck on 'Connecting..'
+  if (!isIOSOrAndroidDevice || isIOSPhantomApp) return null;
+  if (isIOSPhantomApp) return null;
 
   const uniLink =
     adapter.name === 'Backpack'
@@ -48,7 +52,8 @@ export const mobileUniLink = (adapter: Adapter) => {
     suffix = `${suffix}?ref=${window?.location?.origin || defaultLink}`;
   }
 
-  return window.open(`${uniLink}${suffix}`, '_blank');
+  // window.open returns null on IOS devices. assume it works.
+  return !!window.open(`${uniLink}${suffix}`, '_blank') || isIOSDevice;
 };
 
 const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
