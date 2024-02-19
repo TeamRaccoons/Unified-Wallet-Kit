@@ -4,7 +4,10 @@ import { useWallet, Wallet, WalletContextState } from '@solana/wallet-adapter-re
 import { PublicKey } from '@solana/web3.js';
 
 import { Adapter, WalletReadyState } from '@solana/wallet-adapter-base';
-import WalletConnectionProvider, { IUnifiedWalletConfig } from './WalletConnectionProvider';
+import WalletConnectionProvider, {
+  type IUnifiedWalletConfig,
+  type IWalletNotification,
+} from './WalletConnectionProvider';
 import { usePrevious } from 'react-use';
 
 import { shortenAddress } from '../misc/utils';
@@ -193,4 +196,4 @@ const UnifiedWalletProvider = ({
   );
 };
 
-export { UnifiedWalletProvider, useUnifiedWallet, useUnifiedWalletContext };
+export { UnifiedWalletProvider, useUnifiedWallet, useUnifiedWalletContext, IUnifiedWalletConfig, IWalletNotification };

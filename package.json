@@ -1,6 +1,6 @@
 {
   "name": "@jup-ag/wallet-adapter",
-  "version": "0.1.5-test.0",
+  "version": "0.1.5-test.1",
   "license": "MIT",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
