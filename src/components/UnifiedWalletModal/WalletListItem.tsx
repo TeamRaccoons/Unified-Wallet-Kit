@@ -30,7 +30,7 @@ export const WalletIcon: FC<WalletIconProps> = ({ wallet, width = 24, height = 2
 
   if (wallet && wallet.icon && !hasError) {
     return (
-      <div style={{ minWidth: width, minHeight: height }}>
+      <span style={{ minWidth: width, minHeight: height }}>
         {/* // eslint-disable-next-line @next/next/no-img-element */}
         <img
           width={width}
@@ -40,13 +40,13 @@ export const WalletIcon: FC<WalletIconProps> = ({ wallet, width = 24, height = 2
           tw="object-contain"
           onError={onError}
         />
-      </div>
+      </span>
     );
   } else {
     return (
-      <div style={{ minWidth: width, minHeight: height }}>
+      <span style={{ minWidth: width, minHeight: height }}>
         <UnknownIconSVG width={width} height={height} />
-      </div>
+      </span>
     );
   }
 };
@@ -67,19 +67,22 @@ export const WalletListItem = ({ handleClick, wallet }: WalletListItemProps) => 
   }, [wallet?.name]);
 
   return (
-    <li
-      onClick={handleClick}
-      css={[
-        tw`flex items-center px-5 py-4 space-x-5 cursor-pointer border border-white/10 rounded-lg hover:bg-white/10 hover:backdrop-blur-xl hover:shadow-2xl transition-all`,
-        styles.container[theme],
-      ]}
-    >
-      {isMobile() ? (
-        <WalletIcon wallet={wallet} width={24} height={24} />
-      ) : (
-        <WalletIcon wallet={wallet} width={30} height={30} />
-      )}
-      <span tw="font-semibold text-xs overflow-hidden text-ellipsis">{adapterName}</span>
+    <li>
+      <button
+        type="button"
+        onClick={handleClick}
+        css={[
+          tw`flex items-center w-full px-5 py-4 space-x-5 transition-all border rounded-lg cursor-pointer border-white/10 hover:bg-white/10 hover:backdrop-blur-xl hover:shadow-2xl`,
+          styles.container[theme],
+        ]}
+      >
+        {isMobile() ? (
+          <WalletIcon wallet={wallet} width={24} height={24} />
+        ) : (
+          <WalletIcon wallet={wallet} width={30} height={30} />
+        )}
+        <span tw="font-semibold text-xs overflow-hidden text-ellipsis">{adapterName}</span>
+      </button>
     </li>
   );
 };
