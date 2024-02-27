@@ -42,7 +42,8 @@ const Index = () => {
 
                   <div tw="flex flex-wrap gap-3">
                     {(['light', 'dark', 'jupiter'] as IUnifiedTheme[]).map((t) => (
-                      <div
+                      <button
+                        type="button"
                         key={t}
                         onClick={() => setTheme(t)}
                         css={[
@@ -51,7 +52,7 @@ const Index = () => {
                         ]}
                       >
                         {t}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -61,7 +62,8 @@ const Index = () => {
 
                   <div tw="flex flex-wrap gap-3">
                     {[DEFAULT_LANGUAGE, ...OTHER_LANGUAGES].map((l) => (
-                      <div
+                      <button
+                        type="button"
                         key={l}
                         onClick={() => setLang(l)}
                         css={[
@@ -70,7 +72,7 @@ const Index = () => {
                         ]}
                       >
                         {LANGUAGE_LABELS[l]}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
