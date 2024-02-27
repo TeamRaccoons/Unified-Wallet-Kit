@@ -15,7 +15,7 @@ export const CurrentUserBadge: React.FC<{ onClick?: () => void; className?: stri
     <button
       type="button"
       onClick={onClick}
-      tw="inline-flex items-center bg-[#191B1F] py-2 px-3 rounded-2xl h-7 cursor-pointer"
+      tw="flex items-center bg-[#191B1F] py-2 px-3 rounded-2xl h-7 cursor-pointer"
       className={className}
     >
       <span
