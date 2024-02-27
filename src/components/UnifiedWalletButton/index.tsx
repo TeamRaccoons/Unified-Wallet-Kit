@@ -65,7 +65,8 @@ export const UnifiedWalletButton: React.FC<{
   return (
     <>
       {!wallet?.adapter.connected ? (
-        <div
+        <button
+          type="button"
           css={[
             overrideContent ? undefined : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
             styles.container[theme],
@@ -74,7 +75,7 @@ export const UnifiedWalletButton: React.FC<{
           onClick={handleClick}
         >
           {overrideContent || content}
-        </div>
+        </button>
       ) : (
         <CurrentUserBadge onClick={disconnect} className={currentUserClassName} />
       )}
