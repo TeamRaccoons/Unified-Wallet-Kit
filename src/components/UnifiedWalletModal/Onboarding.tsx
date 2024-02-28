@@ -1,11 +1,12 @@
+import React from 'react';
 import { useRef, useState } from 'react';
 import { HARDCODED_WALLET_STANDARDS } from '../../misc/constants';
-import tw, { TwStyle } from 'twin.macro';
+import tw from 'twin.macro';
 import ExternalIcon from '../icons/ExternalIcon';
-import { IUnifiedTheme, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
+import { IStandardStyle, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
 
-const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
+const styles: IStandardStyle = {
   subtitle: {
     light: [tw`text-black/70`],
     dark: [tw`text-white/50`],

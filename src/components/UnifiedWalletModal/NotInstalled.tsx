@@ -1,11 +1,11 @@
 import { Adapter } from '@solana/wallet-adapter-base';
 import React from 'react';
 import { useTranslation } from '../../contexts/TranslationProvider';
-import { IUnifiedTheme, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
+import { IStandardStyle, IUnifiedTheme, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import tw, { TwStyle } from 'twin.macro';
 import ExternalIcon from '../icons/ExternalIcon';
 
-const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
+const styles: IStandardStyle = {
   subtitle: {
     light: [tw`text-black/70`],
     dark: [tw`text-white/50`],

@@ -1,15 +1,15 @@
 import { Adapter, WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useToggle } from 'react-use';
+import tw from 'twin.macro';
 
 import { WalletIcon, WalletListItem } from './WalletListItem';
 
 import Collapse from '../../components/Collapse';
 
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
-import tw, { TwStyle } from 'twin.macro';
 import { useTranslation } from '../../contexts/TranslationProvider';
-import { IUnifiedTheme, useUnifiedWallet, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
+import { IStandardStyle, useUnifiedWallet, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import ChevronUpIcon from '../../icons/ChevronUpIcon';
@@ -18,7 +18,7 @@ import { isMobile, useOutsideClick } from '../../misc/utils';
 import NotInstalled from './NotInstalled';
 import { OnboardingFlow } from './Onboarding';
 
-const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
+const styles: IStandardStyle = {
   container: {
     light: [tw`text-black !bg-white shadow-xl`],
     dark: [tw`text-white !bg-[#3A3B43] border border-white/10`],
@@ -44,6 +44,11 @@ const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
     dark: [],
     jupiter: [],
   },
+  text: {
+    light: [tw`text-black`],
+    dark: [tw`text-white`],
+    jupiter: [tw`text-white`],
+  }
 };
 
 const Header: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -193,7 +198,7 @@ const ListOfWallets: React.FC<{
           <>
             <button type="button" tw="mt-5 flex w-full items-center justify-between cursor-pointer" onClick={onToggle}>
               <span tw="text-xs font-semibold">
-                <span>{t(`More wallets`)}</span>
+                <span css={[styles.text[theme]]}>{t(`More wallets`)}</span>
               </span>
 
               <span tw="w-[10px] h-[6px]">{isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}</span>
@@ -206,7 +211,7 @@ const ListOfWallets: React.FC<{
         ) : null}
         <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
           <button type="button" onClick={() => setShowOnboarding(true)}>
-            <span>{t(`I don't have a wallet`)}</span>
+            <span css={[styles.text[theme]]}>{t(`I don't have a wallet`)}</span>
           </button>
         </div>
       </div>

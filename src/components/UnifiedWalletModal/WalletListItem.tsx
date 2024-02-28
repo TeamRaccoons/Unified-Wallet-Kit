@@ -5,8 +5,8 @@ import 'twin.macro';
 import UnknownIconSVG from '../../icons/UnknownIconSVG';
 import { isMobile } from '../../misc/utils';
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
-import tw, { TwStyle } from 'twin.macro';
-import { IUnifiedTheme, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
+import tw from 'twin.macro';
+import { IStandardStyle, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
 
 export interface WalletIconProps extends DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
@@ -15,7 +15,7 @@ export interface WalletIconProps extends DetailedHTMLProps<ImgHTMLAttributes<HTM
   height?: number;
 }
 
-const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
+const styles: IStandardStyle = {
   container: {
     light: [tw`bg-gray-50 hover:shadow-lg hover:border-black/10`],
     dark: [tw`hover:shadow-2xl hover:bg-white/10`],
@@ -52,7 +52,7 @@ export const WalletIcon: FC<WalletIconProps> = ({ wallet, width = 24, height = 2
 };
 
 export interface WalletListItemProps {
-  handleClick: MouseEventHandler<HTMLLIElement>;
+  handleClick: MouseEventHandler<HTMLButtonElement>;
   wallet: Adapter;
 }
 
