@@ -1,13 +1,13 @@
 import React, { ReactNode, useCallback } from 'react';
 import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
-import tw, { TwStyle } from 'twin.macro';
+import tw from 'twin.macro';
 
 import { CurrentUserBadge } from '../CurrentUserBadge';
 import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletProvider';
-import { IUnifiedTheme, MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
+import { IStandardStyle, MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
 
-const styles: Record<string, { [key in IUnifiedTheme]: TwStyle[] }> = {
+const styles: IStandardStyle = {
   container: {
     light: [tw`bg-white text-black`],
     dark: [tw`bg-[#31333B] text-white`],
@@ -68,7 +68,9 @@ export const UnifiedWalletButton: React.FC<{
         <button
           type="button"
           css={[
-            overrideContent ? undefined : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
+            overrideContent
+              ? undefined
+              : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
             styles.container[theme],
           ]}
           className={className}
