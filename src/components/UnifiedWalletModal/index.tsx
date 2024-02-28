@@ -159,7 +159,8 @@ const ListOfWallets: React.FC<{
             const attachment = walletAttachments ? walletAttachments[adapter.name]?.attachment : null;
 
             return (
-              <div
+              <button
+                type="button"
                 key={idx}
                 onClick={(event) => onClickWallet(event, adapter)}
                 css={[
@@ -175,7 +176,7 @@ const ListOfWallets: React.FC<{
                 )}
                 <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapterName}</span>
                 {attachment ? <div>{attachment}</div> : null}
-              </div>
+              </button>
             );
           })}
         </div>
@@ -190,15 +191,13 @@ const ListOfWallets: React.FC<{
 
         {list.others.length > 0 ? (
           <>
-            <div tw="mt-5 flex justify-between cursor-pointer" onClick={onToggle}>
+            <button type="button" tw="mt-5 flex w-full items-center justify-between cursor-pointer" onClick={onToggle}>
               <span tw="text-xs font-semibold">
                 <span>{t(`More wallets`)}</span>
               </span>
 
-              <div tw=" flex items-center">
-                <span tw="w-[10px] h-[6px]">{isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}</span>
-              </div>
-            </div>
+              <span tw="w-[10px] h-[6px]">{isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}</span>
+            </button>
 
             <Collapse height={0} maxHeight={'auto'} expanded={isOpen}>
               {renderWalletList}
