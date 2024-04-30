@@ -51,6 +51,9 @@ export interface IUnifiedWalletConfig {
   theme?: IUnifiedTheme;
   lang?: AllLanguage;
   walletAttachments?: Record<string, { attachment: ReactNode }>;
+  walletModal?: {
+    footer?: ReactNode;
+  };
 }
 
 export interface IUnifiedWalletMetadata {
