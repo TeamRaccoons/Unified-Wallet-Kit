@@ -16,6 +16,7 @@ export interface IUnifiedWalletContext {
   walletlistExplanation: IUnifiedWalletConfig['walletlistExplanation'];
   theme: IUnifiedTheme;
   walletAttachments: IUnifiedWalletConfig['walletAttachments'];
+  walletModalAttachments: IUnifiedWalletConfig['walletModalAttachments'];
 }
 
 export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
@@ -26,6 +27,7 @@ export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
   walletlistExplanation: undefined,
   theme: 'light',
   walletAttachments: undefined,
+  walletModalAttachments: undefined,
 });
 
 // Copied from @solana/wallet-adapter-react
