@@ -162,7 +162,7 @@ const UnifiedWalletContextProvider: React.FC<
         walletlistExplanation: config.walletlistExplanation,
         theme: config.theme || 'light',
         walletAttachments: config.walletAttachments || {},
-        walletModal: config.walletModal || {},
+        walletModalAttachments: config.walletModalAttachments || {},
       }}
     >
       <ModalDialog open={showModal} onClose={() => setShowModal(false)}>
