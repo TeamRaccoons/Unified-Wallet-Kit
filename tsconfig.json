@@ -27,6 +27,6 @@
     "noEmit": true,
     "incremental": true
   },
-  "include": ["types", "lib/index.tsx"],
+  "include": ["types", "lib/index.tsx", "src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

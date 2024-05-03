@@ -52,7 +52,7 @@ export const WalletIcon: FC<WalletIconProps> = ({ wallet, width = 24, height = 2
 };
 
 export interface WalletListItemProps {
-  handleClick: MouseEventHandler<HTMLLIElement>;
+  handleClick: MouseEventHandler<HTMLButtonElement>;
   wallet: Adapter;
 }
 
