@@ -65,17 +65,26 @@ export const UnifiedWalletButton: React.FC<{
   return (
     <>
       {!wallet?.adapter.connected ? (
-        <button
-          type="button"
-          css={[
-            overrideContent ? undefined : tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
-            styles.container[theme],
-          ]}
-          className={className}
-          onClick={handleClick}
-        >
-          {overrideContent || content}
-        </button>
+        <>
+          {overrideContent ? (
+            // To prevent react render error where <button> is nested
+            <div css={styles.container[theme]} className={className} onClick={handleClick}>
+              {overrideContent}
+            </div>
+          ) : (
+            <button
+              type="button"
+              css={[
+                tw`rounded-lg text-xs py-3 px-5 font-semibold cursor-pointer text-center w-auto`,
+                styles.container[theme],
+              ]}
+              className={className}
+              onClick={handleClick}
+            >
+              {content}
+            </button>
+          )}
+        </>
       ) : (
         <CurrentUserBadge onClick={disconnect} className={currentUserClassName} />
       )}
