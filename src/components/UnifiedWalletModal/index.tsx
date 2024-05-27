@@ -153,7 +153,7 @@ const ListOfWallets: React.FC<{
           {list.highlightedBy === 'PreviouslyConnected' ? t(`Recently used`) : null}
           {list.highlightedBy === 'TopAndRecommended' ? t(`Recommended wallets`) : null}
         </span>
-        <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
+        <div tw="mt-4 flex flex-col space-y-2">
           {list.highlight.map((adapter, idx) => {
             const adapterName = (() => {
               if (adapter.name === SolanaMobileWalletAdapterWalletName) return t(`Mobile`);
@@ -168,7 +168,7 @@ const ListOfWallets: React.FC<{
                 key={idx}
                 onClick={(event) => onClickWallet(event, adapter)}
                 css={[
-                  tw`py-4 px-4 lg:px-2 border border-white/10 rounded-lg flex lg:flex-col items-center lg:justify-center cursor-pointer flex-1 lg:max-w-[33%]`,
+                  tw`py-4 px-4 border border-white/10 rounded-lg flex items-center cursor-pointer flex-1`,
                   tw`hover:backdrop-blur-xl transition-all`,
                   styles.walletItem[theme],
                 ]}
@@ -178,7 +178,7 @@ const ListOfWallets: React.FC<{
                 ) : (
                   <WalletIcon wallet={adapter} width={30} height={30} />
                 )}
-                <span tw="font-semibold text-xs ml-4 lg:ml-0 lg:mt-3">{adapterName}</span>
+                <span tw="font-semibold text-xs ml-4">{adapterName}</span>
                 {attachment ? <div>{attachment}</div> : null}
               </button>
             );
@@ -241,7 +241,8 @@ export interface WalletModalProps {
 
 type HIGHLIGHTED_BY = 'PreviouslyConnected' // last connected
 | 'TopAndRecommended' // Installed, and top wallets
-| 'Onboarding';
+| 'Onboarding'
+| 'TopWallet';
 const TOP_WALLETS: WalletName[] = [
   'Phantom' as WalletName<'Phantom'>,
   'Solflare' as WalletName<'Solflare'>,
