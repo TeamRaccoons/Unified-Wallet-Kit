@@ -10,7 +10,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <GlobalStyles />
       <Component className="App" {...pageProps} />
-      <Toaster position="bottom-left" toastOptions={{ style: { border: 0, borderRadius: '1rem', overflow: 'hidden' } }} />
+      <Toaster
+        position="bottom-left"
+        toastOptions={{ style: { border: 0, borderRadius: '1rem', overflow: 'hidden' } }}
+      />
     </>
-  )
+  );
 }

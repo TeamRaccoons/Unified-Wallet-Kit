@@ -1,11 +1,11 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
+import React from 'react';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
   render() {
     return (
       <Html>
         <Head>
-          <title>Unified Wallet Kit</title>
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon-96x96.png" />
           <meta name="theme-color" content="#103145" />
