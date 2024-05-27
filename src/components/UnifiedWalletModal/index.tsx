@@ -273,7 +273,7 @@ const sortByPrecedence = (walletPrecedence: WalletName[]) => (a: Adapter, b: Ada
 
 const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
   const { wallets } = useUnifiedWallet();
-  const { walletPrecedence, theme } = useUnifiedWalletContext();
+  const { walletPrecedence, theme, walletModalAttachments } = useUnifiedWalletContext();
   const [isOpen, onToggle] = useToggle(false);
   const previouslyConnected = usePreviouslyConnected();
 
@@ -387,6 +387,8 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
       <Header onClose={onClose} />
       <div tw="border-t-[1px] border-white/10" />
       <ListOfWallets list={list} onToggle={onToggle} isOpen={isOpen} />
+
+      {walletModalAttachments?.footer ? <>{walletModalAttachments?.footer}</> : null}
     </div>
   );
 };
