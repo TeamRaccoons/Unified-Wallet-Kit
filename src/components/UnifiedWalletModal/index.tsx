@@ -151,8 +151,7 @@ const ListOfWallets: React.FC<{
       <div className="hideScrollbar" css={[tw`h-full overflow-y-auto pt-3 pb-8 px-5 relative`, isOpen && tw`mb-7`]}>
         <span tw="mt-6 text-xs font-semibold">
           {list.highlightedBy === 'PreviouslyConnected' ? t(`Recently used`) : null}
-          {list.highlightedBy === 'Installed' ? t(`Installed wallets`) : null}
-          {list.highlightedBy === 'TopWallet' ? t(`Popular wallets`) : null}
+          {list.highlightedBy === 'TopAndRecommended' ? t(`Recommended wallets`) : null}
         </span>
         <div tw="mt-4 flex flex-col lg:flex-row lg:space-x-2 space-y-2 lg:space-y-0">
           {list.highlight.map((adapter, idx) => {
@@ -240,7 +239,9 @@ export interface WalletModalProps {
   container?: string;
 }
 
-type HIGHLIGHTED_BY = 'PreviouslyConnected' | 'Installed' | 'TopWallet' | 'Onboarding';
+type HIGHLIGHTED_BY = 'PreviouslyConnected' // last connected
+| 'TopAndRecommended' // Installed, and top wallets
+| 'Onboarding';
 const TOP_WALLETS: WalletName[] = [
   'Phantom' as WalletName<'Phantom'>,
   'Solflare' as WalletName<'Solflare'>,
@@ -345,15 +346,19 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
     }
 
     if (filteredAdapters.installed.length > 0) {
-      const { installed, ...rest } = filteredAdapters;
-      const highlight = filteredAdapters.installed.slice(0, 3);
+      const { installed, top3, ...rest } = filteredAdapters;
+      const highlight = [
+        ...installed.slice(0, 3),
+        ...top3.filter(Boolean),
+      ].filter(Boolean);
+      
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
         .sort(sortByPrecedence(walletPrecedence || []));
       others.unshift(...filteredAdapters.installed.slice(3, filteredAdapters.installed.length));
 
-      return { highlightedBy: 'Installed', highlight, others };
+      return { highlightedBy: 'TopAndRecommended', highlight, others };
     }
 
     if (filteredAdapters.loadable.length === 0) {
