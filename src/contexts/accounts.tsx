@@ -1,14 +1,13 @@
-import BN from 'bn.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { fromLamports } from '../misc/utils';
 import { WRAPPED_SOL_MINT } from '../misc/constants';
+import { fromLamports } from '../misc/utils';
 
 export interface IAccountsBalance {
   balance: number;
-  balanceLamports: BN;
+  balanceLamports: string;
   hasBalance: boolean;
   decimals: number;
 }
@@ -68,7 +67,7 @@ const AccountsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     if (response) {
       return {
         balance: fromLamports(response?.lamports || 0, 9),
-        balanceLamports: new BN(response?.lamports || 0),
+        balanceLamports: response?.lamports.toString(),
         hasBalance: response?.lamports ? response?.lamports > 0 : false,
         decimals: 9,
       };
@@ -84,15 +83,18 @@ const AccountsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       'confirmed',
     );
 
-    const reducedResult = response.value.reduce((acc, item: ParsedTokenData) => {
-      acc[item.account.data.parsed.info.mint] = {
-        balance: item.account.data.parsed.info.tokenAmount.uiAmount,
-        balanceLamports: new BN(0),
-        hasBalance: item.account.data.parsed.info.tokenAmount.uiAmount > 0,
-        decimals: item.account.data.parsed.info.tokenAmount.decimals,
-      };
-      return acc;
-    }, {} as Record<string, IAccountsBalance>);
+    const reducedResult = response.value.reduce(
+      (acc, item: ParsedTokenData) => {
+        acc[item.account.data.parsed.info.mint] = {
+          balance: item.account.data.parsed.info.tokenAmount.uiAmount,
+          balanceLamports: '0',
+          hasBalance: item.account.data.parsed.info.tokenAmount.uiAmount > 0,
+          decimals: item.account.data.parsed.info.tokenAmount.decimals,
+        };
+        return acc;
+      },
+      {} as Record<string, IAccountsBalance>,
+    );
 
     return reducedResult;
   };
