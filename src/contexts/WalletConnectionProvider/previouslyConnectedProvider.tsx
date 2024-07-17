@@ -1,11 +1,25 @@
 import { useLocalStorage, useWallet } from '@solana/wallet-adapter-react';
 import React, { useContext, useEffect } from 'react';
 
+const OLD_KEY_NAME = 'open-wallet-previously-connected';
+const NEW_KEY_NAME = 'unified-wallet-previously-connected';
+
 const PreviouslyConnectedContext = React.createContext<string[]>([]);
 
 const PreviouslyConnectedProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { wallet, connected } = useWallet();
-  const [previouslyConnected, setPreviouslyConnected] = useLocalStorage<string[]>(`open-wallet-previously-connected`, []);
+
+  const [oldPreviouslyConnected, setOldPreviouslyConnected] = useLocalStorage<string[]>(OLD_KEY_NAME, []);
+  const [previouslyConnected, setPreviouslyConnected] = useLocalStorage<string[]>(NEW_KEY_NAME, []);
+
+  // TODO: Remove this block after a few releases (changes made in v0.2.0)
+  useEffect(() => {
+    if (oldPreviouslyConnected) {
+      setPreviouslyConnected(oldPreviouslyConnected);
+      //@ts-ignore
+      setOldPreviouslyConnected(null);
+    }
+  }, []);
 
   useEffect(() => {
     if (connected && wallet) {

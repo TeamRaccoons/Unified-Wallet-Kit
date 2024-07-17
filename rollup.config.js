@@ -1,11 +1,11 @@
-import { nodeExternals } from 'rollup-plugin-node-externals';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
+import { nodeExternals } from 'rollup-plugin-node-externals';
 import pkg from './package.json' assert { type: 'json' };
 
 const config = {
-  name: 'OpenWallet',
+  name: 'UnifiedWallet',
   extensions: ['.ts', '.tsx', '.js', '.jsx'],
 };
 
@@ -40,7 +40,7 @@ export default {
     commonjs(),
     babel({
       extensions: config.extensions,
-      include: ['src/**/*',],
+      include: ['src/**/*'],
       exclude: 'node_modules/**',
     }),
   ],
