@@ -5,7 +5,11 @@ const PreviouslyConnectedContext = React.createContext<string[]>([]);
 
 const PreviouslyConnectedProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { wallet, connected } = useWallet();
-  const [previouslyConnected, setPreviouslyConnected] = useLocalStorage<string[]>(`open-wallet-previously-connected`, []);
+
+  const [previouslyConnected, setPreviouslyConnected] = useLocalStorage<string[]>(
+    'unified-wallet-previously-connected',
+    [],
+  );
 
   useEffect(() => {
     if (connected && wallet) {
