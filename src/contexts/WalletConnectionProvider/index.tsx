@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren, ReactNode, useMemo } from 'react';
-import { WalletProvider } from '@solana/wallet-adapter-react';
+import { useWallet, WalletProvider } from '@solana/wallet-adapter-react';
 import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base';
 import {
   SolanaMobileWalletAdapter,
@@ -9,7 +9,7 @@ import {
 } from '@solana-mobile/wallet-adapter-mobile';
 import { Cluster } from '@solana/web3.js';
 
-import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
+import { PreviouslyConnectedProvider, usePreviouslyConnected } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
 import { IUnifiedTheme } from '../UnifiedWalletContext';
 import { AllLanguage } from '../TranslationProvider/i18n';
@@ -91,10 +91,29 @@ const WalletConnectionProvider: FC<
   }, []);
 
   return (
-    <WalletProvider wallets={wallets} autoConnect={config.autoConnect} onError={noop}>
-      <PreviouslyConnectedProvider>{children}</PreviouslyConnectedProvider>
+    <WalletProvider wallets={wallets} autoConnect={false} onError={noop}>
+      <PreviouslyConnectedProvider>
+        <WalletConnectionProviderWithAutoConnect autoConnect={config.autoConnect}>
+          {children}
+        </WalletConnectionProviderWithAutoConnect>
+      </PreviouslyConnectedProvider>
     </WalletProvider>
   );
+};
+
+const WalletConnectionProviderWithAutoConnect = (props: PropsWithChildren & { autoConnect: boolean }) => {
+  const previouslyConnected = usePreviouslyConnected();
+  const { select, connect } = useWallet();
+
+  const localStorageItem = typeof window !== 'undefined' ? window.localStorage.getItem('walletName')?.replaceAll('"', '') : null;
+  if (props.autoConnect && previouslyConnected[0] === localStorageItem) {
+    select(previouslyConnected[0] as WalletName);
+    setTimeout(() => {
+      connect();
+    }, 0)
+  }
+
+  return <>{props.children}</>;
 };
 
 export default WalletConnectionProvider;
