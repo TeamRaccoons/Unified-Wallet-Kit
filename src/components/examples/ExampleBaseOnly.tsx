@@ -16,7 +16,7 @@ const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = (
     () => ({
       wallets: [],
       config: {
-        autoConnect: false,
+        autoConnect: true,
         env: 'mainnet-beta' as Cluster,
         metadata: {
           name: 'UnifiedWallet',
