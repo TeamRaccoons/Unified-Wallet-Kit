@@ -1,6 +1,6 @@
 import { WalletName } from '@solana/wallet-adapter-base';
 import { PublicKey } from '@solana/web3.js';
-import { IHardcodedWalletStandardAdapter } from 'src/contexts/WalletConnectionProvider/HardcodedWalletStandardAdapter';
+import { IHardcodedWalletStandardAdapter } from '../contexts/WalletConnectionProvider/HardcodedWalletStandardAdapter';
 export const WRAPPED_SOL_MINT = new PublicKey('So11111111111111111111111111111111111111112');
 
 export const HARDCODED_WALLET_STANDARDS: IHardcodedWalletStandardAdapter[] = [
