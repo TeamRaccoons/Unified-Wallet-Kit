@@ -6,7 +6,7 @@ import {
   isVersionedTransaction,
 } from '@solana/wallet-adapter-base';
 import { Keypair, Transaction, TransactionVersion, VersionedTransaction } from '@solana/web3.js';
-import { isIosAndRedirectable } from 'src/misc/utils';
+import { isIosAndRedirectable } from '../../misc/utils';
 
 export interface IHardcodedWalletStandardAdapter {
   id: string;
