@@ -8,3 +8,6 @@ export { default as HardcodedWalletStandardAdapter } from './contexts/WalletConn
 
 // Components
 export * from './components/index';
+
+// Constants
+export { HARDCODED_WALLET_STANDARDS } from './misc/constants';
