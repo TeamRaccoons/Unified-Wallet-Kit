@@ -1,14 +1,26 @@
-import { BaseSignerWalletAdapter, WalletName, WalletNotConnectedError, WalletReadyState, isVersionedTransaction } from "@solana/wallet-adapter-base";
-import { Keypair, Transaction, TransactionVersion, VersionedTransaction } from "@solana/web3.js";
+import {
+  BaseSignerWalletAdapter,
+  WalletName,
+  WalletNotConnectedError,
+  WalletReadyState,
+  isVersionedTransaction,
+} from '@solana/wallet-adapter-base';
+import { Keypair, Transaction, TransactionVersion, VersionedTransaction } from '@solana/web3.js';
+import { isIosAndRedirectable } from '../../misc/utils';
 
 export interface IHardcodedWalletStandardAdapter {
-  id: string; name: WalletName; url: string; icon: string
+  id: string;
+  name: WalletName;
+  url: string;
+  icon: string;
+  deepLink?: () => string;
 }
 
 export default class HardcodedWalletStandardAdapter extends BaseSignerWalletAdapter {
   name = '' as WalletName;
   url = '';
   icon = '';
+  deepLink?: () => string;
   supportedTransactionVersions: ReadonlySet<TransactionVersion> = new Set(['legacy', 0]);
 
   /**
@@ -16,12 +28,18 @@ export default class HardcodedWalletStandardAdapter extends BaseSignerWalletAdap
    * secret key, and because the keypair will be lost any time the wallet is disconnected or the window is refreshed.
    */
   private _keypair: Keypair | null = null;
+  public readyState: WalletReadyState = WalletReadyState.NotDetected;
 
-  constructor({ name, url, icon }: { name: WalletName; url: string; icon: string }) {
+  constructor({ name, url, icon, deepLink }: Omit<IHardcodedWalletStandardAdapter, 'id'>) {
     super();
     this.name = name;
     this.url = url;
     this.icon = icon;
+    this.deepLink = deepLink;
+
+    if (this.deepLink && isIosAndRedirectable()) {
+      this.readyState = WalletReadyState.Loadable;
+    }
   }
 
   get connecting() {
@@ -32,11 +50,11 @@ export default class HardcodedWalletStandardAdapter extends BaseSignerWalletAdap
     return this._keypair && this._keypair.publicKey;
   }
 
-  get readyState() {
-    return WalletReadyState.NotDetected;
-  }
-
   async connect(): Promise<void> {
+    if (this.readyState === WalletReadyState.Loadable && this.deepLink) {
+      window.location.href = this.deepLink();
+      return;
+    }
     throw new WalletNotConnectedError();
   }
 
