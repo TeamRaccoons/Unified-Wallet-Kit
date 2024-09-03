@@ -22,7 +22,7 @@ import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
-import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
+import { UnifiedSupportedProvider } from '../../contexts/WalletConnectionProvider/providers';
 import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
 initializeSolflareAndMetamaskSnap();

@@ -8,7 +8,7 @@ import { Cluster } from '@solana/web3.js';
 import { useMemo } from 'react';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
-import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
+import { UnifiedSupportedProvider } from '../../contexts/WalletConnectionProvider/providers';
 import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
 const HARDCODED_WALLET_CODEBLOCK = `wallets={[]}`;

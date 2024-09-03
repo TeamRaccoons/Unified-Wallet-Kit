@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import tw from 'twin.macro';
 
-import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
+import { UnifiedSupportedProvider } from '../contexts/WalletConnectionProvider/providers';
 import AppHeader from '../components/AppHeader/AppHeader';
 import Footer from '../components/Footer/Footer';
 import V2SexyChameleonText from '../components/SexyChameleonText/V2SexyChameleonText';

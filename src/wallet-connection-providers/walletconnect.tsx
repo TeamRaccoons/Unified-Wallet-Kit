@@ -1,4 +1,3 @@
-import React from 'react';
 import { createWeb3Modal, defaultSolanaConfig } from '@web3modal/solana/react';
 import { solana, solanaTestnet, solanaDevnet } from '@web3modal/solana/chains';
 

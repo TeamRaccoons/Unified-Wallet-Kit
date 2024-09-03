@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useWallet, Wallet, WalletContextState } from '@solana/wallet-adapter-react';
 import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
@@ -24,7 +24,7 @@ import {
   useDisconnect,
   useWeb3ModalAccount,
 } from '@web3modal/solana/react';
-import { initializeWalletConnect } from 'src/wallet-connection-providers/walletconnect';
+import { initializeWalletConnect } from '../wallet-connection-providers/walletconnect';
 
 export type IWalletProps = Omit<
   WalletContextState,

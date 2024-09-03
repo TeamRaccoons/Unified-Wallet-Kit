@@ -1,19 +1,19 @@
-import { FC, PropsWithChildren, ReactNode, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { WalletProvider } from '@solana/wallet-adapter-react';
-import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base';
 import {
   SolanaMobileWalletAdapter,
   createDefaultAddressSelector,
   createDefaultAuthorizationResultCache,
   createDefaultWalletNotFoundHandler,
 } from '@solana-mobile/wallet-adapter-mobile';
+import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base';
+import { WalletProvider } from '@solana/wallet-adapter-react';
 import { Cluster } from '@solana/web3.js';
+import { FC, PropsWithChildren, ReactNode, useMemo } from 'react';
 
-import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
-import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
-import { IUnifiedTheme, useUnifiedWalletContext } from '../UnifiedWalletContext';
+import { initializeWalletConnect } from '../../wallet-connection-providers/walletconnect';
 import { AllLanguage } from '../TranslationProvider/i18n';
-import { initializeWalletConnect } from 'src/wallet-connection-providers/walletconnect';
+import { IUnifiedTheme, useUnifiedWalletContext } from '../UnifiedWalletContext';
+import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
+import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import { UnifiedSupportedProvider } from './providers';
 
 const noop = (error: WalletError, adapter?: Adapter) => {

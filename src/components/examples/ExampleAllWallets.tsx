@@ -15,7 +15,7 @@ import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippe
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { HARDCODED_WALLET_STANDARDS } from '../../misc/constants';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
-import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
+import { UnifiedSupportedProvider } from '../../contexts/WalletConnectionProvider/providers';
 import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
 const ExampleAllWallets: React.FC<{

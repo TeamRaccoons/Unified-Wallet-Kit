@@ -1,11 +1,11 @@
 import { ConnectionProvider } from '@solana/wallet-adapter-react';
 import { useState } from 'react';
-import { SolanaSignMessageTest } from 'src/contexts/SigningTest/SignMessage';
-import { SolanaSignTransactionTest } from 'src/contexts/SigningTest/SignTransaction';
-import { SolanaSendTransactionTest } from 'src/contexts/SigningTest/SolanaSendTransactionTest';
-import { SolanaSignAndSendTransactionTest } from 'src/contexts/SigningTest/SolanaSignAndSendTransactionTest';
-import ChevronDownIcon from 'src/icons/ChevronDownIcon';
-import ChevronUpIcon from 'src/icons/ChevronUpIcon';
+import { SolanaSignMessageTest } from '../../contexts/SigningTest/SignMessage';
+import { SolanaSignTransactionTest } from '../../contexts/SigningTest/SignTransaction';
+import { SolanaSendTransactionTest } from '../../contexts/SigningTest/SolanaSendTransactionTest';
+import { SolanaSignAndSendTransactionTest } from '../../contexts/SigningTest/SolanaSignAndSendTransactionTest';
+import ChevronDownIcon from '../../icons/ChevronDownIcon';
+import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import tw from 'twin.macro';
 import Collapse from '../Collapse';
 
