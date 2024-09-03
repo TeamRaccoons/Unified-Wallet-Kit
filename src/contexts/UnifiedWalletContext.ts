@@ -12,8 +12,7 @@ export type IUnifiedTheme = 'light' | 'dark' | 'jupiter';
 export type IStandardStyle = Record<string, { [key in IUnifiedTheme]: TwStyle[] }>;
 
 export interface IUnifiedWalletContext {
-  provider: UnifiedSupportedProvider,
-  setProvider: (provider: UnifiedSupportedProvider) => void;
+  provider: UnifiedSupportedProvider;
   walletPrecedence: IUnifiedWalletConfig['walletPrecedence'];
   handleConnectClick: (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => Promise<void>;
   showModal: boolean;
@@ -26,7 +25,6 @@ export interface IUnifiedWalletContext {
 
 export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
   provider: 'solana-wallet-adapter',
-  setProvider: () => {},
   walletPrecedence: [],
   handleConnectClick: async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => {},
   showModal: false,

@@ -15,8 +15,14 @@ import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippe
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { HARDCODED_WALLET_STANDARDS } from '../../misc/constants';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
+import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
+import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
-const ExampleAllWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+const ExampleAllWallets: React.FC<{
+  theme: IUnifiedTheme;
+  lang: AllLanguage;
+  provider: UnifiedSupportedProvider;
+}> = ({ theme, lang, provider }) => {
   const wallets = useMemo(() => {
     if (typeof window === 'undefined') {
       return [];
@@ -56,7 +62,7 @@ const ExampleAllWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> =
 
   const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(
     () => ({
-      wallets: wallets,
+      wallets,
       config: {
         autoConnect: false,
         env: 'mainnet-beta',
@@ -74,15 +80,17 @@ const ExampleAllWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> =
         },
         theme,
         lang,
+        provider,
       },
     }),
-    [wallets, theme, lang],
+    [wallets, theme, lang, provider],
   );
 
   return (
     <div tw="flex flex-col items-start">
       <UnifiedWalletProvider {...params}>
         <UnifiedWalletButton />
+        <WalletSigningTestComponent />
       </UnifiedWalletProvider>
 
       <div tw="w-full overflow-x-auto">

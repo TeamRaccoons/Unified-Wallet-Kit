@@ -1,22 +1,26 @@
-import { useWeb3ModalProvider } from '@web3modal/solana/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import tw from 'twin.macro';
+import { useUnifiedWallet } from '../UnifiedWalletContext';
 
 export function SolanaSignMessageTest() {
-  const { walletProvider } = useWeb3ModalProvider();
+  const { publicKey, signMessage } = useUnifiedWallet();
   const [loading, setLoading] = useState(false);
 
   async function onSignMessage() {
     try {
       setLoading(true);
 
-      if (!walletProvider) {
+      if (!publicKey) {
         throw Error('user is disconnected');
       }
 
+      if (!signMessage) {
+        throw Error('signMessage is not found');
+      }
+
       const encodedMessage = new TextEncoder().encode('Hello from Web3Modal');
-      const signature = await walletProvider.signMessage(encodedMessage);
+      const signature = await signMessage(encodedMessage);
 
       toast.success(`Success ${signature}`);
     } catch (err) {
@@ -27,13 +31,16 @@ export function SolanaSignMessageTest() {
   }
 
   return (
-    <button
-      data-test-id="sign-transaction-button"
-      onClick={onSignMessage}
-      disabled={loading}
-      css={tw`cursor-pointer border border-white/10 rounded-lg py-1.5 px-3 bg-white text-black disabled:opacity-50`}
-    >
-      Sign Message
-    </button>
+    <div>
+      <p css={tw`text-white text-xs mt-2 mb-1`}>Sign Message</p>
+      <button
+        data-test-id="sign-transaction-button"
+        onClick={onSignMessage}
+        disabled={loading}
+        css={tw`rounded-lg py-1 px-2 text-xs bg-v2-lily/70 text-black disabled:opacity-50`}
+      >
+        Sign Message
+      </button>
+    </div>
   );
 }

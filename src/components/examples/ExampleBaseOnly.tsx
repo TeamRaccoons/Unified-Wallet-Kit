@@ -8,10 +8,17 @@ import { Cluster } from '@solana/web3.js';
 import { useMemo } from 'react';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
+import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
+import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
 const HARDCODED_WALLET_CODEBLOCK = `wallets={[]}`;
 
-const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+const ExampleBaseOnly: React.FC<{
+  theme: IUnifiedTheme;
+  lang: AllLanguage;
+  provider: UnifiedSupportedProvider;
+  setProvider: React.Dispatch<React.SetStateAction<UnifiedSupportedProvider>>;
+}> = ({ theme, lang, provider, setProvider }) => {
   const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(
     () => ({
       wallets: [],
@@ -30,15 +37,19 @@ const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = (
         },
         theme,
         lang,
+        provider,
       },
+      provider,
+      setProvider,
     }),
-    [theme, lang],
+    [theme, lang, provider],
   );
 
   return (
     <div tw="flex flex-col items-start">
       <UnifiedWalletProvider {...params}>
         <UnifiedWalletButton />
+        <WalletSigningTestComponent />
       </UnifiedWalletProvider>
       <div tw="w-full overflow-x-auto">
         <CodeBlocks

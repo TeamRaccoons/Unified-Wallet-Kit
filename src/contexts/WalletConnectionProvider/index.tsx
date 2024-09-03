@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, PropsWithChildren, ReactNode, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { FC, PropsWithChildren, ReactNode, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base';
 import {
@@ -11,11 +11,10 @@ import { Cluster } from '@solana/web3.js';
 
 import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
-import { IUnifiedTheme } from '../UnifiedWalletContext';
+import { IUnifiedTheme, useUnifiedWalletContext } from '../UnifiedWalletContext';
 import { AllLanguage } from '../TranslationProvider/i18n';
 import { initializeWalletConnect } from 'src/wallet-connection-providers/walletconnect';
 import { UnifiedSupportedProvider } from './providers';
-import { useWeb3Modal } from '@web3modal/solana/react';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter });
@@ -57,6 +56,7 @@ export interface IUnifiedWalletConfig {
   walletModalAttachments?: {
     footer?: ReactNode;
   };
+  provider: UnifiedSupportedProvider;
 }
 
 export interface IUnifiedWalletMetadata {
@@ -100,48 +100,27 @@ const SolanaWalletAdapterProvider: FC<IWalletConnectionProviderProps> = ({
 };
 
 const WalletConnectAdapterProvider: FC<IWalletConnectionProviderProps> = ({ config, children }) => {
-  const wc = useWeb3Modal();
+  // Make sure init is called first
+  useMemo(() => {
+    initializeWalletConnect();
+  }, []);
 
-  return (
-    <>
-      <button type="button" onClick={() => wc.open()}>
-        Open WC
-      </button>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 interface WalletConnectionProviderProps {
   wallets: Adapter[];
   config: IUnifiedWalletConfig;
 }
-type IWalletConnectionProviderProps = PropsWithChildren<
-  { provider: UnifiedSupportedProvider; setProvider: Dispatch<SetStateAction<UnifiedSupportedProvider>> } & WalletConnectionProviderProps
->;
+type IWalletConnectionProviderProps = PropsWithChildren<WalletConnectionProviderProps>;
 
 const WalletConnectionProvider: FC<IWalletConnectionProviderProps> = (props) => {
-  // Make sure init is called first
-  useMemo(() => {
-    initializeWalletConnect();
-  }, [])
-  
-  const { provider, setProvider } = props;
+  const { provider } = useUnifiedWalletContext();
 
   if (provider === 'solana-wallet-adapter') {
-    return (
-      <div>
-        <button onClick={() => setProvider('walletconnect')}>Switch to WalletConnect</button>
-        <SolanaWalletAdapterProvider {...props} />
-      </div>
-    );
+    return <SolanaWalletAdapterProvider {...props} />;
   } else if (provider === 'walletconnect') {
-    return (
-      <div>
-        <button onClick={() => setProvider('solana-wallet-adapter')}>Switch to Solana Wallet Adapter</button>
-        <WalletConnectAdapterProvider {...props} />
-      </div>
-    );
+    return <WalletConnectAdapterProvider {...props} />;
   } else {
     console.error('Invalid wallet connection provider');
     return <></>;

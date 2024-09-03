@@ -22,10 +22,16 @@ import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
+import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
+import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
 initializeSolflareAndMetamaskSnap();
 
-const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+const ExampleSelectedWallets: React.FC<{
+  theme: IUnifiedTheme;
+  lang: AllLanguage;
+  provider: UnifiedSupportedProvider;
+}> = ({ theme, lang, provider }) => {
   const wallets: Adapter[] = useMemo(() => {
     const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
       (() => {
@@ -76,15 +82,17 @@ const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage
         },
         theme,
         lang,
+        provider,
       },
     }),
-    [wallets, theme, lang],
+    [wallets, theme, lang, provider],
   );
 
   return (
     <div tw="flex flex-col items-start">
       <UnifiedWalletProvider {...params}>
         <UnifiedWalletButton />
+        <WalletSigningTestComponent />
       </UnifiedWalletProvider>
 
       <div tw="w-full overflow-x-auto">

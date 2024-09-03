@@ -1,4 +1,4 @@
-import { Dispatch, PropsWithChildren, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useWallet, Wallet, WalletContextState } from '@solana/wallet-adapter-react';
 import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
@@ -12,7 +12,6 @@ import ModalDialog from '../components/ModalDialog';
 import UnifiedWalletModal from '../components/UnifiedWalletModal';
 import {
   UnifiedWalletValueContext,
-  UNIFIED_WALLET_VALUE_DEFAULT_CONTEXT,
   useUnifiedWallet,
   UnifiedWalletContext,
   useUnifiedWalletContext,
@@ -22,11 +21,10 @@ import {
   useWeb3Modal,
   useWeb3ModalState,
   useWeb3ModalProvider,
-  useWeb3ModalEvents,
   useDisconnect,
   useWeb3ModalAccount,
 } from '@web3modal/solana/react';
-import { UnifiedSupportedProvider } from './WalletConnectionProvider/providers';
+import { initializeWalletConnect } from 'src/wallet-connection-providers/walletconnect';
 
 export type IWalletProps = Omit<
   WalletContextState,
@@ -55,13 +53,8 @@ const UnifiedWalletValueProviderForWalletConnect = ({ children }: { children: Re
   const wcModal = useWeb3Modal();
   const wcState = useWeb3ModalState();
   const wcProvider = useWeb3ModalProvider();
-  const events = useWeb3ModalEvents();
   const wcAccount = useWeb3ModalAccount();
   const { disconnect: wcDisconnect } = useDisconnect();
-
-  console.log({ wcModal, wcState, wcProvider, events, wcAccount });
-
-  const defaultWalletContext = useWallet();
 
   const value: WalletContextState = useMemo(() => {
     const publicKey: PublicKey | null = (() => {
@@ -75,11 +68,66 @@ const UnifiedWalletValueProviderForWalletConnect = ({ children }: { children: Re
       return null;
     })();
 
-    return {
-      ...defaultWalletContext,
+    const connect = async () => {
+      try {
+        await wcModal.open();
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-      // autoConnect: false,
-      // wallets: [],
+    const disconnect = async () => {
+      try {
+        wcDisconnect();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const sendTransaction = async (
+      transaction: VersionedTransaction | Transaction,
+      connection: Connection,
+      options?: SendTransactionOptions,
+    ) => {
+      try {
+        if (options) {
+          throw new Error(`Options are not supported by WalletConnect`);
+        }
+
+        return wcProvider.walletProvider.sendTransaction(transaction, connection);
+      } catch (error: any) {
+        throw new Error(error);
+      }
+    };
+
+    const signTransaction = async (transaction: Transaction | VersionedTransaction) => {
+      try {
+        return wcProvider.walletProvider.signTransaction(transaction);
+      } catch (error: any) {
+        throw new Error(error);
+      }
+    };
+
+    const signAllTransactions = async (transactions: (Transaction | VersionedTransaction)[]) => {
+      try {
+        return wcProvider.walletProvider.signAllTransactions(transactions);
+      } catch (error: any) {
+        throw new Error(error);
+      }
+    };
+
+    const signMessage = async (message: Uint8Array) => {
+      try {
+        return wcProvider.walletProvider.signMessage(message);
+      } catch (error: any) {
+        throw new Error(error);
+      }
+    };
+
+    return {
+      signIn: undefined,
+      autoConnect: false,
+      wallets: [],
       wallet: {
         adapter: {
           name: 'WalletConnect' as WalletName,
@@ -91,27 +139,9 @@ const UnifiedWalletValueProviderForWalletConnect = ({ children }: { children: Re
           connected: Boolean(publicKey),
           supportedTransactionVersions: new Set(['legacy', 0]),
           autoConnect: async () => {},
-          connect: async () => {
-            try {
-              await wcModal.open();
-            } catch (error) {
-              console.error(error);
-            }
-          },
-          disconnect: async () => {
-            try {
-              wcDisconnect();
-            } catch (error) {
-              console.error(error);
-            }
-          },
-          sendTransaction: async (
-            transaction: Transaction | VersionedTransaction,
-            connection: Connection,
-            options?: SendTransactionOptions,
-          ) => {
-            return '';
-          },
+          connect,
+          disconnect,
+          sendTransaction,
         } as any,
         readyState: WalletReadyState.Loadable,
       },
@@ -120,36 +150,25 @@ const UnifiedWalletValueProviderForWalletConnect = ({ children }: { children: Re
       connected: Boolean(publicKey),
       disconnecting: false,
       select: async (walletName) => {
-        // Not needed
+        // Not needed for WalletConnect
       },
-      connect: async () => {
-        try {
-          await wcModal.open();
-        } catch (error) {
-          console.error(error);
-        }
-      },
-      disconnect: async () => {
-        try {
-          wcDisconnect();
-        } catch (error) {
-          console.error(error);
-        }
-      },
+      connect,
+      disconnect,
+      sendTransaction,
+      signTransaction,
+      signAllTransactions,
+      signMessage,
     };
-  }, [wcModal, wcState, wcProvider]);
+  }, [wcAccount.address, wcProvider.walletProvider]);
 
-  console.log({ value });
   return <UnifiedWalletValueContext.Provider value={value}>{children}</UnifiedWalletValueContext.Provider>;
 };
 
 const UnifiedWalletContextProvider: React.FC<
   {
-    provider: UnifiedSupportedProvider;
-    setProvider: Dispatch<SetStateAction<UnifiedSupportedProvider>>;
     config: IUnifiedWalletConfig;
   } & PropsWithChildren
-> = ({ provider, setProvider, config, children }) => {
+> = ({ config, children }) => {
   const { publicKey, wallet, select, connect } = useUnifiedWallet();
   const previousPublicKey = usePrevious<PublicKey | null>(publicKey);
   const previousWallet = usePrevious<Wallet | null>(wallet);
@@ -257,8 +276,7 @@ const UnifiedWalletContextProvider: React.FC<
   return (
     <UnifiedWalletContext.Provider
       value={{
-        provider,
-        setProvider,
+        provider: config.provider,
         walletPrecedence: config.walletPrecedence || [],
         handleConnectClick,
         showModal,
@@ -287,18 +305,26 @@ const UnifiedWalletProvider = ({
   config: IUnifiedWalletConfig;
   children: React.ReactNode;
 }) => {
-  const [provider, setProvider] = useState<UnifiedSupportedProvider>('walletconnect');
+  const [hasInitializedWalletConnect, setHasInitializedWalletConnect] = useState(false);
+  useMemo(() => {
+    if (config.provider === 'walletconnect' && hasInitializedWalletConnect === false) {
+      initializeWalletConnect();
+      setHasInitializedWalletConnect(true);
+    }
+  }, [config.provider]);
 
   const UnifiedValueProvider =
-    provider === 'solana-wallet-adapter' ? UnifiedWalletValueProvider : UnifiedWalletValueProviderForWalletConnect;
+    config.provider === 'solana-wallet-adapter'
+      ? UnifiedWalletValueProvider
+      : hasInitializedWalletConnect
+      ? UnifiedWalletValueProviderForWalletConnect
+      : () => null;
 
   return (
     <TranslationProvider lang={config.lang}>
-      <WalletConnectionProvider provider={provider} setProvider={setProvider} wallets={wallets} config={config}>
+      <WalletConnectionProvider wallets={wallets} config={config}>
         <UnifiedValueProvider>
-          <UnifiedWalletContextProvider provider={provider} setProvider={setProvider} config={config}>
-            {children}
-          </UnifiedWalletContextProvider>
+          <UnifiedWalletContextProvider config={config}>{children}</UnifiedWalletContextProvider>
         </UnifiedValueProvider>
       </WalletConnectionProvider>
     </TranslationProvider>

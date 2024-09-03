@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import 'twin.macro';
+import tw from 'twin.macro';
 
+import { UnifiedSupportedProvider } from 'src/contexts/WalletConnectionProvider/providers';
 import AppHeader from '../components/AppHeader/AppHeader';
 import Footer from '../components/Footer/Footer';
+import V2SexyChameleonText from '../components/SexyChameleonText/V2SexyChameleonText';
 import ExampleAllWallets from '../components/examples/ExampleAllWallets';
 import ExampleBaseOnly from '../components/examples/ExampleBaseOnly';
 import ExampleSelectedWallets from '../components/examples/ExampleSelectedWallets';
-import { IUnifiedTheme } from '../contexts/UnifiedWalletContext';
 import { AllLanguage, DEFAULT_LANGUAGE, LANGUAGE_LABELS, OTHER_LANGUAGES } from '../contexts/TranslationProvider/i18n';
-import tw from 'twin.macro';
-import V2SexyChameleonText from '../components/SexyChameleonText/V2SexyChameleonText';
-import { SolanaSignTransactionTest } from 'src/contexts/SigningTest/SignTransaction';
-import { SolanaSignMessageTest } from 'src/contexts/SigningTest/SignMessage';
+import { IUnifiedTheme } from '../contexts/UnifiedWalletContext';
 
 const Index = () => {
   const [theme, setTheme] = useState<IUnifiedTheme>('dark');
   const [lang, setLang] = useState<AllLanguage>('en');
+  const [provider, setProvider] = useState<UnifiedSupportedProvider>('solana-wallet-adapter');
 
   return (
     <>
@@ -78,32 +77,49 @@ const Index = () => {
                     ))}
                   </div>
                 </div>
+
+                <div tw="flex flex-col">
+                  <div tw="w-full border-b border-b-white/10 font-semibold text-center mb-2 pb-2">
+                    Unified Supported Provider
+                  </div>
+
+                  <div tw="flex flex-wrap gap-3">
+                    {(['solana-wallet-adapter', 'walletconnect'] as UnifiedSupportedProvider[]).map((l) => (
+                      <button
+                        type="button"
+                        key={l}
+                        onClick={() => setProvider(l)}
+                        css={[
+                          tw`cursor-pointer border border-white/10 rounded-lg py-1.5 px-3`,
+                          provider === l ? tw`bg-white text-black` : 'hover:bg-white/10',
+                        ]}
+                      >
+                        {l}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <div className="hideScrollbar" tw="bg-black/25 mt-12 max-w-[600px] rounded-xl p-4 w-full">
                 <div tw="font-semibold text-white">Base with Wallet Standard only</div>
                 <div tw="mt-4">
-                  <ExampleBaseOnly theme={theme} lang={lang} />
+                  <ExampleBaseOnly theme={theme} lang={lang} provider={provider} setProvider={setProvider} />
                 </div>
               </div>
 
               <div className="hideScrollbar" tw="bg-black/25 mt-12 max-w-[600px] rounded-xl p-4 w-full">
                 <div tw="font-semibold text-white">With selected wallets</div>
                 <div tw="mt-4">
-                  <ExampleSelectedWallets theme={theme} lang={lang} />
+                  <ExampleSelectedWallets theme={theme} lang={lang} provider={provider} />
                 </div>
               </div>
 
               <div className="hideScrollbar" tw="bg-black/25 mt-12 max-w-[600px] rounded-xl p-4 w-full">
                 <div tw="font-semibold text-white">Example with All Wallets, and Custom Wallets</div>
                 <div tw="mt-4">
-                  <ExampleAllWallets theme={theme} lang={lang} />
+                  <ExampleAllWallets theme={theme} lang={lang} provider={provider} />
                 </div>
-              </div>
-
-              <div css={tw`flex flex-col gap-4`}>
-                <SolanaSignMessageTest />
-                <SolanaSignTransactionTest />
               </div>
             </div>
           </div>
