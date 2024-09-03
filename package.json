@@ -34,7 +34,8 @@
     "@solana/web3.js": ">=1.77.3",
     "decimal.js": ">=10.4.3",
     "react": ">=18",
-    "styled-components": "*"
+    "styled-components": "*",
+    "bs58": ">=4.0.0"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -80,7 +81,8 @@
     "styled-components": "^5.3.6",
     "tailwindcss": "^3.2.4",
     "twin.macro": "^3.1.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "@types/bs58": "^4.0.1"
   },
   "resolutions": {
     "@solana/wallet-adapter-base": "0.9.23"

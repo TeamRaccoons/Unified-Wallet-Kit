@@ -10,6 +10,8 @@ import { IUnifiedTheme } from '../contexts/UnifiedWalletContext';
 import { AllLanguage, DEFAULT_LANGUAGE, LANGUAGE_LABELS, OTHER_LANGUAGES } from '../contexts/TranslationProvider/i18n';
 import tw from 'twin.macro';
 import V2SexyChameleonText from '../components/SexyChameleonText/V2SexyChameleonText';
+import { SolanaSignTransactionTest } from 'src/contexts/SigningTest/SignTransaction';
+import { SolanaSignMessageTest } from 'src/contexts/SigningTest/SignMessage';
 
 const Index = () => {
   const [theme, setTheme] = useState<IUnifiedTheme>('dark');
@@ -97,6 +99,11 @@ const Index = () => {
                 <div tw="mt-4">
                   <ExampleAllWallets theme={theme} lang={lang} />
                 </div>
+              </div>
+
+              <div css={tw`flex flex-col gap-4`}>
+                <SolanaSignMessageTest />
+                <SolanaSignTransactionTest />
               </div>
             </div>
           </div>
