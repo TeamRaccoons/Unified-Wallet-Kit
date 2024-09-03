@@ -1,10 +1,9 @@
 import React from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import 'twin.macro';
 
 import { shortenAddress } from '../misc/utils';
 import tw from 'twin.macro';
-import { IStandardStyle, useUnifiedWalletContext } from '../contexts/UnifiedWalletContext';
+import { IStandardStyle, useUnifiedWallet, useUnifiedWalletContext } from '../contexts/UnifiedWalletContext';
 
 const styles: IStandardStyle = {
   container: {
@@ -20,7 +19,7 @@ const styles: IStandardStyle = {
 };
 
 export const CurrentUserBadge: React.FC<{ onClick?: () => void; className?: string }> = ({ onClick, className }) => {
-  const { wallet, publicKey } = useWallet();
+  const { wallet, publicKey } = useUnifiedWallet();
   const { theme } = useUnifiedWalletContext();
 
   if (!wallet || !publicKey) {

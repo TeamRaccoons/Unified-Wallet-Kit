@@ -42,6 +42,7 @@
     "@solana-mobile/wallet-adapter-mobile": "^2.0.0",
     "@solana/wallet-adapter-base": "0.9.23",
     "@solana/wallet-adapter-react": "0.15.35",
+    "@web3modal/solana": "^5.1.4",
     "react-use": ">=17.2.4"
   },
   "devDependencies": {
@@ -56,8 +57,8 @@
     "@solana/spl-token": "0.1.8",
     "@solana/spl-token-registry": "~0.2.1105",
     "@solana/wallet-adapter-wallets": "0.19.32",
-    "@solflare-wallet/wallet-adapter": "~1.0.3",
     "@solana/web3.js": "^1.77.3",
+    "@solflare-wallet/wallet-adapter": "~1.0.3",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/react-syntax-highlighter": "^15.5.6",

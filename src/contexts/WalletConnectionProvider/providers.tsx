@@ -1,0 +1,1 @@
+export type UnifiedSupportedProvider = 'solana-wallet-adapter' | 'walletconnect';

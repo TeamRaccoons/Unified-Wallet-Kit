@@ -20,8 +20,8 @@ export const UnifiedWalletButton: React.FC<{
   buttonClassName?: string;
   currentUserClassName?: string;
 }> = ({ overrideContent, buttonClassName: className, currentUserClassName }) => {
-  const { setShowModal, theme } = useUnifiedWalletContext();
-  const { disconnect, connect, connecting, wallet } = useUnifiedWallet();
+  const { setShowModal, theme, provider } = useUnifiedWalletContext();
+  const { disconnect, connect, connecting, wallet, connected } = useUnifiedWallet();
   const { t } = useTranslation();
 
   const content = (
@@ -48,6 +48,11 @@ export const UnifiedWalletButton: React.FC<{
 
   const handleClick = useCallback(async () => {
     try {
+      if (provider === 'walletconnect') {
+        await connect();
+        return;
+      }
+
       if (wallet?.adapter?.name === SolanaMobileWalletAdapterWalletName) {
         await connect();
 
@@ -60,11 +65,11 @@ export const UnifiedWalletButton: React.FC<{
         setShowModal(true);
       }
     }
-  }, [wallet, connect]);
+  }, [wallet, connect, provider]);
 
   return (
     <>
-      {!wallet?.adapter.connected ? (
+      {!connected ? (
         <>
           {overrideContent ? (
             // To prevent react render error where <button> is nested
