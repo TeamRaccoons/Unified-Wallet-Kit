@@ -1,6 +1,6 @@
 {
   "name": "@jup-ag/wallet-adapter",
-  "version": "1.0.0-alpha-2",
+  "version": "1.0.0-alpha-3",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
