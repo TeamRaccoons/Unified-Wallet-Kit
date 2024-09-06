@@ -8,9 +8,11 @@ import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import tw from 'twin.macro';
 import Collapse from '../Collapse';
+import JupiterTxTest from 'src/contexts/SigningTest/JupiterTxTest';
+import { useLocalStorage } from 'react-use';
 
 const WalletSigningTestComponent = () => {
-  const [rpc, setRpc] = useState('https://api.mainnet-beta.solana.com/');
+  const [rpc, setRpc] = useLocalStorage('unified-wallet-rpc', 'https://api.mainnet-beta.solana.com/');
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -26,7 +28,7 @@ const WalletSigningTestComponent = () => {
         </button>
       </div>
 
-      <ConnectionProvider endpoint={rpc}>
+      <ConnectionProvider endpoint={rpc || ''}>
         <Collapse height={0} maxHeight={'auto'} expanded={expanded}>
           <div className="flex gap-2">
             <input
@@ -42,6 +44,7 @@ const WalletSigningTestComponent = () => {
             <SolanaSignTransactionTest />
             <SolanaSendTransactionTest />
             <SolanaSignAndSendTransactionTest />
+            <JupiterTxTest rpcUrl={rpc || ''} />
           </div>
         </Collapse>
       </ConnectionProvider>
