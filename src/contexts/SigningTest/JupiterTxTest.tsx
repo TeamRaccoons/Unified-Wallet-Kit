@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useUnifiedWallet } from '../UnifiedWalletContext';
-import { Connection, VersionedTransaction } from '@solana/web3.js';
+import { Transaction, VersionedTransaction } from '@solana/web3.js';
 import { toast } from 'sonner';
 import tw from 'twin.macro';
 import { useConnection } from '@solana/wallet-adapter-react';
@@ -10,7 +10,7 @@ const JupiterTxTest = (props: { rpcUrl: string }) => {
   const { connection } = useConnection();
   const [loading, setLoading] = useState(false);
 
-  const fetchAndSwap = async () => {
+  const fetchAndSwap = async (props: { verTx: boolean }) => {
     if (!signTransaction) {
       throw new Error('signTransaction not available');
     }
@@ -28,8 +28,8 @@ const JupiterTxTest = (props: { rpcUrl: string }) => {
         amount: '100000', // 0.1 USDC
         slippageBps: '300',
         swapMode: 'ExactIn',
-        onlyDirectRoutes: 'false',
-        asLegacyTransaction: 'false',
+        onlyDirectRoutes: props.verTx ? 'false' : 'true',
+        asLegacyTransaction: props.verTx ? 'false' : 'true',
         maxAccounts: '64',
         minimizeSlippage: 'false',
       });
@@ -46,7 +46,7 @@ const JupiterTxTest = (props: { rpcUrl: string }) => {
             prioritizationFeeLamports: {
               priorityLevelWithMaxLamports: { maxLamports: 4000000, global: false, priorityLevel: 'high' },
             },
-            asLegacyTransaction: false,
+            asLegacyTransaction: props.verTx ? false : true,
             dynamicComputeUnitLimit: true,
             allowOptimizedWrappedSolTokenAccount: false,
             quoteResponse,
@@ -61,12 +61,13 @@ const JupiterTxTest = (props: { rpcUrl: string }) => {
         swapResponse,
       });
 
-      // get the latest block hash
       const latestBlockHash = await connection.getLatestBlockhash();
 
       // Execute the transaction
       const swapTransactionBuf = Buffer.from(swapResponse.swapTransaction, 'base64');
-      const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+      const transaction = props.verTx
+        ? VersionedTransaction.deserialize(swapTransactionBuf)
+        : Transaction.from(swapTransactionBuf);
       const signedTx = await signTransaction(transaction);
 
       const rawTransaction = signedTx.serialize();
@@ -94,14 +95,26 @@ const JupiterTxTest = (props: { rpcUrl: string }) => {
   return (
     <div>
       <p css={tw`text-white text-xs mt-2 mb-1`}>Jupiter Swap</p>
-      <button
-        data-test-id="sign-transaction-button"
-        onClick={fetchAndSwap}
-        disabled={loading}
-        css={tw`rounded-lg py-1 px-2 text-xs bg-v2-lily/70 text-black disabled:opacity-50`}
-      >
-        Fetch & Swap (0.1 USDC)
-      </button>
+
+      <div css={tw`flex gap-x-2`}>
+        <button
+          data-test-id="sign-transaction-button"
+          onClick={() => fetchAndSwap({ verTx: true })}
+          disabled={loading}
+          css={tw`rounded-lg py-1 px-2 text-xs bg-v2-lily/70 text-black disabled:opacity-50`}
+        >
+          Fetch & Swap (0.1 USDC)
+        </button>
+
+        <button
+          data-test-id="sign-transaction-button"
+          onClick={() => fetchAndSwap({ verTx: false })}
+          disabled={loading}
+          css={tw`rounded-lg py-1 px-2 text-xs bg-v2-lily/70 text-black disabled:opacity-50`}
+        >
+          Fetch & Swap (0.1 USDC) (Legacy)
+        </button>
+      </div>
     </div>
   );
 };
