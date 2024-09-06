@@ -12,7 +12,7 @@ import { AllLanguage, DEFAULT_LANGUAGE, LANGUAGE_LABELS, OTHER_LANGUAGES } from 
 import { IUnifiedTheme } from '../contexts/UnifiedWalletContext';
 
 const Index = () => {
-  const [theme, setTheme] = useState<IUnifiedTheme>('dark');
+  const [theme, setTheme] = useState<IUnifiedTheme>('jupiter');
   const [lang, setLang] = useState<AllLanguage>('en');
   const [provider, setProvider] = useState<UnifiedSupportedProvider>('solana-wallet-adapter');
 

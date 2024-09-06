@@ -56,7 +56,7 @@ const Header: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useTranslation();
 
   return (
-    <div css={[tw`px-5 py-3 flex justify-between leading-none`, styles.header[theme]]}>
+    <div css={[tw`px-5 pt-5 pb-3 flex justify-between leading-none`, styles.header[theme]]}>
       <div>
         <div tw="font-semibold">
           <span>{t(`Connect Wallet`)}</span>

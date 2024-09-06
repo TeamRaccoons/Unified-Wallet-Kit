@@ -35,6 +35,7 @@ const ExampleBaseOnly: React.FC<{
         walletlistExplanation: {
           href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
         },
+        walletConnectProjectId: '4a4e231c4004ef7b77076a87094fba61', // This is Jupiter Project ID, please get yours at https://cloud.walletconnect.com/sign-in
         theme,
         lang,
         provider,

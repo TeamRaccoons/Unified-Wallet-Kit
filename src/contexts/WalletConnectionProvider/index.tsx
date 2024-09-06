@@ -9,7 +9,6 @@ import { WalletProvider } from '@solana/wallet-adapter-react';
 import { Cluster } from '@solana/web3.js';
 import { FC, PropsWithChildren, ReactNode, useMemo } from 'react';
 
-import { initializeWalletConnect } from '../../wallet-connection-providers/walletconnect';
 import { AllLanguage } from '../TranslationProvider/i18n';
 import { IUnifiedTheme, useUnifiedWalletContext } from '../UnifiedWalletContext';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
@@ -57,6 +56,7 @@ export interface IUnifiedWalletConfig {
     footer?: ReactNode;
   };
   provider: UnifiedSupportedProvider;
+  walletConnectProjectId?: string;
 }
 
 export interface IUnifiedWalletMetadata {
@@ -100,10 +100,6 @@ const SolanaWalletAdapterProvider: FC<IWalletConnectionProviderProps> = ({
 };
 
 const WalletConnectAdapterProvider: FC<IWalletConnectionProviderProps> = ({ config, children }) => {
-  // Make sure init is called first
-  useMemo(() => {
-    initializeWalletConnect();
-  }, []);
 
   return <>{children}</>;
 };

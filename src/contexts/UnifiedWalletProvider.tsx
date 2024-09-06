@@ -25,6 +25,7 @@ import {
   useWeb3ModalAccount,
 } from '@web3modal/solana/react';
 import { initializeWalletConnect } from '../wallet-connection-providers/walletconnect';
+import { solana } from '@web3modal/solana/chains';
 
 export type IWalletProps = Omit<
   WalletContextState,
@@ -308,7 +309,16 @@ const UnifiedWalletProvider = ({
   const [hasInitializedWalletConnect, setHasInitializedWalletConnect] = useState(false);
   useMemo(() => {
     if (config.provider === 'walletconnect' && hasInitializedWalletConnect === false) {
-      initializeWalletConnect();
+      initializeWalletConnect({
+        chains: [solana],
+        projectId: config.walletConnectProjectId || '',
+        metadata: {
+          name: config.metadata.name,
+          description: config.metadata.description,
+          url: config.metadata.url,
+          icons: config.metadata.iconUrls,
+        },
+      });
       setHasInitializedWalletConnect(true);
     }
   }, [config.provider]);
