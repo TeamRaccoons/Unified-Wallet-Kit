@@ -1,6 +1,6 @@
 {
   "name": "@jup-ag/wallet-adapter",
-  "version": "1.0.0-alpha-4",
+  "version": "1.0.0-alpha-5",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
@@ -43,7 +43,7 @@
     "@solana-mobile/wallet-adapter-mobile": "^2.0.0",
     "@solana/wallet-adapter-base": "0.9.23",
     "@solana/wallet-adapter-react": "0.15.35",
-    "@web3modal/solana": "5.1.7",
+    "@web3modal/solana": "5.1.8",
     "react-use": ">=17.2.4"
   },
   "devDependencies": {
