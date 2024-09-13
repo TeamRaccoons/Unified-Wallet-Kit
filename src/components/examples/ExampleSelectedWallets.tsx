@@ -22,10 +22,16 @@ import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
+import { UnifiedSupportedProvider } from '../../contexts/WalletConnectionProvider/providers';
+import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
 initializeSolflareAndMetamaskSnap();
 
-const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+const ExampleSelectedWallets: React.FC<{
+  theme: IUnifiedTheme;
+  lang: AllLanguage;
+  provider: UnifiedSupportedProvider;
+}> = ({ theme, lang, provider }) => {
   const wallets: Adapter[] = useMemo(() => {
     const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
       (() => {
@@ -74,17 +80,20 @@ const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage
         walletlistExplanation: {
           href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
         },
+        walletConnectProjectId: '4a4e231c4004ef7b77076a87094fba61', // This is Jupiter Project ID, please get yours at https://cloud.walletconnect.com/sign-in
         theme,
         lang,
+        provider,
       },
     }),
-    [wallets, theme, lang],
+    [wallets, theme, lang, provider],
   );
 
   return (
     <div tw="flex flex-col items-start">
       <UnifiedWalletProvider {...params}>
         <UnifiedWalletButton />
+        <WalletSigningTestComponent />
       </UnifiedWalletProvider>
 
       <div tw="w-full overflow-x-auto">

@@ -8,10 +8,17 @@ import { Cluster } from '@solana/web3.js';
 import { useMemo } from 'react';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
+import { UnifiedSupportedProvider } from '../../contexts/WalletConnectionProvider/providers';
+import WalletSigningTestComponent from '../WalletSigningTestComponent';
 
 const HARDCODED_WALLET_CODEBLOCK = `wallets={[]}`;
 
-const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+const ExampleBaseOnly: React.FC<{
+  theme: IUnifiedTheme;
+  lang: AllLanguage;
+  provider: UnifiedSupportedProvider;
+  setProvider: React.Dispatch<React.SetStateAction<UnifiedSupportedProvider>>;
+}> = ({ theme, lang, provider, setProvider }) => {
   const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(
     () => ({
       wallets: [],
@@ -28,17 +35,22 @@ const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = (
         walletlistExplanation: {
           href: 'https://station.jup.ag/docs/additional-topics/wallet-list',
         },
+        walletConnectProjectId: '4a4e231c4004ef7b77076a87094fba61', // This is Jupiter Project ID, please get yours at https://cloud.walletconnect.com/sign-in
         theme,
         lang,
+        provider,
       },
+      provider,
+      setProvider,
     }),
-    [theme, lang],
+    [theme, lang, provider],
   );
 
   return (
     <div tw="flex flex-col items-start">
       <UnifiedWalletProvider {...params}>
         <UnifiedWalletButton />
+        <WalletSigningTestComponent />
       </UnifiedWalletProvider>
       <div tw="w-full overflow-x-auto">
         <CodeBlocks

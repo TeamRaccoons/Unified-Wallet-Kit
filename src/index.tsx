@@ -2,6 +2,10 @@
 export * from '@solana/wallet-adapter-base';
 export * from '@solana/wallet-adapter-react';
 
+// Override useWallet to be Unified's
+import { useUnifiedWallet } from './contexts/UnifiedWalletContext';
+export { useUnifiedWallet as useWallet };
+
 // Contexts
 export * from './contexts/UnifiedWalletProvider';
 export { default as HardcodedWalletStandardAdapter } from './contexts/WalletConnectionProvider/HardcodedWalletStandardAdapter';

@@ -1,6 +1,6 @@
 {
   "name": "@jup-ag/wallet-adapter",
-  "version": "0.2.0",
+  "version": "1.0.0-alpha-5",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
@@ -32,6 +32,7 @@
     "@emotion/styled": "^11.10.5",
     "@solana/spl-token": "*",
     "@solana/web3.js": ">=1.77.3",
+    "bs58": ">=4.0.0",
     "decimal.js": ">=10.4.3",
     "react": ">=18",
     "styled-components": "*"
@@ -42,6 +43,7 @@
     "@solana-mobile/wallet-adapter-mobile": "^2.0.0",
     "@solana/wallet-adapter-base": "0.9.23",
     "@solana/wallet-adapter-react": "0.15.35",
+    "@web3modal/solana": "5.1.8",
     "react-use": ">=17.2.4"
   },
   "devDependencies": {
@@ -56,8 +58,9 @@
     "@solana/spl-token": "0.1.8",
     "@solana/spl-token-registry": "~0.2.1105",
     "@solana/wallet-adapter-wallets": "0.19.32",
-    "@solflare-wallet/wallet-adapter": "~1.0.3",
     "@solana/web3.js": "^1.77.3",
+    "@solflare-wallet/wallet-adapter": "~1.0.3",
+    "@types/bs58": "^4.0.1",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/react-syntax-highlighter": "^15.5.6",
@@ -66,6 +69,7 @@
     "babel-loader": "^9.1.0",
     "babel-plugin-macros": "^3.1.0",
     "decimal.js": "^10.4.3",
+    "eslint": "^9.9.1",
     "lokijs": "1.5.12",
     "next": "^13.4.9",
     "postcss": "^8.4.20",

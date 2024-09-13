@@ -5,12 +5,14 @@ import { useContext } from 'react';
 import { createContext } from 'react';
 import { IUnifiedWalletConfig } from './WalletConnectionProvider';
 import { TwStyle } from 'twin.macro';
+import { UnifiedSupportedProvider } from './WalletConnectionProvider/providers';
 
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
 export type IUnifiedTheme = 'light' | 'dark' | 'jupiter';
 export type IStandardStyle = Record<string, { [key in IUnifiedTheme]: TwStyle[] }>;
 
 export interface IUnifiedWalletContext {
+  provider: UnifiedSupportedProvider;
   walletPrecedence: IUnifiedWalletConfig['walletPrecedence'];
   handleConnectClick: (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => Promise<void>;
   showModal: boolean;
@@ -22,6 +24,7 @@ export interface IUnifiedWalletContext {
 }
 
 export const UnifiedWalletContext = createContext<IUnifiedWalletContext>({
+  provider: 'solana-wallet-adapter',
   walletPrecedence: [],
   handleConnectClick: async (event: React.MouseEvent<HTMLElement, globalThis.MouseEvent>, wallet: Adapter) => {},
   showModal: false,
