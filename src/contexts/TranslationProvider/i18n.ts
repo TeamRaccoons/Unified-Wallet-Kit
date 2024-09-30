@@ -111,6 +111,14 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     id: `Baru saja digunakan`,
     ru: `Недавно использованные`,
   },
+  [`Recommended wallets`]: {
+    zh: `推荐钱包`,
+    vi: `Ví được đề xuất`,
+    fr: `Portefeuilles recommandés`,
+    ja: `おすすめのウォレット`,
+    id: `Dompet yang direkomendasikan`,
+    ru: `Рекомендуемые кошельки`,
+  },
   [`Installed wallets`]: {
     zh: `已安装钱包`,
     vi: `Các ví đã cài đặt`,
