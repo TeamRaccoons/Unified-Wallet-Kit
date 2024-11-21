@@ -135,14 +135,6 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     id: `Dompet populer`,
     ru: `Популярные кошельки`,
   },
-  [`Can't find your wallet?`]: {
-    zh: `找不到您的钱包？`,
-    vi: `Không tìm thấy ví của bạn?`,
-    fr: `Vous ne trouvez pas votre portefeuille?`,
-    ja: `ウォレットが見つかりませんか？`,
-    id: `Tidak dapat menemukan dompet Anda?`,
-    ru: `Не можете найти свой кошелек?`,
-  },
   [`I don't have a wallet`]: {
     zh: `我没有钱包`,
     vi: `Tôi không có ví`,

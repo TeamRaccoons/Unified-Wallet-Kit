@@ -107,13 +107,6 @@ const ListOfWallets: React.FC<{
             );
           })}
         </div>
-        {list.highlightedBy !== 'Onboarding' && walletlistExplanation ? (
-          <div css={[tw`text-xs font-semibold underline`, list.others.length > 6 ? tw`mb-8` : '']}>
-            <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
-              <span>{t(`Can't find your wallet?`)}</span>
-            </a>
-          </div>
-        ) : null}
       </div>
     ),
     [handleConnectClick, list.others],
@@ -184,14 +177,6 @@ const ListOfWallets: React.FC<{
             );
           })}
         </div>
-
-        {walletlistExplanation && list.others.length === 0 ? (
-          <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
-            <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
-              <span>{t(`Can't find your wallet?`)}</span>
-            </a>
-          </div>
-        ) : null}
 
         {list.others.length > 0 ? (
           <>
@@ -352,7 +337,7 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
         ...installed.slice(0, 3),
         ...top3.filter(Boolean),
       ].filter(Boolean);
-      
+
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])
