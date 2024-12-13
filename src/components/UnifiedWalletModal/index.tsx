@@ -244,6 +244,7 @@ type HIGHLIGHTED_BY = 'PreviouslyConnected' // last connected
 | 'Onboarding'
 | 'TopWallet';
 const TOP_WALLETS: WalletName[] = [
+  'Jupiter Mobile' as WalletName<'Jupiter Mobile'>,
   'Phantom' as WalletName<'Phantom'>,
   'Solflare' as WalletName<'Solflare'>,
   'Backpack' as WalletName<'Backpack'>,

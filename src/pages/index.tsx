@@ -10,6 +10,7 @@ import { IUnifiedTheme } from '../contexts/UnifiedWalletContext';
 import { AllLanguage, DEFAULT_LANGUAGE, LANGUAGE_LABELS, OTHER_LANGUAGES } from '../contexts/TranslationProvider/i18n';
 import tw from 'twin.macro';
 import V2SexyChameleonText from '../components/SexyChameleonText/V2SexyChameleonText';
+import ExampleWithJupiterMobile from 'src/components/examples/ExampleWithJupiterMobile';
 
 const Index = () => {
   const [theme, setTheme] = useState<IUnifiedTheme>('dark');
@@ -82,6 +83,13 @@ const Index = () => {
                 <div tw="font-semibold text-white">Base with Wallet Standard only</div>
                 <div tw="mt-4">
                   <ExampleBaseOnly theme={theme} lang={lang} />
+                </div>
+              </div>
+              
+              <div className="hideScrollbar" tw="bg-black/25 mt-12 max-w-[600px] rounded-xl p-4 w-full">
+                <div tw="font-semibold text-white">Base with Jupiter Mobile</div>
+                <div tw="mt-4">
+                  <ExampleWithJupiterMobile theme={theme} lang={lang} />
                 </div>
               </div>
 

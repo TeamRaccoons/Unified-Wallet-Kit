@@ -8,15 +8,34 @@ import { Cluster } from '@solana/web3.js';
 import { useMemo } from 'react';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
+import { useReownAppKitAdapter } from 'src/customAdapters/Reown/useCustomReownAdapter';
 
 const HARDCODED_WALLET_CODEBLOCK = `wallets={[]}`;
 
-const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+const ExampleWithJupiterMobile: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+  const { reownAdapter, jupiterAdapter } = useReownAppKitAdapter({
+    appKitOptions: {
+      metadata: {
+        name: 'Jupiter',
+        description: `Jupiter is one of the largest decentralized trading platform and one of the most active governance community in crypto. We're building the everything exchange for everyone.`,
+        url: 'https://jup.ag', // origin must match your domain & subdomain
+        icons: ['https://jup.ag/svg/jupiter-logo.png'],
+      },
+      projectId: '4a4e231c4004ef7b77076a87094fba61',
+      features: {
+        analytics: false,
+        socials: ['google', 'x', 'apple'],
+        email: false,
+      },
+      enableWallets: false,
+    },
+  });
+
   const params: Omit<Parameters<typeof UnifiedWalletProvider>[0], 'children'> = useMemo(
     () => ({
-      wallets: [],
+      wallets: [reownAdapter, jupiterAdapter],
       config: {
-        autoConnect: false,
+        autoConnect: true,
         env: 'mainnet-beta' as Cluster,
         metadata: {
           name: 'UnifiedWallet',
@@ -30,6 +49,7 @@ const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = (
         },
         theme,
         lang,
+        walletPrecedence: [jupiterAdapter.name, reownAdapter.name],
       },
     }),
     [theme, lang],
@@ -51,4 +71,4 @@ const ExampleBaseOnly: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = (
   );
 };
 
-export default ExampleBaseOnly;
+export default ExampleWithJupiterMobile;
