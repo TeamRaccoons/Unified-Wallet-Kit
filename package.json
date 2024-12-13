@@ -22,9 +22,9 @@
     "build:types": "tsc --noEmit false --emitDeclarationOnly --outDir dist/types",
     "build:js": "rollup -c",
     "build-lib": "pnpm build:types && pnpm build:js",
-    "dev": "next dev -p 3001",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "next start",
     "serve": "npx serve public"
   },
   "peerDependencies": {
@@ -34,7 +34,10 @@
     "@solana/web3.js": ">=1.77.3",
     "decimal.js": ">=10.4.3",
     "react": ">=18",
-    "styled-components": "*"
+    "styled-components": "*",
+    "@reown/appkit": ">=1.6.0",
+    "@reown/appkit-adapter-solana": ">=1.6.0",
+    "@reown/appkit-wallet-button": ">=1.6.0"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
