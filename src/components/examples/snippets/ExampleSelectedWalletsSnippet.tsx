@@ -1,34 +1,31 @@
 // This is a duplicated snippet for Codeblock generations
 export const HARDCODED_DECLARTION_BLOCK = `
 const wallets: Adapter[] = useMemo(() => {
-  const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
-    (() => {
-      const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> =
-        new WalletConnectWalletAdapter({
-          network: WalletAdapterNetwork.Mainnet,
-          options: {
-            relayUrl: 'wss://relay.walletconnect.com',
-            projectId: metadata.walletConnectProjectId,
-            metadata: {
-              name: metadata.name,
-              description: metadata.description,
-              url: metadata.url,
-              icons: metadata.iconUrls,
-            },
-          },
-        });
-
-      // While sometimes supported, it mostly isn't. Should this be dynamic in the wallet-adapter instead?
-      adapter.supportedTransactionVersions = new Set(['legacy']);
-      return adapter;
-    })();
+  const { reownAdapter, jupiterAdapter } = useWrappedReownAdapter({
+    appKitOptions: {
+      metadata: {
+        name: 'Your project name',
+        description: 'Your project description',
+        url: '', // origin must match your domain & subdomain
+        icons: [''],
+      },
+      projectId: '<your-project-id>',
+      features: {
+        analytics: false,
+        socials: ['google', 'x', 'apple'],
+        email: false,
+      },
+      enableWallets: false,
+    },
+  });
 
   return [
     new PhantomWalletAdapter(),
     new SolflareWalletAdapter(),
     new CoinbaseWalletAdapter(),
     new TrustWalletAdapter(),
-    walletConnectWalletAdapter,
+    reownAdapter,
+    jupiterAdapter
   ].filter((item) => item && item.name && item.icon) as Adapter[];
 }, []);
 `;
