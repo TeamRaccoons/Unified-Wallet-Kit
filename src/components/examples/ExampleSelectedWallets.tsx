@@ -9,52 +9,48 @@ import {
   PhantomWalletAdapter,
   CoinbaseWalletAdapter,
   TrustWalletAdapter,
-  WalletConnectWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import {
   initialize as initializeSolflareAndMetamaskSnap,
   SolflareWalletAdapter,
 } from '@solflare-wallet/wallet-adapter';
-import { WalletAdapterWithMutableSupportedTransactionVersions, metadata } from './constants';
-import { Adapter, BaseSignerWalletAdapter, WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { Adapter } from '@solana/wallet-adapter-base';
 import WalletNotification from './WalletNotification';
 import CodeBlocks from '../CodeBlocks/CodeBlocks';
 import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
+import { useWrappedReownAdapter } from '@jup-ag/jup-mobile-adapter';
 
 initializeSolflareAndMetamaskSnap();
 
 const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
+  const { reownAdapter, jupiterAdapter } = useWrappedReownAdapter({
+    appKitOptions: {
+      metadata: {
+        name: 'Jupiter',
+        description: `Jupiter is one of the largest decentralized trading platform and one of the most active governance community in crypto. We're building the everything exchange for everyone.`,
+        url: 'https://jup.ag', // origin must match your domain & subdomain
+        icons: ['https://jup.ag/svg/jupiter-logo.png'],
+      },
+      projectId: '4a4e231c4004ef7b77076a87094fba61', // Fill in your project id
+      features: {
+        analytics: false,
+        socials: ['google', 'x', 'apple'],
+        email: false,
+      },
+      enableWallets: false,
+    },
+  });
+
   const wallets: Adapter[] = useMemo(() => {
-    const walletConnectWalletAdapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> | null =
-      (() => {
-        const adapter: WalletAdapterWithMutableSupportedTransactionVersions<BaseSignerWalletAdapter> =
-          new WalletConnectWalletAdapter({
-            network: WalletAdapterNetwork.Mainnet,
-            options: {
-              relayUrl: 'wss://relay.walletconnect.com',
-              projectId: metadata.walletConnectProjectId,
-              metadata: {
-                name: metadata.name,
-                description: metadata.description,
-                url: metadata.url,
-                icons: metadata.iconUrls,
-              },
-            },
-          });
-
-        // While sometimes supported, it mostly isn't. Should this be dynamic in the wallet-adapter instead?
-        adapter.supportedTransactionVersions = new Set(['legacy']);
-        return adapter;
-      })();
-
     return [
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
       new CoinbaseWalletAdapter(),
       new TrustWalletAdapter(),
-      walletConnectWalletAdapter,
+      reownAdapter,
+      jupiterAdapter
     ].filter((item) => item && item.name && item.icon) as Adapter[];
   }, []);
 

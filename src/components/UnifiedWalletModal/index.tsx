@@ -48,7 +48,7 @@ const styles: IStandardStyle = {
     light: [tw`text-black`],
     dark: [tw`text-white`],
     jupiter: [tw`text-white`],
-  }
+  },
 };
 
 const Header: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -107,6 +107,7 @@ const ListOfWallets: React.FC<{
             );
           })}
         </div>
+
         {list.highlightedBy !== 'Onboarding' && walletlistExplanation ? (
           <div css={[tw`text-xs font-semibold underline`, list.others.length > 6 ? tw`mb-8` : '']}>
             <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
@@ -153,45 +154,18 @@ const ListOfWallets: React.FC<{
           {list.highlightedBy === 'PreviouslyConnected' ? t(`Recently used`) : null}
           {list.highlightedBy === 'TopAndRecommended' ? t(`Recommended wallets`) : null}
         </span>
-        <div tw="mt-4 flex flex-col space-y-2">
-          {list.highlight.map((adapter, idx) => {
-            const adapterName = (() => {
-              if (adapter.name === SolanaMobileWalletAdapterWalletName) return t(`Mobile`);
-              return adapter.name;
-            })();
 
-            const attachment = walletAttachments ? walletAttachments[adapter.name]?.attachment : null;
-
-            return (
-              <button
-                type="button"
-                key={idx}
-                onClick={(event) => onClickWallet(event, adapter)}
-                css={[
-                  tw`py-4 px-4 border border-white/10 rounded-lg flex items-center cursor-pointer flex-1`,
-                  tw`hover:backdrop-blur-xl transition-all`,
-                  styles.walletItem[theme],
-                ]}
-              >
-                {isMobile() ? (
-                  <WalletIcon wallet={adapter} width={24} height={24} />
-                ) : (
-                  <WalletIcon wallet={adapter} width={30} height={30} />
-                )}
-                <span tw="font-semibold text-xs ml-4">{adapterName}</span>
-                {attachment ? <div>{attachment}</div> : null}
-              </button>
-            );
-          })}
-        </div>
-
-        {walletlistExplanation && list.others.length === 0 ? (
-          <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
-            <a href={walletlistExplanation.href} target="_blank" rel="noopener noreferrer">
-              <span>{t(`Can't find your wallet?`)}</span>
-            </a>
+        <div>
+          <div tw="mt-4 grid gap-2 grid-cols-2 pb-4" translate="no">
+            {list.highlight.map((adapter, index) => {
+              return (
+                <ul key={index}>
+                  <WalletListItem handleClick={(e) => onClickWallet(e, adapter)} wallet={adapter} />
+                </ul>
+              );
+            })}
           </div>
-        ) : null}
+        </div>
 
         {list.others.length > 0 ? (
           <>
@@ -199,20 +173,11 @@ const ListOfWallets: React.FC<{
               <span tw="text-xs font-semibold">
                 <span css={[styles.text[theme]]}>{t(`More wallets`)}</span>
               </span>
-
-              <span tw="w-[10px] h-[6px]">{isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}</span>
             </button>
 
-            <Collapse height={0} maxHeight={'auto'} expanded={isOpen}>
-              {renderWalletList}
-            </Collapse>
+            {renderWalletList}
           </>
         ) : null}
-        <div tw="text-xs font-semibold mt-4 -mb-2 text-white/80 underline cursor-pointer">
-          <button type="button" onClick={() => setShowOnboarding(true)}>
-            <span css={[styles.text[theme]]}>{t(`I don't have a wallet`)}</span>
-          </button>
-        </div>
       </div>
 
       {/* Bottom Shades */}
@@ -239,11 +204,13 @@ export interface WalletModalProps {
   container?: string;
 }
 
-type HIGHLIGHTED_BY = 'PreviouslyConnected' // last connected
-| 'TopAndRecommended' // Installed, and top wallets
-| 'Onboarding'
-| 'TopWallet';
+type HIGHLIGHTED_BY =
+  | 'PreviouslyConnected' // last connected
+  | 'TopAndRecommended' // Installed, and top wallets
+  | 'Onboarding'
+  | 'TopWallet';
 const TOP_WALLETS: WalletName[] = [
+  'Jupiter Mobile' as WalletName<'Jupiter Mobile'>,
   'Phantom' as WalletName<'Phantom'>,
   'Solflare' as WalletName<'Solflare'>,
   'Backpack' as WalletName<'Backpack'>,
@@ -348,11 +315,8 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
 
     if (filteredAdapters.installed.length > 0) {
       const { installed, top3, ...rest } = filteredAdapters;
-      const highlight = [
-        ...installed.slice(0, 3),
-        ...top3.filter(Boolean),
-      ].filter(Boolean);
-      
+      const highlight = [...installed.slice(0, 3), ...top3.filter(Boolean)].filter(Boolean);
+
       const others = Object.values(rest)
         .flat()
         .sort((a, b) => PRIORITISE[a.readyState] - PRIORITISE[b.readyState])

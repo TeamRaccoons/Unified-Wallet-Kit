@@ -86,7 +86,7 @@ const Index = () => {
               </div>
 
               <div className="hideScrollbar" tw="bg-black/25 mt-12 max-w-[600px] rounded-xl p-4 w-full">
-                <div tw="font-semibold text-white">With selected wallets</div>
+                <div tw="font-semibold text-white">More wallets + Jupiter Mobile</div>
                 <div tw="mt-4">
                   <ExampleSelectedWallets theme={theme} lang={lang} />
                 </div>
