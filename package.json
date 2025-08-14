@@ -86,6 +86,6 @@
     "typescript": "5.7.2"
   },
   "resolutions": {
-    "@solana/wallet-adapter-base": "0.9.23"
+    "@solana/wallet-adapter-base": "0.9.27"
   }
 }
