@@ -5,7 +5,7 @@ import { CurrentUserBadge } from '../CurrentUserBadge';
 import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletProvider';
 import { IStandardStyle, MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
-import { RemoteSolanaMobileWalletAdapterWallet } from '@solana-mobile/wallet-standard-mobile';
+import { RemoteSolanaMobileWalletAdapterWallet, SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-standard-mobile';
 
 const styles: IStandardStyle = {
   container: {
@@ -48,7 +48,7 @@ export const UnifiedWalletButton: React.FC<{
 
   const handleClick = useCallback(async () => {
     try {
-      if (wallet?.adapter?.name === RemoteSolanaMobileWalletAdapterWallet.name) {
+      if (wallet?.adapter?.name === SolanaMobileWalletAdapterWalletName) {
         await connect();
 
         return;

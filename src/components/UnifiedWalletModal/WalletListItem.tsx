@@ -7,7 +7,7 @@ import { isMobile } from '../../misc/utils';
 import tw from 'twin.macro';
 import { IStandardStyle, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
-import { RemoteSolanaMobileWalletAdapterWallet } from '@solana-mobile/wallet-standard-mobile';
+import { RemoteSolanaMobileWalletAdapterWallet, SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-standard-mobile';
 
 export interface WalletIconProps extends DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   wallet: Adapter | null;
@@ -62,7 +62,7 @@ export const WalletListItem = ({ handleClick, wallet }: WalletListItemProps) => 
 
   const adapterName = useMemo(() => {
     if (!wallet) return '';
-    if (wallet.name === RemoteSolanaMobileWalletAdapterWallet.name) return t(`Mobile`);
+    if (wallet.name === SolanaMobileWalletAdapterWalletName) return t(`Mobile`);
     return wallet.name;
   }, [wallet?.name]);
 
