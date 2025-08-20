@@ -47,7 +47,20 @@ interface ExecuteResponse {
   slot: string;
 }
 
-class SwapClient {
+interface HoldingsResponse {
+  amount: string;
+  uiAmount: number;
+  uiAmountString: string;
+  tokens: {
+    [key: string]: {
+      account: string;
+      amount: string;
+      uiAmount: number;
+    }[];
+  };
+}
+
+class UltraClient {
   async getSwapQuote(inputMint: string, outputMint: string, amount: number, owner: string): Promise<SwapQuoteResponse | undefined> {
     try {
       const quoteResponse = await fetch(
@@ -86,8 +99,13 @@ class SwapClient {
 
     return await result.json();
   }
+
+  async getHoldings(owner: string): Promise<HoldingsResponse> {
+    const result = await fetch(`https://ultra-api.jup.ag/holdings/${owner}`);
+    return await result.json();
+  }
 }
 
-const swapClient = new SwapClient();
+const ultraClient = new UltraClient();
 
-export default swapClient;
+export default ultraClient;
