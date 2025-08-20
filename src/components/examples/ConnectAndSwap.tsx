@@ -1,3 +1,5 @@
+import 'twin.macro';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { JupiterSwap } from '../Swap';
 import { UnifiedWalletButton } from '../UnifiedWalletButton';
