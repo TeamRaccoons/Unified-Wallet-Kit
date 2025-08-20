@@ -6,17 +6,15 @@ import * as AllWalletAdapters from '@solana/wallet-adapter-wallets';
 import { BaseSignerWalletAdapter, WalletAdapterNetwork, WalletName } from '@solana/wallet-adapter-base';
 export const MWA_NOT_FOUND_ERROR = 'MWA_NOT_FOUND_ERROR';
 
-import { UnifiedWalletButton } from '..';
+
 import { WalletAdapterWithMutableSupportedTransactionVersions, metadata } from './constants';
 import { UnifiedWalletProvider } from '../../contexts/UnifiedWalletProvider';
 import WalletNotification from './WalletNotification';
-import CodeBlocks from '../CodeBlocks/CodeBlocks';
-import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleAllWalletsSnippet';
+import { HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleAllWalletsSnippet';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { HARDCODED_WALLET_STANDARDS } from '../../misc/constants';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
-import { JupiterSwap } from '../Swap';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import ConnectAndSwap from './ConnectAndSwap';
 
 const ExampleAllWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> = ({ theme, lang }) => {
   const wallets = useMemo(() => {
@@ -81,27 +79,12 @@ const ExampleAllWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage }> =
     [wallets, theme, lang],
   );
 
-  const queryClient = new QueryClient();
-
   return (
-    <div tw="flex flex-col items-center w-full">
-      <div tw="flex flex-1 items-center justify-center gap-6 w-full">
-        <QueryClientProvider client={queryClient}>
-          <UnifiedWalletProvider {...params}>
-            <UnifiedWalletButton />
-            <JupiterSwap />
-          </UnifiedWalletProvider>
-        </QueryClientProvider>
-      </div>
-
-      <div tw="w-full overflow-x-auto">
-        <CodeBlocks
-          params={params}
-          unparsedWalletDeclarationString={''}
-          unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK}
-        />
-      </div>
-    </div>
+    <ConnectAndSwap
+      params={params}
+      unparsedWalletDeclarationString={''}
+      unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK}
+    />
   );
 };
 
