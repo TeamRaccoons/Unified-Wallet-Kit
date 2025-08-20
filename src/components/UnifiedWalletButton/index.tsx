@@ -1,11 +1,11 @@
 import React, { ReactNode, useCallback } from 'react';
-import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 import tw from 'twin.macro';
 
 import { CurrentUserBadge } from '../CurrentUserBadge';
 import { useUnifiedWalletContext, useUnifiedWallet } from '../../contexts/UnifiedWalletProvider';
 import { IStandardStyle, MWA_NOT_FOUND_ERROR } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
+import { RemoteSolanaMobileWalletAdapterWallet } from '@solana-mobile/wallet-standard-mobile';
 
 const styles: IStandardStyle = {
   container: {
@@ -48,7 +48,7 @@ export const UnifiedWalletButton: React.FC<{
 
   const handleClick = useCallback(async () => {
     try {
-      if (wallet?.adapter?.name === SolanaMobileWalletAdapterWalletName) {
+      if (wallet?.adapter?.name === RemoteSolanaMobileWalletAdapterWallet.name) {
         await connect();
 
         return;

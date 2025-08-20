@@ -30,6 +30,7 @@
   "peerDependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@jup-ag/jup-mobile-adapter": "*",
     "@reown/appkit": ">=1.6.0",
     "@reown/appkit-adapter-solana": ">=1.6.0",
     "@reown/appkit-wallet-button": ">=1.6.0",
@@ -37,13 +38,12 @@
     "@solana/web3.js": ">=1.77.3",
     "decimal.js": ">=10.4.3",
     "react": ">=18",
-    "styled-components": "*",
-    "@jup-ag/jup-mobile-adapter": "*"
+    "styled-components": "*"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@solana-mobile/wallet-adapter-mobile": "^2.2.2",
+    "@solana-mobile/wallet-standard-mobile": "^0.3.0",
     "@solana/wallet-adapter-base": "0.9.27",
     "@solana/wallet-adapter-react": "0.15.39",
     "react-use": ">=17.2.4"

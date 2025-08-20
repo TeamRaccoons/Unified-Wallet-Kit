@@ -29,9 +29,9 @@ importers:
       '@reown/appkit-wallet-button':
         specifier: '>=1.6.0'
         version: 1.6.0(@react-native-async-storage/async-storage@1.19.1(react-native@0.72.4(@babel/core@7.22.10)(@babel/preset-env@7.22.10(@babel/core@7.22.10))(bufferutil@4.0.7)(react@18.2.0)(utf-8-validate@5.0.10)))(@types/react@18.2.19)(bufferutil@4.0.7)(react@18.2.0)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@solana-mobile/wallet-adapter-mobile':
-        specifier: ^2.2.2
-        version: 2.2.2(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))(react-native@0.72.4(@babel/core@7.22.10)(@babel/preset-env@7.22.10(@babel/core@7.22.10))(bufferutil@4.0.7)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)
+      '@solana-mobile/wallet-standard-mobile':
+        specifier: ^0.3.0
+        version: 0.3.0(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))(react-native@0.72.4(@babel/core@7.22.10)(@babel/preset-env@7.22.10(@babel/core@7.22.10))(bufferutil@4.0.7)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)
       '@solana/wallet-adapter-base':
         specifier: 0.9.27
         version: 0.9.27(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))
@@ -1927,6 +1927,9 @@ packages:
     resolution: {integrity: sha512-vAv95mID0682O8wLMzsbnMzfwL8EBtJVUOQiywjnwuTxMlYhSdjp0jJw05Otm/j9N1lbkZ9tbgANGHHL8wRmjw==}
     peerDependencies:
       '@solana/web3.js': ^1.58.0
+
+  '@solana-mobile/wallet-standard-mobile@0.3.0':
+    resolution: {integrity: sha512-F5WnqHgM4S4Uy/6GWGImJvnU9FT5pWJ510fNM7bfLr7OOT/33mBwve4c+R8Ej4IyljnzpenHy36et1tolM+Jyg==}
 
   '@solana-program/compute-budget@0.6.1':
     resolution: {integrity: sha512-PWcVmRx2gSQ8jd5va5HzSlKqQmR8Q1sYaPcqpCzhOHcApJ4YsVWY6QhaOD5Nx7z1UXkP12vNq3KDsSCZnT3Hkw==}
@@ -10474,6 +10477,22 @@ snapshots:
       qrcode: 1.5.4
     transitivePeerDependencies:
       - '@solana/wallet-adapter-base'
+      - react
+      - react-native
+
+  '@solana-mobile/wallet-standard-mobile@0.3.0(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))(react-native@0.72.4(@babel/core@7.22.10)(@babel/preset-env@7.22.10(@babel/core@7.22.10))(bufferutil@4.0.7)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)':
+    dependencies:
+      '@solana-mobile/mobile-wallet-adapter-protocol': 2.2.2(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)))(@solana/web3.js@1.77.3(bufferutil@4.0.7)(utf-8-validate@5.0.10))(bs58@5.0.0)(react-native@0.72.4(@babel/core@7.22.10)(@babel/preset-env@7.22.10(@babel/core@7.22.10))(bufferutil@4.0.7)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)
+      '@solana/wallet-standard-chains': 1.1.1
+      '@solana/wallet-standard-features': 1.3.0
+      '@wallet-standard/base': 1.1.0
+      '@wallet-standard/features': 1.1.0
+      bs58: 5.0.0
+      js-base64: 3.7.5
+      qrcode: 1.5.4
+    transitivePeerDependencies:
+      - '@solana/wallet-adapter-base'
+      - '@solana/web3.js'
       - react
       - react-native
 
