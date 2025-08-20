@@ -7,7 +7,7 @@ import { isMobile } from '../../misc/utils';
 import tw from 'twin.macro';
 import { IStandardStyle, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
-import { RemoteSolanaMobileWalletAdapterWallet, SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-standard-mobile';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-standard-mobile';
 
 export interface WalletIconProps extends DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   wallet: Adapter | null;
