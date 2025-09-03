@@ -4,10 +4,10 @@ import 'twin.macro';
 
 import UnknownIconSVG from '../../icons/UnknownIconSVG';
 import { isMobile } from '../../misc/utils';
-import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 import tw from 'twin.macro';
 import { IStandardStyle, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import { useTranslation } from '../../contexts/TranslationProvider';
+import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-standard-mobile';
 
 export interface WalletIconProps extends DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   wallet: Adapter | null;

@@ -1,6 +1,6 @@
 {
   "name": "@jup-ag/wallet-adapter",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "MIT",
   "main": "dist/components.esm.js",
   "module": "dist/components.esm.js",
@@ -30,6 +30,7 @@
   "peerDependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@jup-ag/jup-mobile-adapter": "*",
     "@reown/appkit": ">=1.6.0",
     "@reown/appkit-adapter-solana": ">=1.6.0",
     "@reown/appkit-wallet-button": ">=1.6.0",
@@ -37,15 +38,16 @@
     "@solana/web3.js": ">=1.77.3",
     "decimal.js": ">=10.4.3",
     "react": ">=18",
-    "styled-components": "*",
-    "@jup-ag/jup-mobile-adapter": "*"
+    "styled-components": "*"
   },
   "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@solana-mobile/wallet-adapter-mobile": "^2.0.0",
-    "@solana/wallet-adapter-base": "0.9.23",
-    "@solana/wallet-adapter-react": "0.15.35",
+    "@solana-mobile/wallet-standard-mobile": "0.4.0",
+    "@solana/wallet-adapter-base": "0.9.27",
+    "@solana/wallet-adapter-react": "0.15.39",
+    "@tanstack/react-query": "^5.85.5",
     "react-use": ">=17.2.4"
   },
   "devDependencies": {
@@ -86,6 +88,6 @@
     "typescript": "5.7.2"
   },
   "resolutions": {
-    "@solana/wallet-adapter-base": "0.9.23"
+    "@solana/wallet-adapter-base": "0.9.27"
   }
 }

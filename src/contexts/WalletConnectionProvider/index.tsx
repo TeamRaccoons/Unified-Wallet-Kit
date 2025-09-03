@@ -1,18 +1,19 @@
 import React, { FC, PropsWithChildren, ReactNode, useMemo } from 'react';
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import { Adapter, SupportedTransactionVersions, WalletError, WalletName } from '@solana/wallet-adapter-base';
-import {
-  SolanaMobileWalletAdapter,
-  createDefaultAddressSelector,
-  createDefaultAuthorizationResultCache,
-  createDefaultWalletNotFoundHandler,
-} from '@solana-mobile/wallet-adapter-mobile';
+
 import { Cluster } from '@solana/web3.js';
 
 import { PreviouslyConnectedProvider } from './previouslyConnectedProvider';
 import HardcodedWalletStandardAdapter, { IHardcodedWalletStandardAdapter } from './HardcodedWalletStandardAdapter';
 import { IUnifiedTheme } from '../UnifiedWalletContext';
 import { AllLanguage } from '../TranslationProvider/i18n';
+import {
+  createDefaultChainSelector,
+  createDefaultAuthorizationCache,
+  createDefaultWalletNotFoundHandler,
+  registerMwa,
+} from '@solana-mobile/wallet-standard-mobile';
 
 const noop = (error: WalletError, adapter?: Adapter) => {
   console.log({ error, adapter });
@@ -70,21 +71,19 @@ const WalletConnectionProvider: FC<
     config: IUnifiedWalletConfig;
   }
 > = ({ wallets: passedWallets, config, children }) => {
+  registerMwa({
+    appIdentity: {
+      uri: config.metadata.url,
+      name: config.metadata.name,
+    },
+    authorizationCache: createDefaultAuthorizationCache(),
+    chains: ['solana:mainnet', 'solana:devnet'],
+    chainSelector: createDefaultChainSelector(),
+    onWalletNotFound: createDefaultWalletNotFoundHandler(),
+  });
+
   const wallets = useMemo(() => {
     return [
-      new SolanaMobileWalletAdapter({
-        addressSelector: createDefaultAddressSelector(),
-        appIdentity: {
-          uri: config.metadata.url,
-          // TODO: Icon support looks flaky
-          icon: '',
-          name: config.metadata.name,
-        },
-        authorizationResultCache: createDefaultAuthorizationResultCache(),
-        cluster: config.env,
-        // TODO: Check if MWA still redirects aggressively.
-        onWalletNotFound: createDefaultWalletNotFoundHandler(),
-      }),
       ...passedWallets,
       ...(config.hardcodedWallets || []).map((item) => new HardcodedWalletStandardAdapter(item)),
     ];
