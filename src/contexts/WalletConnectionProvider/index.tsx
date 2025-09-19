@@ -68,8 +68,9 @@ const WalletConnectionProvider: FC<
   PropsWithChildren & {
     wallets: Adapter[];
     config: IUnifiedWalletConfig;
+    localStorageKey?: string;
   }
-> = ({ wallets: passedWallets, config, children }) => {
+> = ({ wallets: passedWallets, config, children, localStorageKey }) => {
   const wallets = useMemo(() => {
     return [
       new SolanaMobileWalletAdapter({
@@ -91,7 +92,7 @@ const WalletConnectionProvider: FC<
   }, []);
 
   return (
-    <WalletProvider wallets={wallets} autoConnect={config.autoConnect} onError={noop}>
+    <WalletProvider wallets={wallets} autoConnect={config.autoConnect} onError={noop} localStorageKey={localStorageKey}>
       <PreviouslyConnectedProvider>{children}</PreviouslyConnectedProvider>
     </WalletProvider>
   );
