@@ -12,7 +12,6 @@ import ModalDialog from '../components/ModalDialog';
 import UnifiedWalletModal from '../components/UnifiedWalletModal';
 import {
   UnifiedWalletValueContext,
-  UNIFIED_WALLET_VALUE_DEFAULT_CONTEXT,
   useUnifiedWallet,
   UnifiedWalletContext,
   useUnifiedWalletContext,
@@ -99,8 +98,6 @@ const UnifiedWalletContextProvider: React.FC<
           throw WalletReadyState.NotDetected;
         }
       } catch (error) {
-        console.log(error);
-
         // Not Installed
         config.notificationCallback?.onNotInstalled({
           publicKey: '',
@@ -113,6 +110,8 @@ const UnifiedWalletContextProvider: React.FC<
             supportedTransactionVersions: adapter.supportedTransactionVersions,
           },
         });
+
+        throw error;
       }
     },
     [select, connect, wallet?.adapter.name],
