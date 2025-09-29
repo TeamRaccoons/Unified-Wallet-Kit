@@ -7,12 +7,9 @@ import { WalletIcon, WalletListItem } from './WalletListItem';
 
 import Collapse from '../../components/Collapse';
 
-import { SolanaMobileWalletAdapterWalletName } from '@solana-mobile/wallet-adapter-mobile';
 import { useTranslation } from '../../contexts/TranslationProvider';
 import { IStandardStyle, useUnifiedWallet, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext';
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider';
-import ChevronDownIcon from '../../icons/ChevronDownIcon';
-import ChevronUpIcon from '../../icons/ChevronUpIcon';
 import CloseIcon from '../../icons/CloseIcon';
 import { isMobile, useOutsideClick } from '../../misc/utils';
 import NotInstalled from './NotInstalled';

@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import 'twin.macro';
 
 import { UnifiedWalletProvider } from '../../contexts/UnifiedWalletProvider';
-import { UnifiedWalletButton } from '../UnifiedWalletButton';
 
 import {
   PhantomWalletAdapter,
@@ -16,11 +15,11 @@ import {
 } from '@solflare-wallet/wallet-adapter';
 import { Adapter } from '@solana/wallet-adapter-base';
 import WalletNotification from './WalletNotification';
-import CodeBlocks from '../CodeBlocks/CodeBlocks';
-import { HARDCODED_DECLARTION_BLOCK, HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
+import { HARDCODED_WALLET_CODEBLOCK } from './snippets/ExampleSelectedWalletsSnippet';
 import { IUnifiedTheme } from '../../contexts/UnifiedWalletContext';
 import { AllLanguage } from '../../contexts/TranslationProvider/i18n';
 import { useWrappedReownAdapter } from '@jup-ag/jup-mobile-adapter';
+import ConnectAndSwap from './ConnectAndSwap';
 
 initializeSolflareAndMetamaskSnap();
 
@@ -78,19 +77,11 @@ const ExampleSelectedWallets: React.FC<{ theme: IUnifiedTheme; lang: AllLanguage
   );
 
   return (
-    <div tw="flex flex-col items-start">
-      <UnifiedWalletProvider {...params}>
-        <UnifiedWalletButton />
-      </UnifiedWalletProvider>
-
-      <div tw="w-full overflow-x-auto">
-        <CodeBlocks
-          params={params}
-          unparsedWalletDeclarationString={HARDCODED_DECLARTION_BLOCK}
-          unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK}
-        />
-      </div>
-    </div>
+    <ConnectAndSwap
+      params={params}
+      unparsedWalletDeclarationString={''}
+      unparsedWalletPropsString={HARDCODED_WALLET_CODEBLOCK}
+    />
   );
 };
 
