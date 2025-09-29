@@ -178,14 +178,16 @@ const UnifiedWalletProvider = ({
   wallets,
   config,
   children,
+  localStorageKey,
 }: {
   wallets: Adapter[];
   config: IUnifiedWalletConfig;
   children: React.ReactNode;
+  localStorageKey?: string;
 }) => {
   return (
     <TranslationProvider lang={config.lang}>
-      <WalletConnectionProvider wallets={wallets} config={config}>
+      <WalletConnectionProvider wallets={wallets} config={config} localStorageKey={localStorageKey}>
         <UnifiedWalletValueProvider>
           <UnifiedWalletContextProvider config={config}>{children}</UnifiedWalletContextProvider>
         </UnifiedWalletValueProvider>
