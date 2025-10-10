@@ -1,5 +1,5 @@
 export const DEFAULT_LANGUAGE = 'en' as const;
-export const OTHER_LANGUAGES = ['zh', 'vi', 'fr', 'ja', 'id', 'ru'] as const;
+export const OTHER_LANGUAGES = ['zh', 'vi', 'fr', 'ja', 'id', 'ru', 'pt-BR'] as const;
 export type AllLanguage = typeof DEFAULT_LANGUAGE | (typeof OTHER_LANGUAGES)[number];
 
 export const LANGUAGE_LABELS: Record<AllLanguage, string> = {
@@ -10,6 +10,7 @@ export const LANGUAGE_LABELS: Record<AllLanguage, string> = {
   ja: '日本語',
   id: 'Indonesian',
   ru: 'Русский',
+  'pt-BR': 'Português (BR)',
 };
 
 // TODO: Depending on language requirement, we might need a library that supports pluralization
@@ -21,6 +22,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `接続中...`,
     id: `Sedang menghubungkan...`,
     ru: `Подключение...`,
+    'pt-BR': `Conectando...`,
   },
   [`Connect Wallet`]: {
     zh: `连接钱包`,
@@ -29,6 +31,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `ウォレットに接続する`,
     id: `Hubungkan dompet`,
     ru: `Подключить кошелек`,
+    'pt-BR': `Conectar Carteira`,
   },
   [`Connect`]: {
     zh: `连接`,
@@ -37,6 +40,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `接続`,
     id: `Hubungkan`,
     ru: `Подключить`,
+    'pt-BR': `Conectar`,
   },
 
   [`You need to connect a Solana wallet.`]: {
@@ -46,6 +50,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `Solanaウォレットを接続する必要があります。`,
     id: `Anda perlu menghubungkan dompet Solana.`,
     ru: `Вам нужно подключить кошелек Solana.`,
+    'pt-BR': `Você precisa conectar uma carteira Solana.`,
   },
   [`New here?`]: {
     zh: `新来的？`,
@@ -54,6 +59,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `初めてですか？`,
     id: `Baru disini?`,
     ru: `Новичок?`,
+    'pt-BR': `Novato?`,
   },
   [`Welcome to DeFi! Create a crypto wallet to get started!`]: {
     zh: `欢迎来到 DeFi！创建一个加密钱包吧！`,
@@ -62,6 +68,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `DeFiへようこそ！暗号ウォレットを作成して始めましょう！`,
     id: `Selamat datang di DeFi! Buat dompet crypto untuk memulai!`,
     ru: `Добро пожаловать в DeFi! Создайте криптокошелек, чтобы начать!`,
+    'pt-BR': `Bem-vindo ao DeFi! Crie uma carteira crypto para começar!`,
   },
   [`Get Started`]: {
     zh: `开始`,
@@ -70,6 +77,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `始める`,
     id: `Mulai`,
     ru: `Начать`,
+    'pt-BR': `Começar`,
   },
   [`Popular wallets to get started`]: {
     zh: `热门钱包`,
@@ -78,6 +86,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `始める人気のウォレット`,
     id: `Dompet populer untuk memulai`,
     ru: `Популярные кошельки для начала`,
+    'pt-BR': `Carteiras populares para começar`,
   },
   [`More wallets`]: {
     zh: `更多钱包`,
@@ -86,6 +95,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `その他のウォレット`,
     id: `Dompet lainnya`,
     ru: `Другие кошельки`,
+    'pt-BR': `Mais carteiras`,
   },
   [`Once installed, refresh this page`]: {
     zh: `安装后，请刷新此页面`,
@@ -94,6 +104,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `インストールしたら、このページを更新してください`,
     id: `Setelah diinstal, segarkan halaman ini`,
     ru: `После установки обновите эту страницу`,
+    'pt-BR': `Depois de instalar, atualize esta página`,
   },
   [`Go back`]: {
     zh: `返回`,
@@ -102,6 +113,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `戻る`,
     id: `Kembali`,
     ru: `Назад`,
+    'pt-BR': `Voltar`,
   },
   [`Recently used`]: {
     zh: `最近使用`,
@@ -110,6 +122,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `最近使用した`,
     id: `Baru saja digunakan`,
     ru: `Недавно использованные`,
+    'pt-BR': `Usadas recentemente`,
   },
   [`Recommended wallets`]: {
     zh: `推荐钱包`,
@@ -118,6 +131,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `おすすめのウォレット`,
     id: `Dompet yang direkomendasikan`,
     ru: `Рекомендуемые кошельки`,
+    'pt-BR': `Carteiras recomendadas`,
   },
   [`Installed wallets`]: {
     zh: `已安装钱包`,
@@ -126,6 +140,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `インストール済みのウォレット`,
     id: `Dompet yang diinstal`,
     ru: `Установленные кошельки`,
+    'pt-BR': `Carteiras instaladas`,
   },
   [`Popular wallets`]: {
     zh: `热门钱包`,
@@ -134,6 +149,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `人気のウォレット`,
     id: `Dompet populer`,
     ru: `Популярные кошельки`,
+    'pt-BR': `Carteiras populares`,
   },
   [`Can't find your wallet?`]: {
     zh: `找不到您的钱包？`,
@@ -142,6 +158,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `ウォレットが見つかりませんか？`,
     id: `Tidak dapat menemukan dompet Anda?`,
     ru: `Не можете найти свой кошелек?`,
+    'pt-BR': `Não consegue encontrar sua carteira?`,
   },
   [`I don't have a wallet`]: {
     zh: `我没有钱包`,
@@ -150,6 +167,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `私はウォレットを持っていません`,
     id: `Saya tidak punya dompet`,
     ru: `У меня нет кошелька`,
+    'pt-BR': `Não tenho uma carteira`,
   },
   [`Have you installed`]: {
     zh: `您是否已安装`,
@@ -158,6 +176,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `インストールしましたか`,
     id: `Apakah Anda sudah menginstal`,
     ru: `Вы установили`,
+    'pt-BR': `Você instalou`,
   },
   [`Install`]: {
     zh: `安装`,
@@ -166,6 +185,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `インストール`,
     id: `Memasang`,
     ru: `Установить`,
+    'pt-BR': `Instalar`,
   },
   [`On mobile:`]: {
     zh: `在手机上：`,
@@ -174,6 +194,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `モバイル：`,
     id: `Di ponsel:`,
     ru: `На мобильном:`,
+    'pt-BR': `No celular:`,
   },
   [`You should open the app instead`]: {
     zh: `您应该打开应用程序`,
@@ -182,6 +203,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `代わりにアプリを開く必要があります`,
     id: `Anda harus membuka aplikasi bukannya`,
     ru: `Вместо этого вы должны открыть приложение`,
+    'pt-BR': `Você deve abrir o aplicativo em vez disso`,
   },
   [`On desktop:`]: {
     zh: `在桌面上：`,
@@ -190,6 +212,7 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `デスクトップ：`,
     id: `Di desktop:`,
     ru: `На рабочем столе:`,
+    'pt-BR': `No desktop:`,
   },
   [`Install and refresh the page`]: {
     zh: `安装并刷新页面`,
@@ -198,5 +221,6 @@ export const i18n: Record<string, { [key in (typeof OTHER_LANGUAGES)[number]]?: 
     ja: `インストールしてページを更新する`,
     id: `Pasang dan segarkan halaman`,
     ru: `Установите и обновите страницу`,
+    'pt-BR': `Instale e atualize a página`,
   },
 };
