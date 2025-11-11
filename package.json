@@ -30,10 +30,6 @@
   "peerDependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@jup-ag/jup-mobile-adapter": "*",
-    "@reown/appkit": ">=1.6.0",
-    "@reown/appkit-adapter-solana": ">=1.6.0",
-    "@reown/appkit-wallet-button": ">=1.6.0",
     "@solana/spl-token": "*",
     "@solana/web3.js": ">=1.77.3",
     "decimal.js": ">=10.4.3",
@@ -85,7 +81,11 @@
     "styled-components": "^5.3.6",
     "tailwindcss": "^3.2.4",
     "twin.macro": "^3.1.0",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "@jup-ag/jup-mobile-adapter": "*",
+    "@reown/appkit": ">=1.6.0",
+    "@reown/appkit-adapter-solana": ">=1.6.0",
+    "@reown/appkit-wallet-button": ">=1.6.0"
   },
   "resolutions": {
     "@solana/wallet-adapter-base": "0.9.27"
