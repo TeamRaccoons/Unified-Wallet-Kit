@@ -208,6 +208,7 @@ type HIGHLIGHTED_BY =
   | 'TopWallet';
 const TOP_WALLETS: WalletName[] = [
   'Jupiter Mobile' as WalletName<'Jupiter Mobile'>,
+  'Jupiter' as WalletName<'Jupiter'>,
   'Phantom' as WalletName<'Phantom'>,
   'Solflare' as WalletName<'Solflare'>,
   'Backpack' as WalletName<'Backpack'>,
